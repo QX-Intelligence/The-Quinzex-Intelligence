@@ -7,6 +7,7 @@ import { Sun, Moon } from 'lucide-react';
 const navItems = [
   { name: 'Expertise', href: '/expertise' },
   { name: 'Philosophy', href: '/philosophy' },
+  { name: 'Collective', href: '/collective' },
   { name: 'Portfolio', href: '/portfolio' },
 ];
 

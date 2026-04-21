@@ -52,6 +52,7 @@ export default function Footer() {
               {[
                 { name: 'Expertise', path: '/expertise' },
                 { name: 'Philosophy', path: '/philosophy' },
+                { name: 'Collective', path: '/collective' },
                 { name: 'Portfolio', path: '/portfolio' },
                 { name: 'Contact', path: '/contact' }
               ].map((item) => (

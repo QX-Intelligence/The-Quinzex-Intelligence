@@ -12,6 +12,8 @@ import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import ProjectFeatures from "./pages/ProjectFeatures";
+import Collective from "./pages/Collective";
+import MemberProfile from "./pages/MemberProfile";
 
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -98,6 +100,8 @@ const App = () => {
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/terms" element={<Terms />} />
                     <Route path="/features" element={<ProjectFeatures />} />
+                    <Route path="/collective" element={<Collective />} />
+                    <Route path="/collective/:id" element={<MemberProfile />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </BrowserRouter>
