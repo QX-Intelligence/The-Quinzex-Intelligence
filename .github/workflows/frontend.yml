@@ -54,7 +54,7 @@ jobs:
 
       - name: Verify build output directory
         run: |
-          ls -la out || (echo "Build output directory missing" && exit 1)
+          ls -la dist || (echo "Build output directory missing" && exit 1)
 
       - name: Create deployment archive
         run: |
