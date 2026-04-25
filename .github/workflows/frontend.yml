@@ -58,7 +58,7 @@ jobs:
 
       - name: Create deployment archive
         run: |
-          tar -czf frontend.tar.gz -C out .
+          tar -czf frontend.tar.gz -C dist .
 
       - name: Verify archive file
         run: ls -lh frontend.tar.gz
