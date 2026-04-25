@@ -1,0 +1,172 @@
+name: Build and Deploy Frontend (Next.js - Static)
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+env:
+  AWS_REGION: ap-south-2
+  EC2_TARGET_DIR: /var/www/frontend
+
+jobs:
+
+  # ==========================================
+  # 1. BUILD JOB - Compile and package frontend
+  # ==========================================
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: List repository contents
+        run: ls -la
+
+      - name: Clean previous dependencies and cache
+        run: |
+          rm -rf node_modules
+          rm -rf ~/.npm
+          rm -rf ~/.cache
+
+      - name: Setup Node.js runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Verify Node and npm versions
+        run: node -v && npm -v
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify npm cache integrity
+        run: npm cache verify
+
+      - name: Build and export static site
+        run: |
+          npm run build
+          npm run export
+
+      - name: Verify build output directory
+        run: |
+          ls -la out || (echo "Build output directory missing" && exit 1)
+
+      - name: Create deployment archive
+        run: |
+          tar -czf frontend.tar.gz -C out .
+
+      - name: Verify archive file
+        run: ls -lh frontend.tar.gz
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend.tar.gz
+
+
+  # ==========================================
+  # 2. RELEASE JOB - Publish build artifact
+  # ==========================================
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+
+      - name: Verify downloaded artifact
+        run: ls -lh
+
+      - name: Set release tag
+        run: echo "RELEASE_TAG=nextjs-${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - name: Confirm release tag
+        run: echo $RELEASE_TAG
+
+      - name: Create GitHub release with artifact
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: NextJS_Static_By_QI ${{ github.sha }}
+          files: frontend.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  # ==========================================
+  # 3. DEPLOY JOB - Deploy to EC2 using SSM
+  # ==========================================
+  deploy:
+    runs-on: ubuntu-latest
+    needs: release
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Send deployment command via SSM
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy static Next.js frontend" \
+            --query "Command.CommandId" \
+            --output text \
+            --parameters commands="
+              RELEASE_URL=https://github.com/${{ github.repository }}/releases/download/nextjs-${GITHUB_SHA}/frontend.tar.gz,
+              rm -rf /tmp/frontend,
+              mkdir -p /tmp/frontend,
+              curl -L \$RELEASE_URL -o /tmp/frontend/frontend.tar.gz,
+              rm -rf $EC2_TARGET_DIR/*,
+              mkdir -p $EC2_TARGET_DIR,
+              tar -xzf /tmp/frontend/frontend.tar.gz -C $EC2_TARGET_DIR,
+              ls -la $EC2_TARGET_DIR
+            ")
+
+          echo "Command ID: $COMMAND_ID"
+
+          aws ssm wait command-executed \
+            --command-id $COMMAND_ID \
+            --instance-id ${{ secrets.EC2_INSTANCE_ID }}
+
+          aws ssm get-command-invocation \
+            --command-id $COMMAND_ID \
+            --instance-id ${{ secrets.EC2_INSTANCE_ID }}
+
+
+  # ==========================================
+  # 4. INVALIDATION JOB - Clear CloudFront cache
+  # ==========================================
+  invalidate:
+    runs-on: ubuntu-latest
+    needs: deploy
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create CloudFront invalidation
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
