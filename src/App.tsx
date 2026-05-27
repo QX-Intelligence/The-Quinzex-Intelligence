@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Expertise from "./pages/Expertise";
@@ -20,14 +20,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import Loader from "./components/Loader";
 
 import { ThemeProvider } from "next-themes";
-import ScrollToTop from "./components/ScrollToTop";
+import SmoothScroll from "./components/SmoothScroll";
 import TargetCursor from "./components/TargetCursor";
 import CanvasCursor from "./components/CanvasCursor";
+import PageTransition from "./components/PageTransition";
 import { HelmetProvider } from "react-helmet-async";
+import AIAssistant from "./components/AIAssistant";
+
 
 const queryClient = new QueryClient();
 
 const App = () => {
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -89,22 +93,23 @@ const App = () => {
                 <Sonner />
                 <CanvasCursor />
                 <TargetCursor />
-                <BrowserRouter>
-                  <ScrollToTop />
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/expertise" element={<Expertise />} />
-                    <Route path="/philosophy" element={<Philosophy />} />
-                    <Route path="/portfolio" element={<Portfolio />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/terms" element={<Terms />} />
-                    <Route path="/features" element={<ProjectFeatures />} />
-                    <Route path="/collective" element={<Collective />} />
-                    <Route path="/collective/:id" element={<MemberProfile />} />
-                    <Route path="*" element={<NotFound />} />
+                <SmoothScroll />
+                <AIAssistant />
+                <AnimatePresence mode="wait">
+                  <Routes location={location} key={location.pathname}>
+                    <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+                    <Route path="/expertise" element={<PageTransition><Expertise /></PageTransition>} />
+                    <Route path="/philosophy" element={<PageTransition><Philosophy /></PageTransition>} />
+                    <Route path="/portfolio" element={<PageTransition><Portfolio /></PageTransition>} />
+                    <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+                    <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+                    <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+                    <Route path="/features" element={<PageTransition><ProjectFeatures /></PageTransition>} />
+                    <Route path="/collective" element={<PageTransition><Collective /></PageTransition>} />
+                    <Route path="/collective/:id" element={<PageTransition><MemberProfile /></PageTransition>} />
+                    <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
                   </Routes>
-                </BrowserRouter>
+                </AnimatePresence>
               </motion.div>
             )}
           </AnimatePresence>

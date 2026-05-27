@@ -110,7 +110,7 @@ export default function Hero() {
               transition={{ duration: 1, delay: 1.4 }}
               className="hidden md:block text-right"
             >
-              <p className="text-5xl font-display font-bold gradient-text">50+</p>
+              <p className="text-5xl font-display font-bold gradient-text">12+</p>
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mt-1">
                 Projects Delivered
               </p>

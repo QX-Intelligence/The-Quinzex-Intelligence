@@ -6,34 +6,38 @@ import * as THREE from 'three';
 function FluidBlob() {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<any>(null);
+  const originalPositions = useRef<Float32Array | null>(null);
 
   const geometry = useMemo(() => {
-    const geo = new THREE.IcosahedronGeometry(2, 20);
+    const geo = new THREE.IcosahedronGeometry(2, 4);
+    // Slice copy the original positions to prevent math drift
+    originalPositions.current = geo.attributes.position.array.slice() as Float32Array;
     return geo;
   }, []);
 
   useFrame((state) => {
-    if (meshRef.current) {
+    if (meshRef.current && originalPositions.current) {
       meshRef.current.rotation.x = state.clock.elapsedTime * 0.05;
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.08;
 
       // Morph vertices for organic movement
       const positions = meshRef.current.geometry.attributes.position;
       const time = state.clock.elapsedTime;
+      const orig = originalPositions.current;
 
       for (let i = 0; i < positions.count; i++) {
-        const x = positions.getX(i);
-        const y = positions.getY(i);
-        const z = positions.getZ(i);
+        const ox = orig[i * 3];
+        const oy = orig[i * 3 + 1];
+        const oz = orig[i * 3 + 2];
 
-        const offset = Math.sin(x * 2 + time * 0.5) * 0.1 +
-          Math.sin(y * 2 + time * 0.3) * 0.1 +
-          Math.sin(z * 2 + time * 0.4) * 0.1;
+        const offset = Math.sin(ox * 2 + time * 0.5) * 0.1 +
+          Math.sin(oy * 2 + time * 0.3) * 0.1 +
+          Math.sin(oz * 2 + time * 0.4) * 0.1;
 
-        const length = Math.sqrt(x * x + y * y + z * z);
+        const length = Math.sqrt(ox * ox + oy * oy + oz * oz);
         const scale = (2 + offset * 0.5) / length;
 
-        positions.setXYZ(i, x * scale, y * scale, z * scale);
+        positions.setXYZ(i, ox * scale, oy * scale, oz * scale);
       }
       positions.needsUpdate = true;
       meshRef.current.geometry.computeVertexNormals();

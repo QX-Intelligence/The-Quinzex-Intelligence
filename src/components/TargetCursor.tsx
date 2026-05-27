@@ -98,16 +98,13 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
                 const currentY = gsap.getProperty(corner, 'y') as number;
                 const targetX = targetCornerPositionsRef.current![i].x - cursorX;
                 const targetY = targetCornerPositionsRef.current![i].y - cursorY;
-                const finalX = currentX + (targetX - currentX) * strength;
-                const finalY = currentY + (targetY - currentY) * strength;
-                const duration = strength >= 0.99 ? (parallaxOn ? 0.2 : 0) : 0.05;
-                gsap.to(corner, {
-                    x: finalX,
-                    y: finalY,
-                    duration: duration,
-                    ease: duration === 0 ? 'none' : 'power1.out',
-                    overwrite: 'auto'
-                });
+                
+                // Directly linear-interpolate (lerp) towards target coordinate to avoid allocations
+                const lerpFactor = strength >= 0.99 ? 0.15 : 0.3;
+                const finalX = currentX + (targetX - currentX) * lerpFactor;
+                const finalY = currentY + (targetY - currentY) * lerpFactor;
+                
+                gsap.set(corner, { x: finalX, y: finalY });
             });
         };
 

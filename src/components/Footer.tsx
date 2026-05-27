@@ -2,31 +2,32 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const socialLinks = [
-  { name: 'Twitter', href: 'https://twitter.com/quinzex' },
-  { name: 'LinkedIn', href: 'https://linkedin.com/company/quinzex' },
-  { name: 'Dribbble', href: '#' },
-  { name: 'GitHub', href: 'https://github.com/siar-cj' },
+  { name: 'Twitter', href: 'https://twitter.com/quinzex', isPlaceholder: true },
+  { name: 'LinkedIn', href: 'https://linkedin.com/company/quinzex', isPlaceholder: true },
+  { name: 'Dribbble', href: '#', isPlaceholder: true },
+  { name: 'GitHub', href: 'https://github.com/siar-cj', isPlaceholder: false },
 ];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const footerRef = useRef(null);
 
-  // Create a reveal effect
-  const { scrollYProgress } = useScroll({
-    target: footerRef,
-    offset: ['start end', 'end end']
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [-250, 0]);
-  const opacity = useTransform(scrollYProgress, [0.5, 1], [0.5, 1]);
+  const handleSocialClick = (e: React.MouseEvent<HTMLAnchorElement>, link: typeof socialLinks[0]) => {
+    if (link.isPlaceholder) {
+      e.preventDefault();
+      toast.info(`Our official ${link.name} channel is being prepared.`, {
+        description: "For immediate business inquiries, please reach out via hello@quinzex.com",
+        duration: 5000,
+      });
+    }
+  };
 
   return (
-    <motion.footer
+    <footer
       ref={footerRef}
-      style={{ y, opacity }}
       className="relative py-20 border-t border-border/30 bg-background z-10"
     >
       <div className="section-container">
@@ -92,6 +93,7 @@ export default function Footer() {
                 <motion.a
                   key={link.name}
                   href={link.href}
+                  onClick={(e) => handleSocialClick(e, link)}
                   whileHover={{ y: -3 }}
                   className="flex items-center gap-2 text-foreground hover:text-primary transition-colors group"
                 >
@@ -123,6 +125,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 }

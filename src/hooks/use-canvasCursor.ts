@@ -89,8 +89,7 @@ const useCanvasCursor = () => {
         function c(e) {
             e.touches
                 ? ((pos.x = e.touches[0].pageX), (pos.y = e.touches[0].pageY))
-                : ((pos.x = e.clientX), (pos.y = e.clientY)),
-                e.preventDefault();
+                : ((pos.x = e.clientX), (pos.y = e.clientY));
         }
         function l(e) {
             1 == e.touches.length &&

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
+import Magnetic from '@/components/ui/magnetic';
 
 const navItems = [
   { name: 'Expertise', href: '/expertise' },
@@ -68,20 +69,19 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-16">
             {navItems.map((item, index) => (
-              <Link
-                key={item.name}
-                to={item.href}
-              >
-                <motion.span
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 + index * 0.1 }}
-                  className={`transition-colors duration-300 text-xs uppercase tracking-[0.3em] hover-line ${location.pathname === item.href ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                >
-                  {item.name}
-                </motion.span>
-              </Link>
+              <Magnetic key={item.name} strength={0.25}>
+                <Link to={item.href}>
+                  <motion.span
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 + index * 0.1 }}
+                    className={`transition-colors duration-300 text-xs uppercase tracking-[0.3em] hover-line ${location.pathname === item.href ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                  >
+                    {item.name}
+                  </motion.span>
+                </Link>
+              </Magnetic>
             ))}
           </div>
 
@@ -116,18 +116,18 @@ export default function Navigation() {
               </div>
             </button>
 
-            <Link
-              to="/contact"
-            >
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="text-xs uppercase tracking-[0.3em] text-primary hover:text-foreground transition-colors hover-line"
-              >
-                Contact
-              </motion.span>
-            </Link>
+            <Magnetic strength={0.3}>
+              <Link to="/contact">
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1 }}
+                  className="text-xs uppercase tracking-[0.3em] text-primary hover:text-foreground transition-colors hover-line"
+                >
+                  Contact
+                </motion.span>
+              </Link>
+            </Magnetic>
           </div>
 
           {/* Mobile Menu Button */}

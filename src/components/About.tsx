@@ -79,9 +79,9 @@ export default function About() {
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-8 border-t border-border/50 pt-12">
                   {[
-                    { value: '98%', label: 'Client Retention' },
-                    { value: '50+', label: 'Projects Shipped' },
-                    { value: '15', label: 'Elite Members' },
+                    { value: '100%', label: 'Client Retention' },
+                    { value: '12+', label: 'Projects Shipped' },
+                    { value: '4', label: 'Elite Architects' },
                   ].map((stat, index) => (
                     <motion.div
                       key={stat.label}

@@ -9,42 +9,42 @@ import { useRef, useState } from 'react';
 const features = [
     {
         icon: <Sparkles className="w-8 h-8 text-primary" />,
-        title: "Looking Like Gold",
-        description: "Imagine if your favorite toy was dipped in shiny gold! That's how we make websites look. We use special colors and lights to make everything glow and look super expensive.",
-        tech: "Premium UI/UX Design"
+        title: "Aura Design Language",
+        description: "Bespoke digital curation styled with a luxury Obsidian & Champagne Gold aesthetic. Fluid responsive systems, micro-animations, and balanced glassmorphism form an instant emotional connection.",
+        tech: "Bespoke Curation & UI/UX"
     },
     {
         icon: <Brain className="w-8 h-8 text-primary" />,
-        title: "Super Smart Brains",
-        description: "Our websites have a brain of their own! They can think and help you do things faster, just like a robot friend who does your homework.",
-        tech: "Artificial Intelligence (AI)"
+        title: "Cognitive Integration",
+        description: "Intelligent software structures loaded with modern AI integrations, semantic pipelines, and natural language processing models to streamline complex operational tasks seamlessly.",
+        tech: "AI & Machine Learning"
     },
     {
         icon: <Rocket className="w-8 h-8 text-primary" />,
-        title: "Fast Like a Rocket",
-        description: "Nobody likes waiting, right? Our websites zoom! When you click a button, it happens *snap* just like that. No loading circles!",
-        tech: "Performance Optimization"
+        title: "Ultra-Low Latency Pipelines",
+        description: "High-performance setups leveraging optimized asset loads, pre-rendering patterns, edge-caching networks, and minimal bundle weights to ensure instantaneous interaction vectors.",
+        tech: "Performance Engineering"
     },
     {
         icon: <Shield className="w-8 h-8 text-primary" />,
-        title: "Strong Like a Castle",
-        description: "We build digital castles. They are super strong so nothing breaks, even if a million people come to visit at the same time!",
-        tech: "Robust Engineering"
+        title: "Resilient System Architecture",
+        description: "Dockerized, microservices-driven structures engineered for horizontal scalability, high concurrent traffic spikes, and strict data layer security protocols.",
+        tech: "Robust Infrastructure"
     }
 ];
 
 const whyItMatters = [
     {
         icon: <Heart className="w-6 h-6 text-primary" />,
-        text: "When a website looks amazing, people TRUST it more. It's like wearing your best clothes to a party!"
+        text: "Bespoke, elite visual presentation establishes instant, unwavering trust with enterprise stakeholders. First impressions are irreversible."
     },
     {
         icon: <Zap className="w-6 h-6 text-primary" />,
-        text: "Happy clients mean more work! When we give them the best, they tell all their friends."
+        text: "Uncompromising application performance guarantees high user retention and frictionless conversion vectors for your digital services."
     },
     {
         icon: <Rocket className="w-6 h-6 text-primary" />,
-        text: "Being the best makes you stand out. In a world of vanilla ice cream, we are the triple-chocolate-fudge sundae!"
+        text: "Unique, highly custom digital ecosystems set your enterprise leagues apart from standard off-the-shelf framework competitors."
     }
 ];
 
@@ -149,13 +149,13 @@ export default function ProjectFeatures() {
                         transition={{ duration: 0.8 }}
                     >
                         <span className="text-primary text-xs tracking-[0.5em] uppercase font-mono block mb-4">
-                            ◆ For The Future Builders ◆
+                            ◆ Engineering Specification ◆
                         </span>
                         <h1 className="font-display text-5xl md:text-7xl font-bold mb-6">
-                            Why We Are <span className="gradient-text">Special</span>
+                            Distinct Core <span className="gradient-text">Assets</span>
                         </h1>
                         <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-                            Explaining our magic so simply, even a kid would say "Wow!"
+                            Bespoke architectures crafted with uncompromising precision and premium luxury aesthetic.
                         </p>
                     </motion.div>
                 </div>
@@ -181,7 +181,7 @@ export default function ProjectFeatures() {
                                 <h3 className="text-2xl font-display font-bold mb-4 text-foreground group-hover:text-primary transition-colors">
                                     {feature.title}
                                 </h3>
-                                <p className="text-muted-foreground text-lg leading-relaxed mb-6">
+                                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                                     {feature.description}
                                 </p>
                                 <div className="inline-block px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-xs text-primary font-mono tracking-wider uppercase">
@@ -199,7 +199,7 @@ export default function ProjectFeatures() {
 
                     <div className="relative z-10 text-center max-w-4xl mx-auto">
                         <h2 className="font-display text-4xl font-bold mb-12">
-                            Why This Matters for <span className="text-primary">Freelancing</span>
+                            The Architecture of <span className="text-primary">Success</span>
                         </h2>
 
                         <div className="grid md:grid-cols-3 gap-10">
@@ -215,7 +215,7 @@ export default function ProjectFeatures() {
                                     <div className="p-3 rounded-full bg-primary/10 text-primary">
                                         {item.icon}
                                     </div>
-                                    <p className="text-lg text-muted-foreground leading-relaxed">
+                                    <p className="text-sm text-muted-foreground leading-relaxed">
                                         "{item.text}"
                                     </p>
                                 </motion.div>
