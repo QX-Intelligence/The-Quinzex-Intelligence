@@ -1288,3 +1288,336 @@ html, body {
     transform: translateX(4px);
 }
 
+/* ==================================================== */
+/* COMPREHENSIVE MOBILE RESPONSIVENESS (< 768px)         */
+/* ==================================================== */
+@media (max-width: 768px) {
+    /* Navbar Dock */
+    .dock-navbar-wrapper {
+        top: 12px !important;
+        padding: 0 12px !important;
+    }
+
+    .dock-pill-container {
+        width: 100% !important;
+        max-width: 440px !important;
+        min-height: 46px !important;
+        height: 46px !important;
+        padding: 0 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    .dock-left-group,
+    .dock-right-group {
+        flex-shrink: 0 !important;
+    }
+
+    .dock-menu-btn {
+        padding: 4px 6px !important;
+        gap: 6px !important;
+    }
+
+    .dock-menu-label {
+        font-size: 12px !important;
+    }
+
+    .dock-brand {
+        position: static !important;
+        transform: none !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-decoration: none !important;
+    }
+
+    .dock-brand-name {
+        font-size: 13px !important;
+        letter-spacing: 0.16em !important;
+        font-weight: 600 !important;
+    }
+
+    .dock-btn-cta {
+        padding: 6px 12px !important;
+        font-size: 10.5px !important;
+        letter-spacing: 0.08em !important;
+        white-space: nowrap !important;
+        gap: 4px !important;
+    }
+
+    @media (max-width: 380px) {
+        .dock-brand-name {
+            font-size: 11.5px !important;
+            letter-spacing: 0.12em !important;
+        }
+        .dock-menu-label {
+            display: none !important;
+        }
+        .dock-btn-cta {
+            padding: 5px 9px !important;
+            font-size: 9.5px !important;
+        }
+    }
+
+    /* Hero Section */
+    .hero-center-brand {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        width: 92vw !important;
+        margin: 0 auto !important;
+    }
+
+    .hero-crest-svg {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .hero-brand-name {
+        font-size: clamp(1.8rem, 6.5vw, 2.5rem) !important;
+        letter-spacing: 0.18em !important;
+    }
+
+    .scroll-discover-text {
+        font-size: 9.5px !important;
+        letter-spacing: 0.14em !important;
+        bottom: 20px !important;
+    }
+
+    /* Content Chapters */
+    .content-chapter {
+        padding: 80px 18px 36px 18px !important;
+    }
+
+    .who-we-are-top-heading,
+    .what-we-do-top-heading,
+    .sustainability-top-heading {
+        font-size: clamp(1.35rem, 5.5vw, 1.9rem) !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0.04em !important;
+        max-width: 100% !important;
+        margin: 0 0 16px 0 !important;
+        text-align: left !important;
+    }
+
+    .who-we-are-bottom-desc,
+    .what-we-do-bottom-desc {
+        font-size: 13.5px !important;
+        line-height: 1.65 !important;
+        max-width: 100% !important;
+        margin: 16px 0 0 0 !important;
+        text-align: left !important;
+    }
+
+    .divisions-showcase-container {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        margin: 24px 0 0 0 !important;
+    }
+
+    .division-feature-card {
+        padding: 20px !important;
+    }
+
+    .case-studies-grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+        margin: 24px 0 0 0 !important;
+    }
+
+    .case-study-card {
+        padding: 22px !important;
+    }
+
+    .sustainability-pillars-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        margin: 24px 0 0 0 !important;
+    }
+
+    /* Case Studies & Project Details */
+    .project-detail-view {
+        padding-top: 80px !important;
+        padding-bottom: 40px !important;
+    }
+
+    .project-detail-container {
+        padding: 0 16px !important;
+    }
+
+    .project-detail-nav-bar {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .project-headline {
+        font-size: clamp(1.85rem, 7vw, 2.5rem) !important;
+        line-height: 1.15 !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .project-subheadline {
+        font-size: clamp(0.95rem, 3.8vw, 1.15rem) !important;
+        line-height: 1.5 !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .project-action-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        gap: 10px !important;
+    }
+
+    .project-action-row a,
+    .project-action-row button {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+
+    .project-metrics-ribbon {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .project-metric-card {
+        padding: 1.25rem !important;
+        border-radius: 1rem !important;
+    }
+
+    .project-metric-num {
+        font-size: 2rem !important;
+    }
+
+    .project-hero-media-frame {
+        height: 240px !important;
+        border-radius: 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .project-hero-media-label {
+        bottom: 12px !important;
+        left: 14px !important;
+        font-size: 11px !important;
+        padding: 4px 12px !important;
+    }
+
+    .project-tech-stack-wrap {
+        padding: 1rem !important;
+        border-radius: 1rem !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .project-narrative-cards-grid {
+        gap: 1.25rem !important;
+        margin-bottom: 2.5rem !important;
+    }
+
+    .project-narrative-card {
+        padding: 1.25rem !important;
+        border-radius: 1rem !important;
+    }
+
+    .narrative-card-title {
+        font-size: 1.2rem !important;
+    }
+
+    .narrative-card-body {
+        font-size: 14px !important;
+        line-height: 1.65 !important;
+    }
+
+    .project-next-card {
+        height: 130px !important;
+        border-radius: 1rem !important;
+    }
+
+    .next-card-content {
+        padding: 0 1.25rem !important;
+    }
+
+    .next-card-title {
+        font-size: 1.3rem !important;
+    }
+
+    .next-card-arrow-circle {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    /* Subpages */
+    .sub-page-view {
+        padding-top: 80px !important;
+    }
+
+    .project-hero-grid {
+        padding: 0 !important;
+    }
+
+    .narrative-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* Fullscreen Luxury Menu Overlay */
+    .luxury-menu-overlay {
+        padding: 24px 18px !important;
+        overflow-y: auto !important;
+    }
+
+    .menu-overlay-header {
+        margin-bottom: 24px !important;
+    }
+
+    .menu-overlay-content {
+        grid-template-columns: 1fr !important;
+        gap: 28px !important;
+    }
+
+    .menu-nav-link-item {
+        font-size: clamp(20px, 5.5vw, 26px) !important;
+        letter-spacing: 0.06em !important;
+    }
+
+    .office-clocks-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    .office-clock-card {
+        padding: 14px !important;
+    }
+
+    .office-time {
+        font-size: 18px !important;
+    }
+
+    /* Footer */
+    .exact-montfort-footer {
+        padding: 48px 18px 28px 18px !important;
+    }
+
+    .footer-columns-row {
+        grid-template-columns: 1fr !important;
+        gap: 28px !important;
+        margin-bottom: 36px !important;
+    }
+
+    .footer-copyright-bar {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+}
+
+

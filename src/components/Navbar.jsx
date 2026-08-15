@@ -1,87 +1,115 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from './Link';
 
-const Magnetic = ({ children, className, href, style, ...props }) => {
+// ── Magnetic Button Component ─────────────────────────────────────────────
+const Magnetic = ({ children, className, href = '#form', onClick, style }) => {
     const ref = useRef(null);
+    const [pos, setPos] = useState({ x: 0, y: 0 });
 
     const handleMouseMove = (e) => {
-        const btn = ref.current;
-        if (!btn) return;
-        const rect = btn.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = (e.clientX - cx) * 0.15;
-        const dy = (e.clientY - cy) * 0.15;
-        btn.style.transform = `translate(${dx}px, ${dy}px)`;
+        if (!ref.current) return;
+        const { left, top, width, height } = ref.current.getBoundingClientRect();
+        const x = (e.clientX - (left + width / 2)) * 0.35;
+        const y = (e.clientY - (top + height / 2)) * 0.35;
+        setPos({ x, y });
     };
 
-    const handleMouseLeave = () => {
-        const btn = ref.current;
-        if (btn) btn.style.transform = '';
+    const handleMouseLeave = () => setPos({ x: 0, y: 0 });
+
+    const handleClick = (e) => {
+        if (onClick) {
+            onClick(e);
+            return;
+        }
+        if (href?.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     };
 
     return (
-        <a
+        <motion.a
             ref={ref}
-            className={className}
             href={href}
-            style={{ ...style, transition: 'transform 0.12s cubic-bezier(0.16, 1, 0.3, 1)' }}
+            onClick={handleClick}
+            className={className}
+            style={style}
+            animate={{ x: pos.x, y: pos.y }}
+            transition={{ type: 'spring', stiffness: 350, damping: 20, mass: 0.5 }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            {...props}
         >
             {children}
-        </a>
+        </motion.a>
     );
 };
 
-const SmartDropdownMenu = ({ toggleLink, toggleLabel, isSmall = false, children }) => {
+// ── Dropdown Helper ───────────────────────────────────────────────────────
+const SmartDropdownMenu = ({ children, toggleLabel, toggleLink }) => {
+    const [open, setOpen] = useState(false);
+    const timerRef = useRef(null);
+
+    const handleMouseEnter = () => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+        setOpen(true);
+    };
+
+    const handleMouseLeave = () => {
+        timerRef.current = setTimeout(() => setOpen(false), 120);
+    };
+
     return (
-        <div className="dropdown-menu w-dropdown">
-            <div className="dropdown-toggle">
-                <Link to={toggleLink} className="nav-link dock-item-link">{toggleLabel}</Link>
-                <img
-                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' viewBox='0 0 7 4'%3E%3Cpath d='M0 0l3.5 4L7 0' fill='none' stroke='%230f3554' stroke-width='1.2'/%3E%3C/svg%3E"
-                    alt=""
-                    className="icon-arrow-about"
-                />
+        <div
+            className="menu-dropdown-wrapper"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={{ position: 'relative', display: 'inline-block' }}
+        >
+            <div className="link-wrapper">
+                <Link to={toggleLink} className="nav-link dock-item-link">
+                    {toggleLabel}
+                </Link>
+                <div className="hover-line"></div>
             </div>
-            <nav className={`menu-area ${isSmall ? 'is-small' : ''}`}>
-                {children}
-            </nav>
+
+            <AnimatePresence>
+                {open && (
+                    <motion.div
+                        className="menu-container-area"
+                        initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                        transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        {children}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
 
+// ── Inline Nav Variants ───────────────────────────────────────────────────
 const menuContainerVariants = {
-    hidden: {
-        opacity: 0,
-        width: 0,
-        scale: 0.98,
-        filter: 'blur(3px)'
-    },
+    hidden: { opacity: 0, width: 0 },
     show: {
         opacity: 1,
         width: 'auto',
-        scale: 1,
-        filter: 'blur(0px)',
         transition: {
-            duration: 0.16,
+            duration: 0.22,
             ease: [0.16, 1, 0.3, 1],
-            staggerChildren: 0.02,
-            delayChildren: 0.01
+            staggerChildren: 0.03,
+            delayChildren: 0.02
         }
     },
     exit: {
         opacity: 0,
         width: 0,
-        scale: 0.98,
-        filter: 'blur(2px)',
-        transition: {
-            duration: 0.12,
-            ease: [0.76, 0, 0.24, 1]
-        }
+        transition: { duration: 0.14, ease: [0.16, 1, 0.3, 1] }
     }
 };
 
@@ -98,7 +126,15 @@ const menuItemVariants = {
 const Navbar = ({ onOpenMenu }) => {
     const [scrolled, setScrolled] = useState(false);
     const [navOpen, setNavOpen]   = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const wrapperRef              = useRef(null);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -116,6 +152,14 @@ const Navbar = ({ onOpenMenu }) => {
         return () => document.removeEventListener('mousedown', handleClick);
     }, []);
 
+    const handleMenuToggle = () => {
+        if (isMobile) {
+            if (onOpenMenu) onOpenMenu();
+        } else {
+            setNavOpen(v => !v);
+        }
+    };
+
     return (
         <motion.div
             ref={wrapperRef}
@@ -126,14 +170,12 @@ const Navbar = ({ onOpenMenu }) => {
         >
             <div
                 className={`dock-pill-container ${scrolled ? 'is-scrolled' : ''}`}
-                style={{ position: 'relative' }}
             >
                 {/* ── LEFT: Menu toggle + inline nav ─────────────────── */}
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-
-                    {/* Hamburger + label */}
+                <div className="dock-left-group" style={{ display: 'flex', alignItems: 'center' }}>
                     <button
-                        onClick={() => setNavOpen(v => !v)}
+                        onClick={handleMenuToggle}
+                        className="dock-menu-btn"
                         style={{
                             display:      'flex',
                             alignItems:   'center',
@@ -141,7 +183,7 @@ const Navbar = ({ onOpenMenu }) => {
                             background:   'none',
                             border:       'none',
                             cursor:       'pointer',
-                            padding:      '6px 12px',
+                            padding:      '6px 10px',
                             borderRadius: '8px',
                             transition:   'background 0.12s ease',
                             flexShrink:   0,
@@ -153,24 +195,24 @@ const Navbar = ({ onOpenMenu }) => {
                             <motion.rect
                                 x="0" y="2.5" width="18" height="2.5" rx="1.25" fill="#0f3554"
                                 style={{ transformOrigin: '9px 7px' }}
-                                animate={navOpen ? { rotate: 45, y: 3.25 } : { rotate: 0, y: 0 }}
+                                animate={(!isMobile && navOpen) ? { rotate: 45, y: 3.25 } : { rotate: 0, y: 0 }}
                                 transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
                             />
                             <motion.rect
                                 x="0" y="9" width="18" height="2.5" rx="1.25" fill="#0f3554"
                                 style={{ transformOrigin: '9px 7px' }}
-                                animate={navOpen ? { rotate: -45, y: -3.25 } : { rotate: 0, y: 0 }}
+                                animate={(!isMobile && navOpen) ? { rotate: -45, y: -3.25 } : { rotate: 0, y: 0 }}
                                 transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
                             />
                         </svg>
-                        <span style={{ fontSize: '13px', fontWeight: 500, color: '#0f3554', fontFamily: 'var(--font-main)', letterSpacing: '0.04em' }}>
-                            {navOpen ? 'Close' : 'Menu'}
+                        <span className="dock-menu-label" style={{ fontSize: '13px', fontWeight: 500, color: '#0f3554', fontFamily: 'var(--font-main)', letterSpacing: '0.04em' }}>
+                            {!isMobile && navOpen ? 'Close' : 'Menu'}
                         </span>
                     </button>
 
-                    {/* Nav items slide in to the RIGHT of the button */}
+                    {/* Desktop inline nav items slide in to the RIGHT of the button */}
                     <AnimatePresence>
-                        {navOpen && (
+                        {!isMobile && navOpen && (
                             <motion.div
                                 key="inline-nav"
                                 initial="hidden"
@@ -198,18 +240,11 @@ const Navbar = ({ onOpenMenu }) => {
                                                         <div className="menu-items-detail-text">Learn more about who we are.</div>
                                                     </div>
                                                 </Link>
-                                                <Link to="/team" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fcffea1a74756a0ea9991_edabc52cff38743f22f94c9ff559f4ef_Our%20Team.svg" loading="lazy" alt="" className="menu-items-icon-img" />
+                                                <Link to="/philosophy" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
+                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fd16f9f6e5aeeb4003d15_18e11a37c95e1e19488a0ea13bba4d6c_Careers.svg" loading="lazy" alt="" className="menu-items-icon-img" />
                                                     <div className="w-layout-vflex">
-                                                        <div className="link-wrapper"><div className="nav-link-sub-items">Our Team</div><div className="hover-line"></div></div>
-                                                        <div className="menu-items-detail-text">Meet the people behind.</div>
-                                                    </div>
-                                                </Link>
-                                                <Link to="/careers" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686ff503c24b9058ebe3f531_b0965bb658c3b4935ff4f09ca731d691_Content%20Design%20%26%20Socials.svg" loading="lazy" alt="" className="menu-items-icon-img" />
-                                                    <div className="w-layout-vflex">
-                                                        <div className="link-wrapper"><div className="nav-link-sub-items">Careers</div><div className="hover-line"></div></div>
-                                                        <div className="menu-items-detail-text">Join and grow with us</div>
+                                                        <div className="link-wrapper"><div className="nav-link-sub-items">Philosophy</div><div className="hover-line"></div></div>
+                                                        <div className="menu-items-detail-text">Our principles and engineering approach.</div>
                                                     </div>
                                                 </Link>
                                             </div>
@@ -217,75 +252,34 @@ const Navbar = ({ onOpenMenu }) => {
                                     </motion.div>
 
                                     <motion.div variants={menuItemVariants}>
-                                        <SmartDropdownMenu toggleLink="/portfolio" toggleLabel="Works">
+                                        <SmartDropdownMenu toggleLink="/services" toggleLabel="Divisions">
                                             <div className="menu-area-list w-layout-hflex">
-                                                <Link to="/portfolio" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fe0daab03c9f1bb1718c4_5c8d24e46fc57de9461bfac6d8624f76_Branding.svg" loading="lazy" alt="" className="menu-items-icon-img" />
+                                                <Link to="/services" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
+                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fd0dcbf5f6a96bfbeae54_b6c4bda0b2401eb124ce8df8645e54d3_Engineering.svg" loading="lazy" alt="" className="menu-items-icon-img" />
                                                     <div className="w-layout-vflex">
-                                                        <div className="link-wrapper"><div className="nav-link-sub-items">All Projects</div><div className="hover-line"></div></div>
-                                                        <div className="menu-items-detail-text">Explore complete case studies.</div>
+                                                        <div className="link-wrapper"><div className="nav-link-sub-items">Engineering</div><div className="hover-line"></div></div>
+                                                        <div className="menu-items-detail-text">Custom software & high-scale architecture.</div>
                                                     </div>
                                                 </Link>
-                                                <Link to="/project/career-vedha" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fe0e10239b149c2a14060_914fbc70f5ca2721d8720d45fcf53533_Web%20Design.svg" loading="lazy" alt="" className="menu-items-icon-img" />
+                                                <Link to="/services" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
+                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fd107a6ecb0c6a51d9d95_7b0d744b74bbbe519b5b2984534f5aa1_Strategy.svg" loading="lazy" alt="" className="menu-items-icon-img" />
                                                     <div className="w-layout-vflex">
-                                                        <div className="link-wrapper"><div className="nav-link-sub-items">CareerVedha</div><div className="hover-line"></div></div>
-                                                        <div className="menu-items-detail-text">50k+ EdTech Analytics Platform.</div>
-                                                    </div>
-                                                </Link>
-                                                <Link to="/project/mh-marble" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fe0e16d0c82b3823721e1_20fdc18bbacab0fb9433926d4e9bacb2_UXUI%20Design.svg" loading="lazy" alt="" className="menu-items-icon-img" />
-                                                    <div className="w-layout-vflex">
-                                                        <div className="link-wrapper"><div className="nav-link-sub-items">MH Marble</div><div className="hover-line"></div></div>
-                                                        <div className="menu-items-detail-text">3D WebGL E-Commerce.</div>
-                                                    </div>
-                                                </Link>
-                                                <Link to="/quinzex/" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: '#0f3554', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '13px', fontWeight: 700 }}>QX</div>
-                                                    <div className="w-layout-vflex">
-                                                        <div className="link-wrapper"><div className="nav-link-sub-items" style={{ color: '#0f3554', fontWeight: 600 }}>Quinzex Platform ↗</div><div className="hover-line"></div></div>
-                                                        <div className="menu-items-detail-text">Explore interactive app.</div>
+                                                        <div className="link-wrapper"><div className="nav-link-sub-items">AI & Machine Learning</div><div className="hover-line"></div></div>
+                                                        <div className="menu-items-detail-text">Autonomous agents & intelligence pipelines.</div>
                                                     </div>
                                                 </Link>
                                             </div>
                                         </SmartDropdownMenu>
                                     </motion.div>
 
-                                    <motion.div variants={menuItemVariants}>
-                                        <SmartDropdownMenu toggleLink="/services" toggleLabel="Services" isSmall={true}>
-                                            <div className="menu-area-list w-layout-hflex">
-                                                <div className="nav-services-flex w-layout-vflex">
-                                                    <Link to="/services" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                        <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fe0e10239b149c2a14060_914fbc70f5ca2721d8720d45fcf53533_Web%20Design.svg" loading="lazy" alt="" className="menu-items-icon-img" />
-                                                        <div className="w-layout-vflex">
-                                                            <div className="link-wrapper"><div className="nav-link-sub-items">Core Expertise</div><div className="hover-line"></div></div>
-                                                            <div className="menu-items-detail-text">Enterprise Tech Matrix</div>
-                                                        </div>
-                                                    </Link>
-                                                    <Link to="/philosophy" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                        <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fe0daab03c9f1bb1718c4_5c8d24e46fc57de9461bfac6d8624f76_Branding.svg" loading="lazy" alt="" className="menu-items-icon-img" />
-                                                        <div className="w-layout-vflex">
-                                                            <div className="link-wrapper"><div className="nav-link-sub-items">Philosophy</div><div className="hover-line"></div></div>
-                                                            <div className="menu-items-detail-text">Triple-A &amp; 5-Step Journey</div>
-                                                        </div>
-                                                    </Link>
-                                                    <Link to="/features" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                        <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686ff503e2370d69422c28b3_1b7feb640e79e59978d46c353df27adc_SEO.svg" loading="lazy" alt="" className="menu-items-icon-img" />
-                                                        <div className="w-layout-vflex">
-                                                            <div className="link-wrapper"><div className="nav-link-sub-items">Aura Architecture</div><div className="hover-line"></div></div>
-                                                            <div className="menu-items-detail-text">Low Latency &amp; Resilience</div>
-                                                        </div>
-                                                    </Link>
-                                                    <Link to="/quinzex/" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                        <div style={{ width: '24px', height: '24px', borderRadius: '5px', background: '#0f3554', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '11px', fontWeight: 700 }}>QX</div>
-                                                        <div className="w-layout-vflex">
-                                                            <div className="link-wrapper"><div className="nav-link-sub-items" style={{ color: '#0f3554', fontWeight: 600 }}>Quinzex Platform ↗</div><div className="hover-line"></div></div>
-                                                            <div className="menu-items-detail-text">Launch interactive ecosystem</div>
-                                                        </div>
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                        </SmartDropdownMenu>
+                                    <motion.div variants={menuItemVariants} className="link-wrapper" onClick={() => setNavOpen(false)}>
+                                        <Link to="/team" className="nav-link dock-item-link">Collective</Link>
+                                        <div className="hover-line"></div>
+                                    </motion.div>
+
+                                    <motion.div variants={menuItemVariants} className="link-wrapper" onClick={() => setNavOpen(false)}>
+                                        <Link to="/portfolio" className="nav-link dock-item-link">Selected Work</Link>
+                                        <div className="hover-line"></div>
                                     </motion.div>
 
                                     <motion.div
@@ -293,7 +287,7 @@ const Navbar = ({ onOpenMenu }) => {
                                         className="link-wrapper"
                                         onClick={() => {
                                             setNavOpen(false);
-                                            onOpenMenu();
+                                            if (onOpenMenu) onOpenMenu();
                                         }}
                                     >
                                         <span className="nav-link dock-item-link" style={{ cursor: 'pointer' }}>Full Menu</span>
@@ -305,35 +299,40 @@ const Navbar = ({ onOpenMenu }) => {
                     </AnimatePresence>
                 </div>
 
-                {/* ── CENTER: Brand Logo — absolutely centered, smoothly hidden when menu is open ────────── */}
+                {/* ── CENTER: Brand Logo ─────────────────── */}
                 <Link
                     to="/"
                     className="dock-brand"
                     style={{
-                        position:      'absolute',
-                        left:          '50%',
-                        top:           '50%',
-                        transform:     'translate(-50%, -50%)',
+                        position:      isMobile ? 'static' : 'absolute',
+                        left:          isMobile ? 'auto' : '50%',
+                        top:           isMobile ? 'auto' : '50%',
+                        transform:     isMobile ? 'none' : 'translate(-50%, -50%)',
                         zIndex:        1,
-                        opacity:       navOpen ? 0 : 1,
-                        pointerEvents: navOpen ? 'none' : 'auto',
+                        opacity:       (!isMobile && navOpen) ? 0 : 1,
+                        pointerEvents: (!isMobile && navOpen) ? 'none' : 'auto',
                         transition:    'opacity 0.15s ease, transform 0.15s ease',
-                        transformOrigin: 'center center'
+                        textDecoration: 'none',
+                        display:       'flex',
+                        alignItems:    'center',
+                        justifyContent:'center'
                     }}
                 >
-                    <span className="dock-brand-name">Quinzex</span>
+                    <span className="dock-brand-name">QUINZEX</span>
                 </Link>
 
                 {/* ── RIGHT: CTA ──────────────────────── */}
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div className="dock-right-group" style={{ display: 'flex', alignItems: 'center' }}>
                     <Magnetic href="#form" className="dock-btn-cta">
-                        <span>Let's chat</span>
-                        <img
-                            src="https://cdn.prod.website-files.com/673786754d248974527e65b5/673a19276ccbf2bcc1c6be57_hand%20wave.avif"
-                            loading="lazy"
-                            alt=""
-                            style={{ width: '1.1rem', height: '1.1rem' }}
-                        />
+                        <span>{isMobile ? 'Chat 👋' : "Let's chat"}</span>
+                        {!isMobile && (
+                            <img
+                                src="https://cdn.prod.website-files.com/673786754d248974527e65b5/673a19276ccbf2bcc1c6be57_hand%20wave.avif"
+                                loading="lazy"
+                                alt=""
+                                style={{ width: '1.1rem', height: '1.1rem' }}
+                            />
+                        )}
                     </Magnetic>
                 </div>
             </div>
