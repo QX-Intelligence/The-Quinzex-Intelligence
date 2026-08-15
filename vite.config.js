@@ -5,8 +5,11 @@ import fs from 'fs';
 
 function serveQuinzexPlugin() {
   const quinzexDist = path.resolve(__dirname, 'Quinzex-main/dist');
+  const targetDistQuinzex = path.resolve(__dirname, 'dist/quinzex');
+
   return {
     name: 'serve-quinzex',
+    // Dev server middleware
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         if (req.url && req.url.startsWith('/quinzex')) {
@@ -51,6 +54,17 @@ function serveQuinzexPlugin() {
         }
         next();
       });
+    },
+
+    // Production build hook: Copy Quinzex-main/dist into dist/quinzex
+    closeBundle() {
+      if (fs.existsSync(quinzexDist)) {
+        if (!fs.existsSync(targetDistQuinzex)) {
+          fs.mkdirSync(targetDistQuinzex, { recursive: true });
+        }
+        fs.cpSync(quinzexDist, targetDistQuinzex, { recursive: true });
+        console.log('[serveQuinzexPlugin] Successfully copied Quinzex-main/dist into dist/quinzex for production deployment.');
+      }
     }
   };
 }
