@@ -1289,9 +1289,299 @@ html, body {
 }
 
 /* ==================================================== */
+/* FULLSCREEN NAVIGATION MENU OVERLAY                   */
+/* ==================================================== */
+.fullmenu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(246, 250, 254, 0.97);
+    backdrop-filter: blur(36px) saturate(180%);
+    -webkit-backdrop-filter: blur(36px) saturate(180%);
+    z-index: 999999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: #0a1926;
+    padding: 3rem 4rem 2.5rem 4rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Reset all links inside fullmenu - NO default browser blue or underlines */
+.fullmenu-overlay a {
+    text-decoration: none !important;
+    color: inherit;
+}
+
+.fullmenu-wrap {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.5rem;
+}
+
+/* Top Header */
+.fullmenu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(15, 53, 84, 0.08);
+}
+
+.fullmenu-brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.fullmenu-brand-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: #0a1926;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.fullmenu-brand-tagline {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    color: rgba(15, 53, 84, 0.45);
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.fullmenu-close-btn {
+    background: #ffffff;
+    border: 1px solid rgba(15, 53, 84, 0.12);
+    color: #0a1926;
+    border-radius: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(15, 53, 84, 0.04);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fullmenu-close-btn:hover {
+    background: #0a1926;
+    color: #ffffff;
+    transform: rotate(90deg) scale(1.05);
+}
+
+/* Main Body */
+.fullmenu-body {
+    display: flex;
+    gap: 4rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1;
+    margin: 1.5rem 0;
+}
+
+/* Primary Nav List (Editorial Swiss Typography) */
+.fullmenu-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    flex: 1;
+}
+
+.fullmenu-nav-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    text-decoration: none !important;
+    color: #0a1926 !important;
+    padding: 0.45rem 0;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.fullmenu-nav-num {
+    font-family: 'Space Grotesk', monospace, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #0284c7;
+    letter-spacing: 0.08em;
+    min-width: 26px;
+}
+
+.fullmenu-nav-label {
+    font-size: clamp(2rem, 3.8vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: #0a1926;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.fullmenu-nav-arrow {
+    font-size: 1.5rem;
+    color: #0284c7;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fullmenu-nav-item:hover .fullmenu-nav-label {
+    color: #0284c7;
+    transform: translateX(8px);
+}
+
+.fullmenu-nav-item:hover .fullmenu-nav-arrow {
+    opacity: 1;
+    transform: translateX(8px);
+}
+
+/* Side Panel (Context & Quick Access) */
+.fullmenu-side-panel {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+    padding-left: 3rem;
+    border-left: 1px solid rgba(15, 53, 84, 0.08);
+}
+
+.fullmenu-side-heading {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(15, 53, 84, 0.45);
+    margin-bottom: 0.85rem;
+}
+
+.fullmenu-featured-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.fullmenu-featured-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-decoration: none !important;
+    transition: transform 0.2s ease;
+}
+
+.fullmenu-featured-item:hover {
+    transform: translateX(4px);
+}
+
+.fullmenu-featured-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0a1926;
+    transition: color 0.2s ease;
+}
+
+.fullmenu-featured-item:hover .fullmenu-featured-title {
+    color: #0284c7;
+}
+
+.fullmenu-featured-cat {
+    font-size: 0.75rem;
+    color: rgba(15, 53, 84, 0.5);
+}
+
+.fullmenu-side-email {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0a1926 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+    display: inline-block;
+}
+
+.fullmenu-side-email:hover {
+    color: #0284c7 !important;
+}
+
+.fullmenu-side-studios {
+    font-size: 0.75rem;
+    color: rgba(15, 53, 84, 0.5);
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+}
+
+/* Footer Bar */
+.fullmenu-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(15, 53, 84, 0.08);
+    width: 100%;
+}
+
+.fullmenu-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #0a1926;
+    color: #ffffff !important;
+    padding: 0.8rem 1.8rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none !important;
+    box-shadow: 0 4px 16px rgba(10, 25, 38, 0.15);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fullmenu-cta-btn:hover {
+    background: #0284c7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.25);
+}
+
+.fullmenu-footer-info {
+    font-size: 0.82rem;
+    color: rgba(15, 53, 84, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-dot {
+    color: rgba(15, 53, 84, 0.3);
+}
+
+.fullmenu-platform-link {
+    color: #0a1926 !important;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+}
+
+.fullmenu-platform-link:hover {
+    color: #0284c7 !important;
+}
+
+/* ==================================================== */
 /* COMPREHENSIVE MOBILE RESPONSIVENESS (< 768px)         */
 /* ==================================================== */
 @media (max-width: 768px) {
+    /* Prevent any horizontal body overflow */
+    html, body, #root, .montfort-page {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+
     /* Navbar Dock */
     .dock-navbar-wrapper {
         top: 12px !important;
@@ -1339,7 +1629,8 @@ html, body {
         font-weight: 600 !important;
     }
 
-    .dock-btn-cta {
+    /* Scope button size to dock only so other page CTAs stay comfortable */
+    .dock-pill-container .dock-btn-cta {
         padding: 6px 12px !important;
         font-size: 10.5px !important;
         letter-spacing: 0.08em !important;
@@ -1355,97 +1646,175 @@ html, body {
         .dock-menu-label {
             display: none !important;
         }
-        .dock-btn-cta {
+        .dock-pill-container .dock-btn-cta {
             padding: 5px 9px !important;
             font-size: 9.5px !important;
         }
     }
 
     /* Hero Section */
+    #Hero.content-chapter {
+        min-height: 100vh !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 0 20px !important;
+    }
+
     .hero-center-brand {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 10px !important;
-        width: 92vw !important;
-        margin: 0 auto !important;
+        gap: 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: auto 0 !important;
     }
 
     .hero-crest-svg {
-        width: 28px !important;
-        height: 28px !important;
+        width: 30px !important;
+        height: 30px !important;
+        flex-shrink: 0 !important;
     }
 
     .hero-brand-name {
-        font-size: clamp(1.8rem, 6.5vw, 2.5rem) !important;
+        font-size: clamp(1.75rem, 6.5vw, 2.35rem) !important;
         letter-spacing: 0.18em !important;
+        border-left: 1px solid rgba(15, 53, 84, 0.3) !important;
+        padding-left: 14px !important;
+    }
+
+    .hero-bottom-bar {
+        position: absolute !important;
+        left: 20px !important;
+        right: 20px !important;
+        bottom: 24px !important;
+        display: flex !important;
+        justify-content: center !important;
     }
 
     .scroll-discover-text {
         font-size: 9.5px !important;
-        letter-spacing: 0.14em !important;
-        bottom: 20px !important;
+        letter-spacing: 0.16em !important;
+        text-align: center !important;
     }
 
-    /* Content Chapters */
+    /* Content Chapters Layout: Clear floating dock navbar with ample headroom */
     .content-chapter {
-        padding: 80px 18px 36px 18px !important;
+        min-height: auto !important;
+        justify-content: flex-start !important;
+        padding: 105px 20px 56px 20px !important;
+        gap: 28px !important;
+        scroll-margin-top: 72px !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .who-we-are-top-heading,
     .what-we-do-top-heading,
     .sustainability-top-heading {
-        font-size: clamp(1.35rem, 5.5vw, 1.9rem) !important;
-        line-height: 1.3 !important;
+        font-size: clamp(1.35rem, 5.5vw, 1.95rem) !important;
+        line-height: 1.25 !important;
         letter-spacing: 0.04em !important;
+        align-self: stretch !important;
+        width: 100% !important;
         max-width: 100% !important;
-        margin: 0 0 16px 0 !important;
+        margin: 0 !important;
         text-align: left !important;
     }
 
     .who-we-are-bottom-desc,
     .what-we-do-bottom-desc {
-        font-size: 13.5px !important;
+        font-size: 14px !important;
         line-height: 1.65 !important;
+        align-self: stretch !important;
+        width: 100% !important;
         max-width: 100% !important;
-        margin: 16px 0 0 0 !important;
+        margin: 0 !important;
         text-align: left !important;
     }
 
+    /* Capability Cards */
     .divisions-showcase-container {
         grid-template-columns: 1fr !important;
         gap: 14px !important;
-        margin: 24px 0 0 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .division-feature-card {
-        padding: 20px !important;
+        padding: 20px 18px !important;
+        border-radius: 16px !important;
     }
 
+    .card-division-title {
+        font-size: 13.5px !important;
+        letter-spacing: 0.1em !important;
+        margin-bottom: 8px !important;
+    }
+
+    .card-division-copy {
+        font-size: 13px !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Case Studies Grid */
     .case-studies-grid {
         grid-template-columns: 1fr !important;
-        gap: 18px !important;
-        margin: 24px 0 0 0 !important;
+        gap: 16px !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .case-study-card {
-        padding: 22px !important;
+        padding: 22px 20px !important;
+        border-radius: 16px !important;
     }
 
+    .case-study-metric {
+        font-size: 28px !important;
+    }
+
+    /* Sustainability / Collective Pillars */
     .sustainability-pillars-grid {
         grid-template-columns: 1fr !important;
         gap: 20px !important;
-        margin: 24px 0 0 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .pillar-col {
+        padding-top: 16px !important;
+    }
+
+    .pillar-name {
+        font-size: 14px !important;
+        letter-spacing: 0.08em !important;
+    }
+
+    .pillar-desc {
+        font-size: 13px !important;
+        line-height: 1.6 !important;
     }
 
     /* Case Studies & Project Details */
     .project-detail-view {
-        padding-top: 80px !important;
+        padding-top: 96px !important;
         padding-bottom: 40px !important;
     }
 
     .project-detail-container {
         padding: 0 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .project-detail-nav-bar {
@@ -1456,8 +1825,8 @@ html, body {
     }
 
     .project-headline {
-        font-size: clamp(1.85rem, 7vw, 2.5rem) !important;
-        line-height: 1.15 !important;
+        font-size: clamp(1.75rem, 7vw, 2.3rem) !important;
+        line-height: 1.18 !important;
         margin-bottom: 0.75rem !important;
     }
 
@@ -1497,7 +1866,7 @@ html, body {
     }
 
     .project-hero-media-frame {
-        height: 240px !important;
+        height: 220px !important;
         border-radius: 1rem !important;
         margin-bottom: 1.5rem !important;
     }
@@ -1519,6 +1888,7 @@ html, body {
     }
 
     .project-narrative-cards-grid {
+        grid-template-columns: 1fr !important;
         gap: 1.25rem !important;
         margin-bottom: 2.5rem !important;
     }
@@ -1538,7 +1908,7 @@ html, body {
     }
 
     .project-next-card {
-        height: 130px !important;
+        height: 120px !important;
         border-radius: 1rem !important;
     }
 
@@ -1547,17 +1917,18 @@ html, body {
     }
 
     .next-card-title {
-        font-size: 1.3rem !important;
+        font-size: 1.2rem !important;
     }
 
     .next-card-arrow-circle {
-        width: 38px !important;
-        height: 38px !important;
+        width: 36px !important;
+        height: 36px !important;
     }
 
     /* Subpages */
     .sub-page-view {
-        padding-top: 80px !important;
+        padding-top: 96px !important;
+        padding-bottom: 40px !important;
     }
 
     .project-hero-grid {
@@ -1569,54 +1940,128 @@ html, body {
         gap: 12px !important;
     }
 
-    /* Fullscreen Luxury Menu Overlay */
-    .luxury-menu-overlay {
-        padding: 24px 18px !important;
+    /* Fullscreen Editorial Navigation (Mobile Responsive) */
+    .fullmenu-overlay {
+        padding: 1.25rem 1.25rem 2.25rem 1.25rem !important;
         overflow-y: auto !important;
+        overflow-x: hidden !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
     }
 
-    .menu-overlay-header {
-        margin-bottom: 24px !important;
+    .fullmenu-wrap {
+        gap: 1.25rem !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
     }
 
-    .menu-overlay-content {
-        grid-template-columns: 1fr !important;
-        gap: 28px !important;
+    .fullmenu-header {
+        padding-bottom: 0.75rem !important;
     }
 
-    .menu-nav-link-item {
-        font-size: clamp(20px, 5.5vw, 26px) !important;
-        letter-spacing: 0.06em !important;
+    .fullmenu-close-btn {
+        width: 2.35rem !important;
+        height: 2.35rem !important;
     }
 
-    .office-clocks-grid {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px !important;
+    .fullmenu-body {
+        flex-direction: column !important;
+        gap: 0 !important;
+        margin: 0.5rem 0 !important;
+        flex: 1 !important;
+        justify-content: center !important;
     }
 
-    .office-clock-card {
-        padding: 14px !important;
+    .fullmenu-nav-list {
+        gap: 0.35rem !important;
+        width: 100% !important;
     }
 
-    .office-time {
-        font-size: 18px !important;
+    .fullmenu-nav-item {
+        width: 100% !important;
+        justify-content: flex-start !important;
+        padding: 0.35rem 0 !important;
+        gap: 0.85rem !important;
+    }
+
+    .fullmenu-nav-num {
+        font-size: 0.75rem !important;
+        min-width: 20px !important;
+    }
+
+    .fullmenu-nav-label {
+        font-size: clamp(1.6rem, 6.5vw, 2.1rem) !important;
+        font-weight: 700 !important;
+    }
+
+    .fullmenu-nav-arrow {
+        display: inline-block !important;
+        opacity: 0.35 !important;
+        font-size: 1.15rem !important;
+        margin-left: auto !important;
+        transform: none !important;
+    }
+
+    .fullmenu-nav-item:hover .fullmenu-nav-arrow {
+        opacity: 1 !important;
+        transform: translateX(4px) !important;
+    }
+
+    /* Keep side panel on desktop; mobile navigation stays 100% pure and uncluttered */
+    .fullmenu-side-panel {
+        display: none !important;
+    }
+
+    .fullmenu-footer {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.75rem !important;
+        padding-top: 1rem !important;
+    }
+
+    .fullmenu-cta-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 0.85rem 1.25rem !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    .fullmenu-footer-info {
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        text-align: center !important;
+        gap: 8px !important;
+        font-size: 0.75rem !important;
     }
 
     /* Footer */
     .exact-montfort-footer {
-        padding: 48px 18px 28px 18px !important;
+        padding: 48px 20px 28px 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .footer-columns-row {
         grid-template-columns: 1fr !important;
         gap: 28px !important;
         margin-bottom: 36px !important;
+        width: 100% !important;
+    }
+
+    .exact-montfort-footer .dock-btn-cta {
+        padding: 10px 18px !important;
+        font-size: 11px !important;
+        letter-spacing: 0.08em !important;
     }
 
     .footer-copyright-bar {
         flex-direction: column !important;
         align-items: flex-start !important;
         gap: 12px !important;
+        width: 100% !important;
     }
 }
 

@@ -45,7 +45,7 @@ const MemberProfile = ({ memberId }) => {
                             <img src={member.image} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
 
-                        <div style={{ flex: 1, minWidth: '280px' }}>
+                        <div style={{ flex: 1, minWidth: 'min(100%, 260px)' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
                                 <div className="dot" style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#0f3554' }}></div>
                                 <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.6)' }}>Quinzex Specialist</span>
@@ -98,7 +98,7 @@ const MemberProfile = ({ memberId }) => {
                                                 borderRadius: '999px',
                                                 background: 'rgba(15, 53, 84, 0.06)',
                                                 color: '#0f3554',
-                                                border: '1px solid rgba(15, 53, 84, 0.1)'
+                                                border: '1px solid rgba(15, 53, 84, 0.12)'
                                             }}
                                         >
                                             {item}
@@ -115,7 +115,7 @@ const MemberProfile = ({ memberId }) => {
                     <h2 style={{ fontFamily: 'var(--font-main)', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
                         Engineered Systems &amp; Contributions
                     </h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
                         {member.projects.map((proj, pIdx) => (
                             <div
                                 key={pIdx}

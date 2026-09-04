@@ -158,7 +158,7 @@ const SubPage = ({ path }) => {
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
                                     The Triple-A Standard
                                 </h3>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
                                     {philosophyPillars.map((p, idx) => (
                                         <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2rem' }}>
                                             <h4 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0f3554', marginBottom: '10px' }}>{p.title}</h4>
@@ -183,7 +183,7 @@ const SubPage = ({ path }) => {
                     {/* ==================================================== */}
                     {activePath === '/team' && (
                         <div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem', marginBottom: '4rem' }}>
                                 {teamMembers.map((member, index) => (
                                     <motion.div 
                                         key={member.id}
@@ -278,7 +278,7 @@ const SubPage = ({ path }) => {
                     {activePath === '/services' && (
                         <div>
                             {/* Engineering Pillars */}
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
                                 {engineeringPillars.map((pillar, idx) => (
                                     <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2rem' }}>
                                         <div style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '8px' }}>
@@ -325,7 +325,7 @@ const SubPage = ({ path }) => {
                     {activePath === '/philosophy' && (
                         <div>
                             {/* Triple-A Standard */}
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem', marginBottom: '4rem' }}>
                                 {philosophyPillars.map((p, idx) => (
                                     <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
                                         <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, color: '#0f3554', marginBottom: '10px' }}>
@@ -375,7 +375,7 @@ const SubPage = ({ path }) => {
                     {/* ==================================================== */}
                     {activePath === '/portfolio' && (
                         <div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem', marginBottom: '4rem' }}>
                                 {projectsList.map((project, idx) => (
                                     <div
                                         key={project.id}
@@ -460,7 +460,7 @@ const SubPage = ({ path }) => {
                     {/* ==================================================== */}
                     {activePath === '/features' && (
                         <div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
                                 {auraFeatures.map((feat, idx) => (
                                     <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2rem' }}>
                                         <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0f3554', opacity: 0.6, marginBottom: '8px' }}>
@@ -521,7 +521,7 @@ const SubPage = ({ path }) => {
                     {/* 8. FOR STARTUPS PAGE                                 */}
                     {/* ==================================================== */}
                     {activePath === '/startups' && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem' }}>
                             <div style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
                                 <div style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '8px' }}>Package 01</div>
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, color: '#0f3554', marginBottom: '12px' }}>The 4-Week Launch Sprint</h3>
@@ -550,7 +550,7 @@ const SubPage = ({ path }) => {
                     {/* 9. CONTACT PAGE                                      */}
                     {/* ==================================================== */}
                     {activePath === '/contact' && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem' }}>
                             <div style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, color: '#0f3554', marginBottom: '1.5rem' }}>Direct Inquiries</h3>
                                 
