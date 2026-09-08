@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { navigate } from '../utils/navigation';
 
-export const Link = ({ to, children, className, onClick, ...props }) => {
+export const Link = forwardRef(({ to, children, className, onClick, ...props }, ref) => {
     const handleClick = (e) => {
         if (onClick) onClick(e);
         if (e.defaultPrevented) return;
@@ -21,10 +21,12 @@ export const Link = ({ to, children, className, onClick, ...props }) => {
     };
 
     return (
-        <a href={to} className={className} onClick={handleClick} {...props}>
+        <a ref={ref} href={to} className={className} onClick={handleClick} {...props}>
             {children}
         </a>
     );
-};
+});
+
+Link.displayName = 'Link';
 
 export default Link;

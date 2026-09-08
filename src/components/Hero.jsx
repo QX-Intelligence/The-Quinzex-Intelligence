@@ -37,16 +37,16 @@ const Hero = () => {
                         <div className="sect-dot-flex w-layout-hflex" style={{ gap: '0.5rem', alignItems: 'center' }}>
                             <div className="dot" style={{ backgroundColor: 'var(--red)', width: '0.5rem', height: '0.5rem', borderRadius: '50%' }}></div>
                             <div style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.85rem', fontWeight: 600, color: 'var(--grey-light)' }}>
-                                Strategy &amp; Design Collective
+                                Software Engineering &amp; AI Studio
                             </div>
                         </div>
 
                         <header className="w-layout-vflex" style={{ gap: '1.25rem', alignItems: 'flex-start' }}>
                             <h1 style={{ textAlign: 'left', margin: 0, fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 500, letterSpacing: '-0.04em', color: 'var(--black)', lineHeight: 1.1 }}>
-                                We help tech leaders shape the brand &amp; digital presence that drives growth.
+                                We help tech leaders build high-performance software &amp; AI systems that drive growth.
                             </h1>
                             <p style={{ margin: 0, fontSize: '1.15rem', color: 'var(--grey-light)', lineHeight: 1.6, maxWidth: '32rem', textAlign: 'left' }}>
-                                Quinzex is a premium creative agency. We reject generic templates and cookie-cutter approaches in favor of bespoke, high-signal digital experiences that demand attention and drive growth.
+                                Quinzex is a software engineering and AI systems studio. We reject generic templates and fragile architecture in favor of scalable, high-performance platforms that scale reliably.
                             </p>
                         </header>
 

@@ -59,6 +59,38 @@ export const teamMembers = [
         ]
     },
     {
+        id: 'ashwin-kr',
+        name: 'Ashwin K R',
+        role: 'Backend Developer',
+        subtitle: 'Java · Spring Boot · Distributed Systems · Kafka',
+        description: 'Backend developer designing low-latency distributed systems, event-driven architectures (Kafka), Redis caching, and robust OAuth2/JWT security.',
+        portfolioUrl: 'https://stunning-cactus-8b9821.netlify.app/',
+        image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80',
+        skills: [
+            { category: 'Languages', items: ['Java', 'SQL'] },
+            { category: 'Frameworks', items: ['Spring Boot', 'Hibernate'] },
+            { category: 'Architecture', items: ['Distributed Systems', 'Event-Driven Arch', 'WebSockets', 'Redis'] },
+            { category: 'Cloud & Auth', items: ['AWS S3', 'JWT', 'OAuth2', 'RBAC', 'Kafka'] }
+        ],
+        projects: [
+            {
+                title: 'Real-Time Chat & Notifications',
+                description: 'Built a full-featured real-time communication platform with WebSocket-based messaging, signaling flow, and Kafka-powered async event handling.',
+                tags: ['Java', 'Kafka', 'WebSockets']
+            },
+            {
+                title: 'Advanced Authentication System',
+                description: 'Production-style authentication using Redis with TTL, JWT access & refresh tokens, OAuth2 social logins, and role-based access control.',
+                tags: ['Security', 'OAuth2', 'Redis']
+            },
+            {
+                title: 'Scalable API System',
+                description: 'High-performance API system with cursor-based pagination for large data, optimized database queries, and secure AWS S3 integrations.',
+                tags: ['API Design', 'AWS S3', 'Optimization']
+            }
+        ]
+    },
+    {
         id: 'akhil-malisetty',
         name: 'Akhil Malisetty',
         role: 'Backend Engineer',
@@ -87,6 +119,38 @@ export const teamMembers = [
                 title: 'Scalable API System',
                 description: 'High-performance API system with cursor-based pagination for large data, optimized database queries, and secure AWS S3 integrations.',
                 tags: ['API Design', 'AWS S3', 'Optimization']
+            }
+        ]
+    },
+    {
+        id: 'siva-chandrasekhar',
+        name: 'Siva Chandrasekhar Javvadi',
+        role: 'Cloud & DevOps Engineer',
+        subtitle: 'Kubernetes · Infrastructure · Automation',
+        description: 'Building reliable pipelines, scalable infrastructure, and automated workflows. Turning complexity into clean, reproducible systems. Focusing on zero-downtime, AWS/Azure, multi-environment deployments, and infrastructure stability.',
+        portfolioUrl: 'https://shiva-portfolio-gray.vercel.app/',
+        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=1200&q=80',
+        skills: [
+            { category: 'Cloud', items: ['AWS', 'Azure', 'Terraform'] },
+            { category: 'Orchestration', items: ['Kubernetes', 'Docker'] },
+            { category: 'CI/CD & Automation', items: ['GitHub Actions', 'Jenkins', 'ArgoCD', 'Ansible'] },
+            { category: 'Observability', items: ['Prometheus', 'Grafana', 'SonarQube'] }
+        ],
+        projects: [
+            {
+                title: 'Deployment - Dolphin HR',
+                description: 'Deployed centralized HR portal (Java Springboot microservices) on internal infra with RBAC and audit logging.',
+                tags: ['Internal Infra', 'RBAC', 'Deployment']
+            },
+            {
+                title: 'Deployment - CareerVedha',
+                description: 'Managed infrastructure for an EdTech video content delivery platform. Optimized for low-latency global edge access.',
+                tags: ['AWS', 'Low Latency', 'CDN']
+            },
+            {
+                title: 'K8s Migration & Pipelines',
+                description: 'Migrating monolithic apps to scalable microservices on EKS with automated CI/CD pipelines securing zero downtime.',
+                tags: ['EKS', 'ArgoCD', 'Microservices']
             }
         ]
     },

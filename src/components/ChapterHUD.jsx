@@ -4,7 +4,7 @@ const CHAPTERS = [
     { id: 'WhoWeAre', label: 'WHO WE ARE' },
     { id: 'WhatWeDo', label: 'WHAT WE DO' },
     { id: 'GlobalConnectivity', label: 'SELECTED WORK' },
-    { id: 'Sustainability', label: 'COLLECTIVE' }
+    { id: 'Sustainability', label: 'OUR TEAM' }
 ];
 
 const ChapterHUD = ({ activeChapter = 'WhoWeAre', onScrollToChapter }) => {

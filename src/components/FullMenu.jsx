@@ -7,7 +7,7 @@ const PRIMARY_NAV = [
     { num: '02', label: 'About Us', path: '/about' },
     { num: '03', label: 'Selected Work', path: '/portfolio' },
     { num: '04', label: 'Tech Matrix', path: '/services' },
-    { num: '05', label: 'The Collective', path: '/team' },
+    { num: '05', label: 'Our Team', path: '/team' },
     { num: '06', label: 'Startup Sprints', path: '/startups' },
     { num: '07', label: 'Contact', path: '/contact' },
 ];

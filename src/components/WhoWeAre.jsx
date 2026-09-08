@@ -27,7 +27,7 @@ const WhoWeAre = () => {
                         </h2>
                         
                         <p style={{ margin: 0, fontSize: '1.05rem', color: 'var(--grey-light)', lineHeight: 1.6, textAlign: 'left' }}>
-                            Quinzex Intelligence is a premium freelancing collective for tech and corporate leaders at turning points — pre-launch, post-pivot, market expansion, or a full repositioning. We've seen what happens when a company's brand lags behind its ambition. Investors notice. Deals stall. Talent looks elsewhere.
+                            Quinzex Intelligence is a high-performance software engineering and AI systems studio for tech and corporate leaders at turning points — pre-launch, post-pivot, market expansion, or a full repositioning. We've seen what happens when a company's technology infrastructure lags behind its ambition. Investors notice. Deals stall. Talent looks elsewhere.
                         </p>
 
                         <p style={{ margin: 0, fontSize: '1.05rem', color: 'var(--grey-light)', lineHeight: 1.6, textAlign: 'left' }}>

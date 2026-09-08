@@ -32,9 +32,9 @@ const SubPage = ({ path }) => {
             tagline: "We close the gap between what companies are and how they are perceived."
         },
         "/team": {
-            title: "The Collective",
+            title: "Our Team",
             category: "Our Team & Specialists",
-            tagline: "An elite network of senior engineers deployed to build your highest-stakes systems."
+            tagline: "An elite engineering team deployed to build your highest-stakes systems."
         },
         "/services": {
             title: "Core Expertise",
@@ -57,7 +57,7 @@ const SubPage = ({ path }) => {
             tagline: "Modern cognitive integrations, ultra-low latency pipelines, and resilient system architecture."
         },
         "/careers": {
-            title: "Careers & Collective",
+            title: "Careers & Engineering",
             category: "Join Our Ranks",
             tagline: "Work with elite global talent on high-impact projects."
         },
@@ -69,7 +69,7 @@ const SubPage = ({ path }) => {
         "/contact": {
             title: "Start a Conversation",
             category: "Direct Inquiries",
-            tagline: "Let's discuss your next turning point, architecture overhaul, or digital product launch."
+            tagline: "Let's discuss your next engineering challenge, AI workflow, architecture overhaul, or digital product launch."
         },
         "/privacy": {
             title: privacyPolicyData.title,
@@ -85,8 +85,8 @@ const SubPage = ({ path }) => {
 
     const currentMeta = pageMeta[activePath] || {
         title: "Quinzex Intelligence",
-        category: "Strategy & Design",
-        tagline: "Strategy & Design collective for technology leaders at turning points."
+        category: "Software Engineering & AI Systems",
+        tagline: "High-performance software engineering, cloud architecture & AI systems studio for modern technology leaders."
     };
 
     return (
@@ -130,7 +130,7 @@ const SubPage = ({ path }) => {
                                 </div>
                                 <div className="narrative-right">
                                     <p className="narrative-paragraph">
-                                        Quinzex Intelligence is a bespoke strategy &amp; design collective for technology and corporate leaders at turning points. We believe that architecture, strategy, and design are not separate disciplines — they are three pillars of the same foundation. We reject generic templates and cookie-cutter approaches in favor of bespoke, high-signal digital experiences that demand attention and drive growth.
+                                        Quinzex Intelligence is a bespoke software &amp; design studio for technology and corporate leaders at turning points. We believe that architecture, strategy, and design are not separate disciplines — they are three pillars of the same foundation. We reject generic templates and cookie-cutter approaches in favor of high-performance web applications and software systems that demand attention and drive growth.
                                     </p>
                                 </div>
                             </div>
@@ -141,12 +141,12 @@ const SubPage = ({ path }) => {
                                 <div className="narrative-left">
                                     <div className="sect-dot-flex w-layout-hflex">
                                         <div className="dot"></div>
-                                        <div>The Collective Model</div>
+                                        <div>The Engineering Model</div>
                                     </div>
                                 </div>
                                 <div className="narrative-right">
                                     <p className="narrative-paragraph">
-                                        Unlike traditional agencies that carry massive overhead and assign juniors to critical accounts, we operate as a hand-picked network of elite specialists. This model allows us to deploy the exact talent needed for your specific challenge — whether it is distributed microservices, a 3D WebGL brand overhaul, or custom AI telemetry — without friction, bureaucracy, or unnecessary price tags.
+                                        Unlike traditional agencies that carry massive overhead and assign juniors to critical accounts, we operate as a dedicated team of senior specialists. This model allows us to deploy the exact talent needed for your specific challenge — whether it is distributed microservices, a 3D WebGL brand overhaul, or custom AI telemetry — without friction, bureaucracy, or unnecessary price tags.
                                     </p>
                                 </div>
                             </div>
@@ -509,8 +509,8 @@ const SubPage = ({ path }) => {
                                         <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.3rem', fontWeight: 700, color: '#0f3554', marginBottom: '8px' }}>{role.title}</h3>
                                         <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#2a4358' }}>{role.desc}</p>
                                     </div>
-                                    <a href="mailto:careers@quinzex.ai" className="dock-btn-cta">
-                                        Apply to Collective &rarr;
+                                    <a href="mailto:careers@quinzexintelligence.com" className="dock-btn-cta">
+                                        Apply to Team &rarr;
                                     </a>
                                 </div>
                             ))}
@@ -528,7 +528,7 @@ const SubPage = ({ path }) => {
                                 <p style={{ fontSize: '14px', lineHeight: 1.75, color: '#2a4358', marginBottom: '1.5rem' }}>
                                     A fast-paced, high-intensity partnership designed to build your flagship digital MVP, establish institutional brand guidelines, and prepare your deck and interactive product for Seed or Series A funding rounds.
                                 </p>
-                                <a href="mailto:partners@quinzex.ai?subject=Launch%20Sprint" className="dock-btn-cta">
+                                <a href="mailto:partners@quinzexintelligence.com?subject=Launch%20Sprint" className="dock-btn-cta">
                                     Inquire About Sprint &rarr;
                                 </a>
                             </div>
@@ -539,7 +539,7 @@ const SubPage = ({ path }) => {
                                 <p style={{ fontSize: '14px', lineHeight: 1.75, color: '#2a4358', marginBottom: '1.5rem' }}>
                                     For selected high-potential technology companies, we offer hybrid service agreements combining cash and equity. We deploy our senior architects directly into your team, aligning our upside completely with yours.
                                 </p>
-                                <a href="mailto:partners@quinzex.ai?subject=Equity%20Partnership" className="dock-btn-cta">
+                                <a href="mailto:partners@quinzexintelligence.com?subject=Equity%20Partnership" className="dock-btn-cta">
                                     Propose Partnership &rarr;
                                 </a>
                             </div>
@@ -556,19 +556,19 @@ const SubPage = ({ path }) => {
                                 
                                 <div style={{ marginBottom: '1.5rem' }}>
                                     <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)', marginBottom: '4px' }}>General &amp; New Projects</div>
-                                    <a href="mailto:hello@quinzex.ai" style={{ fontSize: '16px', fontWeight: 600, color: '#0f3554', textDecoration: 'none' }}>hello@quinzex.ai</a>
+                                    <a href="mailto:hello@quinzexintelligence.com" style={{ fontSize: '16px', fontWeight: 600, color: '#0f3554', textDecoration: 'none' }}>hello@quinzexintelligence.com</a>
                                 </div>
 
                                 <div style={{ marginBottom: '1.5rem' }}>
                                     <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)', marginBottom: '4px' }}>Enterprise Partnerships</div>
-                                    <a href="mailto:partners@quinzex.ai" style={{ fontSize: '16px', fontWeight: 600, color: '#0f3554', textDecoration: 'none' }}>partners@quinzex.ai</a>
+                                    <a href="mailto:partners@quinzexintelligence.com" style={{ fontSize: '16px', fontWeight: 600, color: '#0f3554', textDecoration: 'none' }}>partners@quinzexintelligence.com</a>
                                 </div>
 
                                 <div style={{ marginBottom: '1.5rem' }}>
                                     <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)', marginBottom: '4px' }}>Offices &amp; Presence</div>
                                     <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#2a4358' }}>
                                         San Francisco &bull; London &bull; Geneva<br />
-                                        Global Distributed Collective
+                                        Global Distributed Engineering Team
                                     </p>
                                 </div>
                             </div>

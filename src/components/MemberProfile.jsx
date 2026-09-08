@@ -32,7 +32,7 @@ const MemberProfile = ({ memberId }) => {
                 {/* Back Link */}
                 <div style={{ marginBottom: '2rem' }}>
                     <Link to="/team" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#0f3554', textDecoration: 'none', fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        &larr; Back to Collective
+                        &larr; Back to Team
                     </Link>
                 </div>
 

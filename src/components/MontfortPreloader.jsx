@@ -240,7 +240,7 @@ const MontfortPreloader = ({ onDone }) => {
                             marginBottom: '32px'
                         }}
                     >
-                        Strategy &amp; Design Collective
+                        Software Engineering &amp; AI Studio
                     </motion.div>
 
                     {/* Architectural Counter */}

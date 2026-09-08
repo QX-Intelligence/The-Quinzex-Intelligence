@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import * as THREE from 'three';
 
 const MontfortCanvas = () => {
     useEffect(() => {
@@ -6,7 +7,7 @@ const MontfortCanvas = () => {
         let timer = null;
         let rafId = null;
 
-        async function initHomepageEnvironment(App) {
+        async function initHomepageEnvironment(App, basePos, baseLookAt, dirX, dirY, dirZ) {
             const hp = App.webgl?.pages?.Homepage;
             const mainScene = App.webgl?.mainScene;
             if (!hp || !mainScene) return;
@@ -19,7 +20,9 @@ const MontfortCanvas = () => {
                 // Attach background peaks from homepage.glb
                 if (hp.env) {
                     const logo = hp.env.getObjectByName('MONTFORT');
-                    if (logo) logo.visible = false;
+                    if (logo) {
+                        logo.visible = false;
+                    }
 
                     if (mainScene.mountains && !mainScene.mountains.children.includes(hp.env)) {
                         mainScene.mountains.add(hp.env);
@@ -72,6 +75,12 @@ const MontfortCanvas = () => {
                         mainScene.clouds.add(topCh.clouds);
                     }
                 }
+
+                // Remove any previously added 3D depth logo
+                const existingLogo = mainScene.getObjectByName('QUINZEX_DEPTH_LOGO');
+                if (existingLogo) {
+                    mainScene.remove(existingLogo);
+                }
             } catch (err) {
                 console.error('Error initializing homepage 3D environment:', err);
             }
@@ -101,8 +110,8 @@ const MontfortCanvas = () => {
             const dirY = dy / dist;
             const dirZ = dz / dist;
 
-            // Initialize full environment (multiple mountain peaks + cloud sea)
-            initHomepageEnvironment(App);
+            // Initialize full environment (multiple mountain peaks + cloud sea + 3D depth logo)
+            initHomepageEnvironment(App, basePos, baseLookAt, dirX, dirY, dirZ);
 
             // Ensure renderer is sized to exact viewport with crisp devicePixelRatio
             const updateSize = () => {
@@ -123,16 +132,19 @@ const MontfortCanvas = () => {
             updateSize();
             window.addEventListener('resize', updateSize, { passive: true });
 
-            // Continuous 60fps/120fps animation & render loop for dynamic 3D mountain motion
-            const renderFrame = () => {
+            // Update 3D Camera coordinates smoothly on scroll
+            let lastScrollY = -1;
+            const updateCamera = () => {
                 if (!isMounted) return;
 
                 const cam = App.webgl?.camera;
                 const scene = App.webgl?.mainScene;
-                const renderer = App.webgl?.renderer;
 
-                if (cam && scene && renderer) {
+                if (cam && scene) {
                     const scrollY = window.scrollY || 0;
+                    if (scrollY === lastScrollY) return;
+                    lastScrollY = scrollY;
+
                     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
                     const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
 
@@ -141,7 +153,6 @@ const MontfortCanvas = () => {
                     }
 
                     // Pure Mountain Zoom (dolly along sightline) & Angle Shift on scroll
-                    // Zoom: smooth dolly-in closer to the mountain peak during scroll chapters, then pull out for collective panorama
                     const zoom = Math.sin(progress * Math.PI) * 46.0;
 
                     // Lateral & Altitude Angle Differences
@@ -165,14 +176,11 @@ const MontfortCanvas = () => {
 
                     cam.position.set(posX, posY, posZ);
                     cam.lookAt(targetX, targetY, targetZ);
-
-                    renderer.render(scene, cam);
                 }
-
-                rafId = requestAnimationFrame(renderFrame);
             };
 
-            rafId = requestAnimationFrame(renderFrame);
+            updateCamera();
+            window.addEventListener('scroll', updateCamera, { passive: true });
         }
 
         checkAndBindApp();
@@ -180,7 +188,6 @@ const MontfortCanvas = () => {
         return () => {
             isMounted = false;
             if (timer) clearTimeout(timer);
-            if (rafId) cancelAnimationFrame(rafId);
         };
     }, []);
 

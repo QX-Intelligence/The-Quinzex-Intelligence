@@ -18,15 +18,15 @@ const MontfortFooter = () => {
                         <span style={{ fontFamily: 'var(--font-main)', fontSize: '18px', letterSpacing: '0.24em', textTransform: 'uppercase', color: '#0f3554', fontWeight: 400 }}>QUINZEX</span>
                     </div>
                     <p style={{ fontSize: '12px', lineHeight: 1.7, color: 'var(--text-navy-secondary)', maxWidth: '280px', marginBottom: '24px' }}>
-                        Strategy &amp; Design collective for technology leaders at turning points.
+                        High-performance software engineering, cloud architecture &amp; AI systems studio for modern technology leaders.
                     </p>
-                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
                         <Link to="/contact" className="dock-btn-cta" style={{ display: 'inline-flex' }}>
                             START A CONVERSATION
                         </Link>
-                        <a href="/quinzex/" className="dock-btn-cta" style={{ display: 'inline-flex', background: 'rgba(15, 53, 84, 0.08)', color: '#0f3554', border: '1px solid rgba(15, 53, 84, 0.2)' }}>
-                            LAUNCH PLATFORM ↗
-                        </a>
+                        <Link to="/contact" className="dock-btn-cta" style={{ display: 'inline-flex', background: 'rgba(15, 53, 84, 0.08)', color: '#0f3554', border: '1px solid rgba(15, 53, 84, 0.2)' }}>
+                            BOOK A DISCOVERY CALL
+                        </Link>
                     </div>
                 </div>
 
@@ -34,7 +34,7 @@ const MontfortFooter = () => {
                     <h4 className="footer-office-title">NAVIGATION</h4>
                     <ul className="footer-nav-list">
                         <li><Link to="/about">About Us</Link></li>
-                        <li><Link to="/team">The Collective</Link></li>
+                        <li><Link to="/team">Our Team</Link></li>
                         <li><Link to="/services">Core Expertise</Link></li>
                         <li><Link to="/portfolio">Selected Work</Link></li>
                         <li><Link to="/philosophy">Our Philosophy</Link></li>
@@ -56,12 +56,12 @@ const MontfortFooter = () => {
                 <div>
                     <h4 className="footer-office-title">GLOBAL INQUIRIES</h4>
                     <p className="footer-office-address">
-                        Geneva &bull; London &bull; San Francisco<br />
-                        Global Distributed Collective
+                        Global Distributed Team<br />
+                        US &bull; EU &bull; APAC Timezones
                     </p>
                     <p className="footer-office-contact">
-                        <a href="mailto:hello@quinzex.ai">hello@quinzex.ai</a><br />
-                        <a href="mailto:partners@quinzex.ai">partners@quinzex.ai</a>
+                        <a href="mailto:hello@quinzexintelligence.com">hello@quinzexintelligence.com</a><br />
+                        <a href="mailto:partners@quinzexintelligence.com">partners@quinzexintelligence.com</a>
                     </p>
                 </div>
             </div>

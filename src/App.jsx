@@ -18,7 +18,6 @@ import MontfortFooter from './components/MontfortFooter';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
-    const [scrollProgress, setScrollProgress] = useState(0);
     const [activeChapter, setActiveChapter] = useState('WhoWeAre');
     const [menuOpen, setMenuOpen] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -79,24 +78,26 @@ function App() {
         });
         gsap.ticker.lagSmoothing(0);
 
+        let ticking = false;
         const handleScroll = () => {
-            const scrollY = window.scrollY;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
-            setScrollProgress(progress);
-
-            // Active Chapter detection matching section IDs on homepage
-            const chapters = ['WhoWeAre', 'WhatWeDo', 'GlobalConnectivity', 'Sustainability'];
-            for (let i = chapters.length - 1; i >= 0; i--) {
-                const el = document.getElementById(chapters[i]);
-                if (el) {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top <= window.innerHeight * 0.5) {
-                        setActiveChapter(chapters[i]);
-                        break;
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                // Active Chapter detection matching section IDs on homepage
+                const chapters = ['Sustainability', 'GlobalConnectivity', 'WhatWeDo', 'WhoWeAre'];
+                for (let i = 0; i < chapters.length; i++) {
+                    const el = document.getElementById(chapters[i]);
+                    if (el) {
+                        const rect = el.getBoundingClientRect();
+                        if (rect.top <= window.innerHeight * 0.5) {
+                            const found = chapters[i];
+                            setActiveChapter(prev => prev === found ? prev : found);
+                            break;
+                        }
                     }
                 }
-            }
+                ticking = false;
+            });
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -135,7 +136,7 @@ function App() {
             <div className="cloud-mist-overlay" />
 
             {/* 3D WebGL Alpine Mountain Canvas Backdrop */}
-            <MontfortCanvas scrollProgress={scrollProgress} />
+            <MontfortCanvas />
 
             {/* Our Floating Dock Navbar */}
             <Navbar onOpenMenu={() => setMenuOpen(true)} />
@@ -150,7 +151,7 @@ function App() {
                     />
 
                     {/* Main Scroll Content Sections with Quinzex Data */}
-                    <MontfortSections />
+                    <MontfortSections onScrollToChapter={scrollToTarget} />
                 </>
             ) : isProject ? (
                 <>

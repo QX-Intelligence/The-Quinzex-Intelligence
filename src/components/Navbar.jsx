@@ -49,17 +49,19 @@ const Magnetic = ({ children, className, href = '#form', onClick, style }) => {
 };
 
 // ── Dropdown Helper ───────────────────────────────────────────────────────
-const SmartDropdownMenu = ({ children, toggleLabel, toggleLink }) => {
-    const [open, setOpen] = useState(false);
-    const timerRef = useRef(null);
+const SmartDropdownMenu = ({ children, toggleLabel, toggleLink, id, activeMenu, setActiveMenu, menuTimerRef }) => {
+    const isOpen = activeMenu === id;
 
     const handleMouseEnter = () => {
-        if (timerRef.current) clearTimeout(timerRef.current);
-        setOpen(true);
+        if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
+        setActiveMenu(id);
     };
 
     const handleMouseLeave = () => {
-        timerRef.current = setTimeout(() => setOpen(false), 120);
+        if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
+        menuTimerRef.current = setTimeout(() => {
+            setActiveMenu(null);
+        }, 180);
     };
 
     return (
@@ -77,13 +79,13 @@ const SmartDropdownMenu = ({ children, toggleLabel, toggleLink }) => {
             </div>
 
             <AnimatePresence>
-                {open && (
+                {isOpen && (
                     <motion.div
                         className="menu-container-area"
-                        initial={{ opacity: 0, y: 6, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                        transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 3 }}
+                        transition={{ duration: 0.12, ease: [0.16, 1, 0.3, 1] }}
                     >
                         {children}
                     </motion.div>
@@ -93,41 +95,45 @@ const SmartDropdownMenu = ({ children, toggleLabel, toggleLink }) => {
     );
 };
 
-// ── Inline Nav Variants ───────────────────────────────────────────────────
+// ── Inline Nav Variants ───────────────────────────────────────────────
+// IMPORTANT: Do NOT animate width or height — it triggers layout reflow every
+// frame which invalidates the backdrop-filter compositor cache, causing stutter.
+// Only animate opacity + transform (compositor-only, zero reflow).
 const menuContainerVariants = {
-    hidden: { opacity: 0, width: 0 },
+    hidden: { opacity: 0, x: -8 },
     show: {
         opacity: 1,
-        width: 'auto',
+        x: 0,
         transition: {
-            duration: 0.22,
+            duration: 0.18,
             ease: [0.16, 1, 0.3, 1],
-            staggerChildren: 0.03,
-            delayChildren: 0.02
+            staggerChildren: 0.025,
+            delayChildren: 0.01
         }
     },
     exit: {
         opacity: 0,
-        width: 0,
-        transition: { duration: 0.14, ease: [0.16, 1, 0.3, 1] }
+        x: -6,
+        transition: { duration: 0.12, ease: [0.16, 1, 0.3, 1] }
     }
 };
 
 const menuItemVariants = {
-    hidden: { opacity: 0, x: -6, filter: 'blur(2px)' },
+    hidden: { opacity: 0, x: -5 },
     show: {
         opacity: 1,
         x: 0,
-        filter: 'blur(0px)',
         transition: { duration: 0.14, ease: [0.16, 1, 0.3, 1] }
     }
 };
 
 const Navbar = ({ onOpenMenu }) => {
-    const [scrolled, setScrolled] = useState(false);
-    const [navOpen, setNavOpen]   = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
-    const wrapperRef              = useRef(null);
+    const [scrolled, setScrolled]     = useState(false);
+    const [navOpen, setNavOpen]       = useState(false);
+    const [isMobile, setIsMobile]     = useState(false);
+    const [activeMenu, setActiveMenu] = useState(null);
+    const menuTimerRef                = useRef(null);
+    const wrapperRef                  = useRef(null);
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -146,6 +152,7 @@ const Navbar = ({ onOpenMenu }) => {
         const handleClick = (e) => {
             if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
                 setNavOpen(false);
+                setActiveMenu(null);
             }
         };
         document.addEventListener('mousedown', handleClick);
@@ -219,29 +226,57 @@ const Navbar = ({ onOpenMenu }) => {
                                 animate="show"
                                 exit="exit"
                                 variants={menuContainerVariants}
-                                style={{ overflow: 'visible' }}
+                                style={{ overflow: 'visible', display: 'flex' }}
                             >
                                 <nav
                                     className="nav-menu is-header w-layout-hflex"
                                     style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', paddingLeft: '8px' }}
                                 >
-                                    <motion.div variants={menuItemVariants} className="link-wrapper" onClick={() => setNavOpen(false)}>
+                                    <motion.div 
+                                        variants={menuItemVariants} 
+                                        className="link-wrapper" 
+                                        onMouseEnter={() => {
+                                            if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
+                                            setActiveMenu(null);
+                                        }}
+                                        onClick={() => setNavOpen(false)}
+                                    >
                                         <Link to="/" className="nav-link dock-item-link">Home</Link>
                                         <div className="hover-line"></div>
                                     </motion.div>
 
                                     <motion.div variants={menuItemVariants}>
-                                        <SmartDropdownMenu toggleLink="/about" toggleLabel="About">
+                                        <SmartDropdownMenu 
+                                            id="about"
+                                            activeMenu={activeMenu}
+                                            setActiveMenu={setActiveMenu}
+                                            menuTimerRef={menuTimerRef}
+                                            toggleLink="/about" 
+                                            toggleLabel="About"
+                                        >
                                             <div className="menu-area-list w-layout-hflex">
                                                 <Link to="/about" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fcffeb4a9ebce019aab78_9f7d0ed25b545b1c9973dfe3c39693df_Company.svg" loading="lazy" alt="" className="menu-items-icon-img" />
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f3554" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="menu-items-icon-img">
+                                                        <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+                                                        <line x1="9" y1="22" x2="9" y2="18" />
+                                                        <line x1="15" y1="22" x2="15" y2="18" />
+                                                        <line x1="9" y1="6" x2="9.01" y2="6" strokeWidth="2.4" />
+                                                        <line x1="15" y1="6" x2="15.01" y2="6" strokeWidth="2.4" />
+                                                        <line x1="9" y1="10" x2="9.01" y2="10" strokeWidth="2.4" />
+                                                        <line x1="15" y1="10" x2="15.01" y2="10" strokeWidth="2.4" />
+                                                        <line x1="9" y1="14" x2="9.01" y2="14" strokeWidth="2.4" />
+                                                        <line x1="15" y1="14" x2="15.01" y2="14" strokeWidth="2.4" />
+                                                    </svg>
                                                     <div className="w-layout-vflex">
                                                         <div className="link-wrapper"><div className="nav-link-sub-items">Company</div><div className="hover-line"></div></div>
                                                         <div className="menu-items-detail-text">Learn more about who we are.</div>
                                                     </div>
                                                 </Link>
                                                 <Link to="/philosophy" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fd16f9f6e5aeeb4003d15_18e11a37c95e1e19488a0ea13bba4d6c_Careers.svg" loading="lazy" alt="" className="menu-items-icon-img" />
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f3554" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="menu-items-icon-img">
+                                                        <polygon points="12 2 15.5 8.5 22 12 15.5 15.5 12 22 8.5 15.5 2 12 8.5 8.5 12 2" />
+                                                        <circle cx="12" cy="12" r="2.5" fill="#0f3554" />
+                                                    </svg>
                                                     <div className="w-layout-vflex">
                                                         <div className="link-wrapper"><div className="nav-link-sub-items">Philosophy</div><div className="hover-line"></div></div>
                                                         <div className="menu-items-detail-text">Our principles and engineering approach.</div>
@@ -252,17 +287,38 @@ const Navbar = ({ onOpenMenu }) => {
                                     </motion.div>
 
                                     <motion.div variants={menuItemVariants}>
-                                        <SmartDropdownMenu toggleLink="/services" toggleLabel="Divisions">
+                                        <SmartDropdownMenu 
+                                            id="divisions"
+                                            activeMenu={activeMenu}
+                                            setActiveMenu={setActiveMenu}
+                                            menuTimerRef={menuTimerRef}
+                                            toggleLink="/services" 
+                                            toggleLabel="Divisions"
+                                        >
                                             <div className="menu-area-list w-layout-hflex">
                                                 <Link to="/services" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fd0dcbf5f6a96bfbeae54_b6c4bda0b2401eb124ce8df8645e54d3_Engineering.svg" loading="lazy" alt="" className="menu-items-icon-img" />
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f3554" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="menu-items-icon-img">
+                                                        <polyline points="16 18 22 12 16 6" />
+                                                        <polyline points="8 6 2 12 8 18" />
+                                                        <line x1="14" y1="4" x2="10" y2="20" />
+                                                    </svg>
                                                     <div className="w-layout-vflex">
                                                         <div className="link-wrapper"><div className="nav-link-sub-items">Engineering</div><div className="hover-line"></div></div>
                                                         <div className="menu-items-detail-text">Custom software & high-scale architecture.</div>
                                                     </div>
                                                 </Link>
                                                 <Link to="/services" className="menu-items w-inline-block" onClick={() => setNavOpen(false)}>
-                                                    <img src="https://cdn.prod.website-files.com/673786754d248974527e65b5/686fd107a6ecb0c6a51d9d95_7b0d744b74bbbe519b5b2984534f5aa1_Strategy.svg" loading="lazy" alt="" className="menu-items-icon-img" />
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f3554" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="menu-items-icon-img">
+                                                        <circle cx="12" cy="12" r="3.2" />
+                                                        <circle cx="5" cy="6" r="2" />
+                                                        <circle cx="19" cy="6" r="2" />
+                                                        <circle cx="5" cy="18" r="2" />
+                                                        <circle cx="19" cy="18" r="2" />
+                                                        <line x1="6.8" y1="7.4" x2="10" y2="10.2" />
+                                                        <line x1="17.2" y1="7.4" x2="14" y2="10.2" />
+                                                        <line x1="6.8" y1="16.6" x2="10" y2="13.8" />
+                                                        <line x1="17.2" y1="16.6" x2="14" y2="13.8" />
+                                                    </svg>
                                                     <div className="w-layout-vflex">
                                                         <div className="link-wrapper"><div className="nav-link-sub-items">AI & Machine Learning</div><div className="hover-line"></div></div>
                                                         <div className="menu-items-detail-text">Autonomous agents & intelligence pipelines.</div>
@@ -272,12 +328,28 @@ const Navbar = ({ onOpenMenu }) => {
                                         </SmartDropdownMenu>
                                     </motion.div>
 
-                                    <motion.div variants={menuItemVariants} className="link-wrapper" onClick={() => setNavOpen(false)}>
-                                        <Link to="/team" className="nav-link dock-item-link">Collective</Link>
+                                    <motion.div 
+                                        variants={menuItemVariants} 
+                                        className="link-wrapper" 
+                                        onMouseEnter={() => {
+                                            if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
+                                            setActiveMenu(null);
+                                        }}
+                                        onClick={() => setNavOpen(false)}
+                                    >
+                                        <Link to="/team" className="nav-link dock-item-link">Our Team</Link>
                                         <div className="hover-line"></div>
                                     </motion.div>
 
-                                    <motion.div variants={menuItemVariants} className="link-wrapper" onClick={() => setNavOpen(false)}>
+                                    <motion.div 
+                                        variants={menuItemVariants} 
+                                        className="link-wrapper" 
+                                        onMouseEnter={() => {
+                                            if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
+                                            setActiveMenu(null);
+                                        }}
+                                        onClick={() => setNavOpen(false)}
+                                    >
                                         <Link to="/portfolio" className="nav-link dock-item-link">Selected Work</Link>
                                         <div className="hover-line"></div>
                                     </motion.div>
@@ -285,6 +357,10 @@ const Navbar = ({ onOpenMenu }) => {
                                     <motion.div
                                         variants={menuItemVariants}
                                         className="link-wrapper"
+                                        onMouseEnter={() => {
+                                            if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
+                                            setActiveMenu(null);
+                                        }}
                                         onClick={() => {
                                             setNavOpen(false);
                                             if (onOpenMenu) onOpenMenu();
