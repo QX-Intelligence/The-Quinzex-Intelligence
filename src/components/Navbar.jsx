@@ -183,32 +183,35 @@ const Navbar = ({ onOpenMenu }) => {
                     <button
                         onClick={handleMenuToggle}
                         className="dock-menu-btn"
+                        aria-label="Open navigation menu"
                         style={{
                             display:      'flex',
                             alignItems:   'center',
                             gap:          '8px',
-                            background:   'none',
+                            background:   'transparent',
                             border:       'none',
                             cursor:       'pointer',
-                            padding:      '6px 10px',
-                            borderRadius: '8px',
-                            transition:   'background 0.12s ease',
+                            padding:      '6px 8px',
+                            borderRadius: '0',
                             flexShrink:   0,
                         }}
-                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(15, 53, 84, 0.06)'}
-                        onMouseLeave={e => e.currentTarget.style.background = 'none'}
                     >
-                        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+                        <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
                             <motion.rect
-                                x="0" y="2.5" width="18" height="2.5" rx="1.25" fill="#0f3554"
-                                style={{ transformOrigin: '9px 7px' }}
-                                animate={(!isMobile && navOpen) ? { rotate: 45, y: 3.25 } : { rotate: 0, y: 0 }}
+                                x="0" y="1" width="9.5" height="2.5" rx="1.25" fill="#0f3554"
+                                style={{ transformOrigin: '10px 7.5px' }}
+                                animate={(!isMobile && navOpen) ? { rotate: 45, x: 2.5, y: 5, width: 15 } : { rotate: 0, x: 0, y: 0, width: 9.5 }}
                                 transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
                             />
                             <motion.rect
-                                x="0" y="9" width="18" height="2.5" rx="1.25" fill="#0f3554"
-                                style={{ transformOrigin: '9px 7px' }}
-                                animate={(!isMobile && navOpen) ? { rotate: -45, y: -3.25 } : { rotate: 0, y: 0 }}
+                                x="5.25" y="6.25" width="9.5" height="2.5" rx="1.25" fill="#0f3554"
+                                animate={(!isMobile && navOpen) ? { opacity: 0 } : { opacity: 1 }}
+                                transition={{ duration: 0.15 }}
+                            />
+                            <motion.rect
+                                x="10.5" y="11.5" width="9.5" height="2.5" rx="1.25" fill="#0f3554"
+                                style={{ transformOrigin: '10px 7.5px' }}
+                                animate={(!isMobile && navOpen) ? { rotate: -45, x: -2.5, y: -5, width: 15 } : { rotate: 0, x: 0, y: 0, width: 9.5 }}
                                 transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
                             />
                         </svg>
