@@ -183,41 +183,75 @@ const Navbar = ({ onOpenMenu }) => {
                     <button
                         onClick={handleMenuToggle}
                         className="dock-menu-btn"
-                        aria-label="Open navigation menu"
+                        aria-label={(!isMobile && navOpen) ? "Close navigation menu" : "Open navigation menu"}
                         style={{
-                            display:      'flex',
-                            alignItems:   'center',
-                            gap:          '8px',
-                            background:   'transparent',
-                            border:       'none',
-                            cursor:       'pointer',
-                            padding:      '6px 8px',
-                            borderRadius: '0',
-                            flexShrink:   0,
+                            display:        'flex',
+                            alignItems:     'center',
+                            justifyContent: 'center',
+                            background:     'transparent',
+                            border:         'none',
+                            cursor:         'pointer',
+                            padding:        '6px',
+                            borderRadius:   '8px',
+                            flexShrink:     0,
+                            position:       'relative',
+                            width:          '32px',
+                            height:         '32px',
+                            transition:     'background-color 0.15s ease',
                         }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(15, 53, 84, 0.06)'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
-                        <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
-                            <motion.rect
-                                x="0" y="1" width="9.5" height="2.5" rx="1.25" fill="#0f3554"
-                                style={{ transformOrigin: '10px 7.5px' }}
-                                animate={(!isMobile && navOpen) ? { rotate: 45, x: 2.5, y: 5, width: 15 } : { rotate: 0, x: 0, y: 0, width: 9.5 }}
-                                transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                            />
-                            <motion.rect
-                                x="5.25" y="6.25" width="9.5" height="2.5" rx="1.25" fill="#0f3554"
-                                animate={(!isMobile && navOpen) ? { opacity: 0 } : { opacity: 1 }}
-                                transition={{ duration: 0.15 }}
-                            />
-                            <motion.rect
-                                x="10.5" y="11.5" width="9.5" height="2.5" rx="1.25" fill="#0f3554"
-                                style={{ transformOrigin: '10px 7.5px' }}
-                                animate={(!isMobile && navOpen) ? { rotate: -45, x: -2.5, y: -5, width: 15 } : { rotate: 0, x: 0, y: 0, width: 9.5 }}
-                                transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                            />
-                        </svg>
-                        <span className="dock-menu-label" style={{ fontSize: '13px', fontWeight: 500, color: '#0f3554', fontFamily: 'var(--font-main)', letterSpacing: '0.04em' }}>
-                            {!isMobile && navOpen ? 'Close' : 'Menu'}
-                        </span>
+                        <div style={{ position: 'relative', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {/* Stairs icon (Menu) */}
+                            <motion.div
+                                initial={false}
+                                animate={{
+                                    opacity: (!isMobile && navOpen) ? 0 : 1,
+                                    rotate:  (!isMobile && navOpen) ? -90 : 0,
+                                    scale:   (!isMobile && navOpen) ? 0.6 : 1,
+                                }}
+                                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                                style={{
+                                    position:       'absolute',
+                                    inset:          0,
+                                    display:        'flex',
+                                    alignItems:     'center',
+                                    justifyContent: 'center',
+                                    pointerEvents:  'none',
+                                }}
+                            >
+                                <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
+                                    <rect x="0" y="1" width="9.5" height="2.5" rx="1.25" fill="#0f3554" />
+                                    <rect x="5.25" y="6.25" width="9.5" height="2.5" rx="1.25" fill="#0f3554" />
+                                    <rect x="10.5" y="11.5" width="9.5" height="2.5" rx="1.25" fill="#0f3554" />
+                                </svg>
+                            </motion.div>
+
+                            {/* Close 'X' icon */}
+                            <motion.div
+                                initial={false}
+                                animate={{
+                                    opacity: (!isMobile && navOpen) ? 1 : 0,
+                                    rotate:  (!isMobile && navOpen) ? 0 : 90,
+                                    scale:   (!isMobile && navOpen) ? 1 : 0.6,
+                                }}
+                                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                                style={{
+                                    position:       'absolute',
+                                    inset:          0,
+                                    display:        'flex',
+                                    alignItems:     'center',
+                                    justifyContent: 'center',
+                                    pointerEvents:  'none',
+                                }}
+                            >
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                    <line x1="3.5" y1="3.5" x2="14.5" y2="14.5" stroke="#0f3554" strokeWidth="2.2" strokeLinecap="round" />
+                                    <line x1="14.5" y1="3.5" x2="3.5" y2="14.5" stroke="#0f3554" strokeWidth="2.2" strokeLinecap="round" />
+                                </svg>
+                            </motion.div>
+                        </div>
                     </button>
 
                     {/* Desktop inline nav items slide in to the RIGHT of the button */}

@@ -1,13 +1,61 @@
 export const projectData = {
+    "brunst-studios": {
+        id: "brunst-studios",
+        numId: "01",
+        category: "Next.js / Creative Direction",
+        title: "Brunst Studios",
+        tagline: "Visionary creative agency platform bringing together the world’s creative diversity.",
+        year: "2024",
+        url: "https://www.brunst.in/",
+        image: "/assets/brunst_studios.png",
+        results: {
+            metrics: ["<0.8s", "100%", "+140%"],
+            labels: ["TurboPack load speed", "Typography switch score", "Global client inquiries"]
+        },
+        challenge: "Brunst Studios is home to a world of creative fields—bringing together luxury brands, interiors, authors, and athletes under a single visionary creative agency. They needed a high-fashion, midnight-aesthetic web platform with dynamic typography switching, atmospheric noise textures, and zero performance compromise.",
+        architecture: "Engineered on Next.js with TurboPack and Vercel edge deployment. Implemented an interactive typography switcher (switching between Cormorant Garamond and Libre Baskerville in real-time), procedural SVG fractal noise filters, and framer-motion stagger reveals for seamless modal interactions.",
+        outcome: "Delivered a cinematic, sub-800ms luxury web portal with global CDN distribution. Elevated Brunst Studios' digital presence with a 140% surge in creative partnership inquiries across US, EU, and APAC markets.",
+        tech: ["Next.js", "Turbopack", "TailwindCSS", "Framer Motion", "SVG Noise", "Vercel Edge"],
+        next: {
+            id: "nova-analytics",
+            title: "Nova Analytics",
+            category: "Data & ML / Python & Vue",
+            image: "/assets/nova_analytics_home.png"
+        }
+    },
+    "nova-analytics": {
+        id: "nova-analytics",
+        numId: "02",
+        category: "Data & ML / Python & Vue",
+        title: "Nova Analytics",
+        tagline: "High-throughput predictive telemetry pipeline & executive business intelligence suite.",
+        year: "2024",
+        url: "https://69326c54e8aec728a1540bf7--celadon-zuccutto-a71c25.netlify.app/",
+        image: "/assets/nova_analytics_home.png",
+        results: {
+            metrics: ["10M+", "350ms", "99.9%"],
+            labels: ["Daily telemetry events", "p99 Query response", "Pipeline reliability"]
+        },
+        challenge: "Enterprise clients required real-time telemetry processing across millions of daily events with interactive drill-down analytics without exhausting memory or stalling client dashboards.",
+        architecture: "Engineered a distributed streaming pipeline using Python, Apache Kafka, and ClickHouse for columnar OLAP queries. The reactive frontend is built with Vue 3, Pinia, and custom WebGL charting canvas, delivering sub-second updates.",
+        outcome: "Processed 10M+ daily events at 350ms average query latency. Enabled instant root-cause diagnostics across distributed server nodes with zero data loss over 12 months.",
+        tech: ["Python", "Vue 3", "ClickHouse", "Apache Kafka", "Docker", "FastAPI", "TailwindCSS"],
+        next: {
+            id: "career-vedha",
+            title: "CareerVedha",
+            category: "Full-Stack / Next.js",
+            image: "/assets/careervedha_home.png"
+        }
+    },
     "career-vedha": {
         id: "career-vedha",
-        numId: "01",
+        numId: "03",
         category: "Full-Stack / Next.js",
         title: "CareerVedha",
         tagline: "High-concurrency EdTech & Analytics platform serving 50,000+ students in real-time.",
         year: "2024",
         url: "https://careervedha.com",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80",
+        image: "/assets/careervedha_home.png",
         results: {
             metrics: ["50k+", "<120ms", "+67%"],
             labels: ["Concurrent users", "p99 Response latency", "Time-on-platform gain"]
@@ -20,18 +68,18 @@ export const projectData = {
             id: "mh-marble",
             title: "MH Marble",
             category: "Architecture / React",
-            image: "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=640&h=480&fit=crop&q=80"
+            image: "/assets/mhmarble_home.png"
         }
     },
     "mh-marble": {
         id: "mh-marble",
-        numId: "02",
+        numId: "04",
         category: "Architecture / React",
         title: "MH Marble",
         tagline: "Premium E-Commerce showcase with interactive 3D WebGL material inspection.",
         year: "2024",
         url: "https://mhmarble.com",
-        image: "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1200&q=80",
+        image: "/assets/mhmarble_home.png",
         results: {
             metrics: ["340%", "1.2s", "99+"],
             labels: ["Conversion lift", "Page load time", "Core Web Vitals"]
@@ -44,18 +92,18 @@ export const projectData = {
             id: "nexus",
             title: "Nexus",
             category: "Socket.io / Node.js",
-            image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=640&h=480&fit=crop&q=80"
+            image: "/assets/nexus_home.png"
         }
     },
     "nexus": {
         id: "nexus",
-        numId: "03",
+        numId: "05",
         category: "Socket.io / Node.js",
         title: "Nexus",
         tagline: "Production-grade, sub-100ms real-time messaging application for high concurrent streams.",
         year: "2023",
         url: "https://nexus-sage-chi.vercel.app/",
-        image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&auto=format&fit=crop&q=80",
+        image: "/assets/nexus_home.png",
         results: {
             metrics: ["5k", "98ms", "0%"],
             labels: ["Simultaneous connections", "Avg message latency", "Dropped connections (6mo)"]
@@ -68,18 +116,18 @@ export const projectData = {
             id: "hrms",
             title: "HRMS",
             category: "Dashboard / Java",
-            image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=640&h=480&fit=crop&q=80"
+            image: "/assets/hrms_home.png"
         }
     },
     "hrms": {
         id: "hrms",
-        numId: "04",
+        numId: "06",
         category: "Dashboard / Java",
         title: "HRMS",
         tagline: "Enterprise management system with automated payroll consolidation & analytics.",
         year: "2023",
         url: "https://hrms-front-end-woad.vercel.app/",
-        image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=1200&auto=format&fit=crop&q=80",
+        image: "/assets/hrms_home.png",
         results: {
             metrics: ["20+ hrs", "4 min", "100%"],
             labels: ["Saved weekly", "Payroll generation time", "Data accuracy rate"]
@@ -89,10 +137,10 @@ export const projectData = {
         outcome: "Eliminated 20+ hours of manual weekly reporting. Payroll generation time reduced from 3 days to under 4 minutes. No data discrepancies reported in 14 months of use.",
         tech: ["Java", "Spring Boot", "MySQL", "React", "Recharts", "JWT", "REST API"],
         next: {
-            id: "career-vedha",
-            title: "CareerVedha",
-            category: "Full-Stack / Next.js",
-            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&h=480&fit=crop&q=80"
+            id: "brunst-studios",
+            title: "Brunst Studios",
+            category: "Next.js / Creative Direction",
+            image: "/assets/brunst_studios.png"
         }
     }
 };

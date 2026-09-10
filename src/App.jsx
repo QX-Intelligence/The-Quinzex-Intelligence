@@ -19,6 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 function App() {
     const [activeChapter, setActiveChapter] = useState('WhoWeAre');
+    const [isInFooter, setIsInFooter] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [currentPath, setCurrentPath] = useState(typeof window !== 'undefined' ? window.location.pathname : '/');
@@ -83,6 +84,14 @@ function App() {
             if (ticking) return;
             ticking = true;
             requestAnimationFrame(() => {
+                const footer = document.querySelector('.ic-creative-footer');
+                if (footer) {
+                    const fRect = footer.getBoundingClientRect();
+                    setIsInFooter(fRect.top < window.innerHeight * 0.75);
+                } else {
+                    setIsInFooter(false);
+                }
+
                 // Active Chapter detection matching section IDs on homepage
                 const chapters = ['Sustainability', 'GlobalConnectivity', 'WhatWeDo', 'WhoWeAre'];
                 for (let i = 0; i < chapters.length; i++) {
@@ -147,6 +156,7 @@ function App() {
                     {/* Fixed Left Chapter Navigation HUD (Tracking Indicator) */}
                     <ChapterHUD 
                         activeChapter={activeChapter}
+                        isInFooter={isInFooter}
                         onScrollToChapter={scrollToTarget}
                     />
 

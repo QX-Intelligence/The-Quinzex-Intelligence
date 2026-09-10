@@ -4,7 +4,7 @@ import Link from './Link';
 import { projectData } from '../data/projects';
 
 const ProjectDetail = ({ projectId }) => {
-    const project = projectData[projectId] || projectData['career-vedha'];
+    const project = projectData[projectId] || projectData['brunst-studios'] || Object.values(projectData)[0];
     const imageRef = useRef(null);
 
     useEffect(() => {

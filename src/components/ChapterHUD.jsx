@@ -7,9 +7,9 @@ const CHAPTERS = [
     { id: 'Sustainability', label: 'OUR TEAM' }
 ];
 
-const ChapterHUD = ({ activeChapter = 'WhoWeAre', onScrollToChapter }) => {
+const ChapterHUD = ({ activeChapter = 'WhoWeAre', isInFooter = false, onScrollToChapter }) => {
     return (
-        <aside className="montfort-hud" aria-label="Chapter Navigation HUD">
+        <aside className={`montfort-hud ${isInFooter ? 'is-hidden' : ''}`} aria-label="Chapter Navigation HUD">
             <div className="hud-vertical-line" />
             
             {CHAPTERS.map((chap) => {

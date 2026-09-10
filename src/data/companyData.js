@@ -98,7 +98,7 @@ export const clientJourney = [
 
 export const auraFeatures = [
     {
-        title: "Aura Design Language",
+        title: "Quinzex Design Language",
         description: "Bespoke digital curation styled with a luxury Alpine & Obsidian aesthetic. Fluid responsive systems, micro-animations, and balanced glassmorphism form an instant emotional connection.",
         tech: "Bespoke Curation & UI/UX"
     },

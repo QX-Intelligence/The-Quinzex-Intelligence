@@ -13,6 +13,8 @@ const PRIMARY_NAV = [
 ];
 
 const FEATURED_PROJECTS = [
+    { title: 'Brunst Studios', path: '/project/brunst-studios', category: 'Creative Agency & Next.js' },
+    { title: 'Nova Analytics', path: '/project/nova-analytics', category: 'Data & ML Telemetry' },
     { title: 'CareerVedha', path: '/project/career-vedha', category: 'EdTech & WebSocket Engine' },
     { title: 'MH Marble', path: '/project/mh-marble', category: '3D WebGL Inspector' },
     { title: 'Nexus Platform', path: '/project/nexus', category: 'Sub-100ms Messaging' },

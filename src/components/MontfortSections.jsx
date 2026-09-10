@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MontfortContact from './MontfortContact';
+import MontfortFooter from './MontfortFooter';
 import Link from './Link';
 
 const MontfortSections = ({ onScrollToChapter }) => {
@@ -386,55 +387,55 @@ const MontfortSections = ({ onScrollToChapter }) => {
                             <div className="ic-project-track-wrap">
                                 <div className="ic-project-track" ref={projectCarouselRef}>
                                     <div className="ic-bento-block">
-                                        <a href="/project/fintech" className="ic-bento-card ic-bento-large">
+                                        <Link to="/project/brunst-studios" className="ic-bento-card ic-bento-large">
                                             <div className="ic-bento-content">
-                                                <h3 className="ic-bento-title">Aura FinTech</h3>
-                                                <p className="ic-bento-tags">Finance • React • TypeScript</p>
+                                                <h3 className="ic-bento-title">Brunst Studios</h3>
+                                                <p className="ic-bento-tags">Creative Agency • Next.js • Turbopack</p>
                                             </div>
                                             <div className="ic-bento-icon">↗</div>
-                                        </a>
+                                        </Link>
 
-                                        <a href="/project/analytics" className="ic-bento-card ic-bento-small">
+                                        <Link to="/project/nova-analytics" className="ic-bento-card ic-bento-small">
                                             <div className="ic-bento-content">
                                                 <h3 className="ic-bento-title">Nova Analytics</h3>
-                                                <p className="ic-bento-tags">Data • Python • Vue</p>
+                                                <p className="ic-bento-tags">Data &amp; ML • Python • Vue</p>
                                             </div>
                                             <div className="ic-bento-icon">↗</div>
-                                        </a>
+                                        </Link>
 
-                                        <a href="/project/career-vedha" className="ic-bento-card ic-bento-small">
+                                        <Link to="/project/career-vedha" className="ic-bento-card ic-bento-small">
                                             <div className="ic-bento-content">
                                                 <h3 className="ic-bento-title">CareerVedha</h3>
                                                 <p className="ic-bento-tags">EdTech • Next.js • WebSockets</p>
                                             </div>
                                             <div className="ic-bento-icon">↗</div>
-                                        </a>
+                                        </Link>
 
-                                        <a href="/project/mh-marble" className="ic-bento-card ic-bento-large">
+                                        <Link to="/project/mh-marble" className="ic-bento-card ic-bento-large">
                                             <div className="ic-bento-content">
                                                 <h3 className="ic-bento-title">MH Marble</h3>
                                                 <p className="ic-bento-tags">E-Commerce • React • WebGL</p>
                                             </div>
                                             <div className="ic-bento-icon">↗</div>
-                                        </a>
+                                        </Link>
                                     </div>
 
                                     <div className="ic-bento-block-narrow">
-                                        <a href="/project/nexus" className="ic-bento-card ic-bento-large">
+                                        <Link to="/project/nexus" className="ic-bento-card ic-bento-large">
                                             <div className="ic-bento-content">
                                                 <h3 className="ic-bento-title">Nexus Platform</h3>
                                                 <p className="ic-bento-tags">Messaging • Node.js • Redis</p>
                                             </div>
                                             <div className="ic-bento-icon">↗</div>
-                                        </a>
+                                        </Link>
 
-                                        <a href="/project/hrms" className="ic-bento-card ic-bento-large">
+                                        <Link to="/project/hrms" className="ic-bento-card ic-bento-large">
                                             <div className="ic-bento-content">
                                                 <h3 className="ic-bento-title">HRMS Platform</h3>
-                                                <p className="ic-bento-tags">Enterprise • React • GraphQL</p>
+                                                <p className="ic-bento-tags">Enterprise • Java • Spring Boot</p>
                                             </div>
                                             <div className="ic-bento-icon">↗</div>
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -537,63 +538,9 @@ const MontfortSections = ({ onScrollToChapter }) => {
             </div>
 
             {/* ==================================================== */}
-            {/* EXACT MONTFORT FOOTER (PURE WHITE BACKGROUND)        */}
+            {/* LUXURY FLOATING CARD FOOTER & QUINZEX WATERMARK      */}
             {/* ==================================================== */}
-            <footer className="ic-creative-footer">
-                <div className="ic-footer-top">
-                    <h2 className="ic-footer-cta-title">READY TO BUILD<br />THE FUTURE?</h2>
-                    <div className="ic-footer-cta-actions">
-                        <button onClick={() => onScrollToChapter?.('form')} className="ic-footer-btn-primary">
-                            START A CONVERSATION
-                        </button>
-                        <a href="https://cal.com/quinzex/discovery" target="_blank" rel="noopener noreferrer" className="ic-footer-btn-secondary">
-                            BOOK DISCOVERY CALL
-                        </a>
-                    </div>
-                </div>
-
-                <div className="ic-footer-middle">
-                    <div className="ic-footer-brand">
-                        <div className="ic-footer-logo-wrap">
-                            <svg width="24" height="24" viewBox="0 0 44 44" fill="none">
-                                <circle cx="22" cy="13" r="3.6" fill="var(--text-navy)" />
-                                <circle cx="11" cy="22" r="3.6" fill="var(--text-navy)" />
-                                <circle cx="33" cy="22" r="3.6" fill="var(--text-navy)" />
-                                <circle cx="15" cy="33" r="3.2" fill="var(--text-navy)" />
-                                <circle cx="29" cy="33" r="3.2" fill="var(--text-navy)" />
-                                <circle cx="22" cy="24" r="2.8" fill="var(--text-navy)" />
-                            </svg>
-                            <span className="ic-footer-logo-text">QUINZEX</span>
-                        </div>
-                        <p className="ic-footer-brand-desc">
-                            High-performance software engineering, cloud architecture &amp; AI systems studio for modern technology leaders.
-                        </p>
-                    </div>
-                    
-                    <div className="ic-footer-links-grid">
-                        <div className="ic-footer-link-group">
-                            <h4>NAVIGATION</h4>
-                            <a href="#Hero" onClick={(e) => { e.preventDefault(); onScrollToChapter?.('Hero'); }}>Overview</a>
-                            <a href="#WhoWeAre" onClick={(e) => { e.preventDefault(); onScrollToChapter?.('WhoWeAre'); }}>Who We Are</a>
-                            <a href="#WhatWeDo" onClick={(e) => { e.preventDefault(); onScrollToChapter?.('WhatWeDo'); }}>Capabilities</a>
-                            <a href="#GlobalConnectivity" onClick={(e) => { e.preventDefault(); onScrollToChapter?.('GlobalConnectivity'); }}>Selected Work</a>
-                        </div>
-                        <div className="ic-footer-link-group">
-                            <h4>INQUIRIES</h4>
-                            <a href="mailto:hello@quinzexintelligence.com">hello@quinzexintelligence.com</a>
-                            <a href="mailto:partners@quinzexintelligence.com">partners@quinzexintelligence.com</a>
-                            <p style={{ marginTop: '16px' }}>Global Distributed Team<br/>US &bull; EU &bull; APAC Timezones</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="ic-footer-bottom">
-                    <div className="ic-footer-copyright">
-                        © {new Date().getFullYear()} Quinzex Intelligence. All rights reserved.
-                    </div>
-                    <div className="ic-footer-giant-text">QUINZEX</div>
-                </div>
-            </footer>
+            <MontfortFooter onScrollToChapter={onScrollToChapter} />
         </main>
     );
 };

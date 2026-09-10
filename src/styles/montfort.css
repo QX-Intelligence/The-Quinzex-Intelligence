@@ -334,6 +334,13 @@ html, body {
     flex-direction: column;
     gap: 22px;
     pointer-events: auto;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.montfort-hud.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) translateX(-16px);
 }
 
 .hud-vertical-line {
@@ -1043,211 +1050,344 @@ html, body {
 }
 
 /* ==================================================== */
-/* EXACT MONTFORT FOOTER (PURE WHITE BACKGROUND)        */
+/* MINIMAL ALPINE DAYLIGHT FOOTER                       */
 /* ==================================================== */
+
 /* ==================================================== */
-/* CREATIVE AGENCY FOOTER                               */
+/* FLOATING CARD LUXURY FOOTER (REFERENCE DESIGN)       */
 /* ==================================================== */
 
 .ic-creative-footer {
     position: relative;
     z-index: 50;
-    background-image: url('/mountain-ice.jpg');
-    background-size: cover;
-    background-position: center bottom;
+    background: #f4f6f9;
     color: var(--text-navy);
     width: 100%;
     overflow: hidden;
-    padding-top: 120px;
+    padding: clamp(36px, 4vw, 64px) clamp(16px, 2.5vw, 44px) clamp(20px, 3vw, 40px) clamp(16px, 2.5vw, 44px);
+    border-top: 1px solid rgba(15, 53, 84, 0.06);
+    box-sizing: border-box;
 }
 
-.ic-creative-footer::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    z-index: 0;
-}
-
-.ic-creative-footer > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* TOP SECTION */
+/* TOP CTA SECTION (REMOVED - FOOTER HAS ONLY THE CARD & GIANT QUINZEX) */
 .ic-footer-top {
-    max-width: 1200px;
-    margin: 0 auto 100px auto;
-    padding: 0 48px;
+    display: none !important;
+}
+
+/* CARD WRAPPER & CONTAINER - COMPLETE LEFT TO RIGHT WIDTH */
+.ic-footer-card-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* FLOATING WHITE CARD (EXACTLY LIKE REFERENCE, FULL WIDTH) */
+.ic-footer-floating-card {
+    position: relative;
+    z-index: 2;
+    background: #ffffff;
+    border-radius: clamp(20px, 2.2vw, 32px);
+    border: 1px solid rgba(15, 53, 84, 0.08);
+    box-shadow: 0 20px 50px -12px rgba(15, 53, 84, 0.08), 0 1px 3px rgba(15, 53, 84, 0.04);
+    padding: clamp(36px, 4vw, 56px) clamp(24px, 4.5vw, 72px) clamp(24px, 3vw, 36px) clamp(24px, 4.5vw, 72px);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+}
+
+.ic-footer-card-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1.85fr;
+    gap: clamp(32px, 5vw, 90px);
+}
+
+/* BRAND COLUMN */
+.ic-footer-brand-col {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    justify-content: flex-start;
 }
 
-.ic-footer-cta-title {
-    font-family: var(--font-main);
-    font-size: clamp(40px, 6vw, 80px);
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    color: var(--text-navy);
-    margin: 0 0 48px 0;
-}
-
-.ic-footer-cta-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.ic-footer-btn-primary {
-    background: var(--text-navy);
-    color: #ffffff;
-    border: none;
-    border-radius: 99px;
-    padding: 16px 32px;
-    font-family: var(--font-main);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.ic-footer-btn-primary:hover {
-    background: #000000;
-    transform: translateY(-2px);
-}
-
-.ic-footer-btn-secondary {
-    background: rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(15, 53, 84, 0.2);
-    color: var(--text-navy);
-    border-radius: 99px;
-    padding: 16px 32px;
-    font-family: var(--font-main);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-}
-.ic-footer-btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.6);
-    border-color: rgba(15, 53, 84, 0.4);
-    transform: translateY(-2px);
-}
-
-/* MIDDLE SECTION */
-.ic-footer-middle {
-    max-width: 1200px;
-    margin: 0 auto 60px auto;
-    padding: 0 48px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-}
-
-.ic-footer-logo-wrap {
+.ic-footer-card-brand {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
 }
 
-.ic-footer-logo-text {
-    font-family: var(--font-main);
-    font-size: 18px;
-    letter-spacing: 0.24em;
-    font-weight: 400;
+.ic-footer-card-name {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    font-size: 17px;
+    letter-spacing: 0.16em;
+    font-weight: 700;
     color: var(--text-navy);
 }
 
-.ic-footer-brand-desc {
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--text-navy-secondary);
+.ic-footer-card-desc {
+    font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #4b6680;
     max-width: 320px;
-}
-
-.ic-footer-links-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-}
-
-.ic-footer-link-group h4 {
-    font-family: var(--font-main);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    color: var(--text-navy);
     margin: 0 0 24px 0;
 }
 
-.ic-footer-link-group a,
-.ic-footer-link-group p {
-    display: block;
-    font-family: var(--font-main);
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--text-navy-secondary);
-    text-decoration: none;
-    margin-bottom: 12px;
-    transition: color 0.2s ease;
-    line-height: 1.6;
+.ic-footer-social-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.ic-footer-link-group a:hover {
+.ic-footer-social-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4b6680;
+    background: rgba(15, 53, 84, 0.03);
+    border: 1px solid rgba(15, 53, 84, 0.06);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.ic-footer-social-icon:hover {
+    color: var(--text-navy);
+    background: rgba(15, 53, 84, 0.08);
+    border-color: rgba(15, 53, 84, 0.15);
+    transform: translateY(-2px);
+}
+
+/* 3 NAVIGATION COLUMNS */
+.ic-footer-columns-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.ic-footer-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.ic-footer-col-title {
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-navy);
+    margin-bottom: 18px;
+}
+
+.ic-footer-column a {
+    font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+    font-size: 13px;
+    font-weight: 400;
+    color: #5d7a94;
+    text-decoration: none;
+    margin-bottom: 11px;
+    transition: color 0.2s ease;
+    line-height: 1.5;
+}
+
+.ic-footer-column a:hover {
     color: var(--text-navy);
 }
 
-/* BOTTOM SECTION */
-.ic-footer-bottom {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    padding-top: 40px;
-}
-
-.ic-footer-copyright {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    font-family: var(--font-main);
+.ic-footer-col-note {
+    font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
     font-size: 12px;
-    color: var(--text-navy-secondary);
-    padding-bottom: 24px;
+    line-height: 1.6;
+    color: #7a94a8;
+    margin-top: 6px;
 }
 
-.ic-footer-giant-text {
-    position: absolute;
-    bottom: -6vw; 
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: var(--font-main);
-    font-size: 24vw; 
-    font-weight: 700;
-    color: rgba(15, 53, 84, 0.04); 
-    line-height: 1;
-    white-space: nowrap;
-    pointer-events: none;
+/* CARD DIVIDER */
+.ic-footer-card-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(15, 53, 84, 0.07);
+    margin: 40px 0 24px 0;
+}
+
+/* CARD BOTTOM ROW */
+.ic-footer-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.ic-footer-card-copyright {
+    font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+    font-size: 12.5px;
+    color: #7a94a8;
+    letter-spacing: 0.01em;
+}
+
+.ic-footer-card-legal {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.ic-footer-card-legal a {
+    font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+    font-size: 12.5px;
+    color: #7a94a8;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.ic-footer-card-legal a:hover {
+    color: var(--text-navy);
+    text-decoration: underline;
+}
+
+/* GIANT WATERMARK WITH LIVING MOUNTAINS, BILLOWING SMOKE & MIST SHIMMER */
+@keyframes livingMountainSmoke {
+    0% {
+        background-position: 
+            -120% 0,      /* Sunlight shimmer beam starting left */
+            -15% 42%,     /* Smoke cloud 1 starting near Q/U */
+            115% 58%,     /* Smoke cloud 2 starting near E/X */
+            center 46%,   /* Atmospheric wash */
+            10% 32%;      /* Mountain rock panned left-up */
+    }
+    50% {
+        background-position: 
+            220% 0,       /* Sunlight shimmer sweeps across to right */
+            60% 30%,      /* Smoke cloud 1 billows towards N/Z/E */
+            40% 65%,      /* Smoke cloud 2 billows towards U/I */
+            center 46%,   /* Atmospheric wash */
+            85% 68%;      /* Mountain rock panned right-down */
+    }
+    100% {
+        background-position: 
+            -120% 0,      /* Sunlight shimmer beam returns */
+            -15% 42%,     /* Smoke cloud 1 returns */
+            115% 58%,     /* Smoke cloud 2 returns */
+            center 46%,   /* Atmospheric wash */
+            10% 32%;      /* Mountain rock returns */
+    }
+}
+
+.ic-footer-watermark {
+    position: relative;
     z-index: 1;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -clamp(44px, 6.8vw, 105px);
+    padding-bottom: clamp(12px, 2vw, 32px);
+    pointer-events: auto;
+    user-select: none;
+    overflow: hidden;
+}
+
+.ic-footer-watermark-canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 14px 32px rgba(15, 53, 84, 0.10));
+    cursor: default;
+    pointer-events: auto;
+}
+
+.ic-footer-watermark-text {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(80px, 18.2vw, 340px);
+    font-weight: 800;
+    letter-spacing: clamp(2px, 0.6vw, 16px);
+    line-height: 0.85;
+    text-transform: uppercase;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    display: block;
+    
+    /* Multi-layered living atmosphere: shimmer, billowing smoke clouds, mist wash, and panoramic mountain image */
+    background-image: 
+        /* Layer 1: Sweeping sunlight shimmer beam */
+        linear-gradient(115deg, transparent 28%, rgba(255, 255, 255, 0.42) 48%, rgba(220, 242, 255, 0.7) 52%, transparent 72%),
+        /* Layer 2: Billowing smoke cloud 1 (drifting left to right) */
+        radial-gradient(ellipse 65% 50% at 50% 50%, rgba(255, 255, 255, 0.65) 0%, rgba(225, 240, 255, 0.35) 45%, transparent 75%),
+        /* Layer 3: Billowing mist plume 2 (drifting right to left) */
+        radial-gradient(ellipse 55% 45% at 50% 50%, rgba(240, 248, 255, 0.55) 0%, rgba(195, 225, 250, 0.22) 50%, transparent 80%),
+        /* Layer 4: Ethereal alpine depth wash preserving deep rock contrasts */
+        linear-gradient(180deg, rgba(244, 246, 249, 0.42) 0%, rgba(15, 53, 84, 0.18) 45%, rgba(15, 53, 84, 0.44) 100%),
+        /* Layer 5: Mountain & smoke photographic base with oversized canvas for cinematic panning */
+        url('/assets/mountain_smoke.jpg');
+    background-size: 200% 100%, 75% 75%, 65% 65%, cover, 135% 135%;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+    animation: livingMountainSmoke 14s ease-in-out infinite alternate;
+    
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    
+    /* Elegant crisp outline framing the letters */
+    -webkit-text-stroke: 1.25px rgba(15, 53, 84, 0.28);
+    text-stroke: 1.25px rgba(15, 53, 84, 0.28);
+    
+    filter: drop-shadow(0 10px 24px rgba(15, 53, 84, 0.08));
 }
 
 @media (max-width: 900px) {
-    .ic-footer-middle {
-        grid-template-columns: 1fr;
-        gap: 48px;
+    .ic-creative-footer {
+        padding: 32px 14px 20px 14px !important;
     }
-    .ic-footer-giant-text {
-        font-size: 28vw;
-        bottom: -4vw;
+    .ic-footer-top {
+        display: none !important;
+    }
+    .ic-footer-floating-card {
+        padding: 32px 20px 24px 20px !important;
+        border-radius: 20px !important;
+    }
+    .ic-footer-card-grid {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+    }
+    .ic-footer-columns-group {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 24px !important;
+    }
+    .ic-footer-card-divider {
+        margin: 28px 0 20px 0 !important;
+    }
+    .ic-footer-card-bottom {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 14px !important;
+    }
+    .ic-footer-card-legal {
+        flex-wrap: wrap !important;
+        gap: 16px !important;
+    }
+    .ic-footer-watermark {
+        margin-top: -30px !important;
+        padding-bottom: 16px !important;
+    }
+    .ic-footer-watermark-text {
+        font-size: clamp(44px, 17vw, 110px) !important;
+        -webkit-text-stroke: 1px rgba(15, 53, 84, 0.25) !important;
+        letter-spacing: 0.04em !important;
+    }
+}
+
+@media (max-width: 550px) {
+    .ic-footer-columns-group {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .ic-footer-watermark-text {
+        font-size: clamp(36px, 16vw, 68px) !important;
     }
 }
 
@@ -3690,56 +3830,39 @@ html, body {
 
     /* ── Creative Footer ── */
     .ic-creative-footer {
-        padding: 60px 20px 40px 20px !important;
+        padding: 32px 14px 20px 14px !important;
         position: relative !important;
         z-index: 20 !important;
-        background: #ffffff !important;
+        background: #f4f6f9 !important;
     }
 
     .ic-footer-top {
-        padding: 0 !important;
-        margin-bottom: 48px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        text-align: center !important;
+        display: none !important;
     }
 
-    .ic-footer-cta-title {
-        font-size: clamp(28px, 7vw, 44px) !important;
-        margin-bottom: 24px !important;
-        text-align: center !important;
+    .ic-footer-floating-card {
+        padding: 32px 20px 22px 20px !important;
+        border-radius: 20px !important;
     }
 
-    .ic-footer-cta-actions {
-        flex-direction: column !important;
-        width: 100% !important;
-        max-width: 320px !important;
-        gap: 12px !important;
-    }
-
-    .ic-footer-btn-primary,
-    .ic-footer-btn-secondary {
-        width: 100% !important;
-        text-align: center !important;
-        justify-content: center !important;
-        box-sizing: border-box !important;
-    }
-
-    .ic-footer-middle {
+    .ic-footer-card-grid {
         grid-template-columns: 1fr !important;
-        gap: 36px !important;
-        padding: 0 !important;
+        gap: 32px !important;
     }
 
-    .ic-footer-links-grid {
-        grid-template-columns: 1fr !important;
-        gap: 28px !important;
+    .ic-footer-columns-group {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 24px !important;
     }
 
-    .ic-footer-giant-text {
-        font-size: 24vw !important;
-        bottom: -3vw !important;
+    .ic-footer-watermark {
+        margin-top: -24px !important;
+    }
+
+    .ic-footer-watermark-text {
+        font-size: clamp(38px, 13vw, 76px) !important;
+        -webkit-text-stroke: 1.1px rgba(15, 53, 84, 0.16) !important;
+        letter-spacing: 0.04em !important;
     }
 }
 

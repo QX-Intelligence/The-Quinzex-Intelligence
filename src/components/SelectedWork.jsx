@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from './Link';
+import { projectsList } from '../data/projects';
 
 const FeaturedProjectCard = ({ project }) => {
     const itemRef = useRef(null);
@@ -154,41 +155,14 @@ const SubProjectCard = ({ project, index }) => {
 };
 
 const SelectedWork = () => {
-    const projects = [
-        {
-            category: "AI & Automation, US",
-            link: "/projects/nexaflow-ai",
-            title: "NexaFlow AI",
-            description: "NexaFlow AI is an enterprise automation platform deploying intelligent workflows across finance, operations, and data infrastructure — reducing manual overhead by 80% and enabling teams to operate at 10x speed.",
-            image: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=640&h=480&fit=crop&crop=center&q=80",
-            results: {
-                metrics: ["$42M", "80%", "10x"],
-                labels: ["Series B raised", "Ops cost reduction", "Team velocity gain"]
-            }
-        },
-        {
-            category: "SaaS Platform, UK",
-            link: "/projects/orbis-saas",
-            title: "Orbis SaaS",
-            description: "Orbis is a B2B SaaS platform connecting enterprise buyers with vetted digital solution providers — 50,000+ active users, Fortune 500 partnerships, and a platform growing faster than its brand could keep up with.",
-            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&h=480&fit=crop&crop=center&q=80",
-            results: {
-                metrics: ["60%+", "50k+", "3.8:1"],
-                labels: ["Activation growth", "Active users", "ROAS in 90 days"]
-            }
-        },
-        {
-            category: "Fintech, SG",
-            link: "/projects/vaultex",
-            title: "Vaultex Fintech",
-            description: "Vaultex is Southeast Asia's emerging cross-border payment intelligence platform — integrating AI-driven risk models with real-time FX optimization across 12 markets, built for the institutional and SME alike.",
-            image: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=640&h=480&fit=crop&crop=center&q=80",
-            results: {
-                metrics: ["$1.2B", "12", "99.97%"],
-                labels: ["Volume processed", "Markets served", "Uptime SLA"]
-            }
-        }
-    ];
+    const projects = projectsList.map(p => ({
+        category: p.category,
+        link: `/project/${p.id}`,
+        title: p.title,
+        description: p.tagline || p.challenge,
+        image: p.image,
+        results: p.results
+    }));
 
     return (
         <>

@@ -4,22 +4,22 @@ import { motion, useMotionValue, useAnimation } from 'framer-motion';
 const Testimonials = () => {
     const testimonials = [
         {
-            text: `"Quinzex Intelligence transformed not just our website — they transformed how the market perceives us. Within 3 months of the rebrand, we closed two enterprise deals that had previously stalled for over a year."`,
-            avatar: "JK",
-            name: "James Kroft",
-            role: "CEO, NexaFlow AI"
+            text: `"Quinzex transformed Brunst Studios into a digital tour de force. Their TurboPack architecture, real-time font switcher, and noise atmosphere elevated our client inquiries by over 140%."`,
+            avatar: "BS",
+            name: "Aarav Mehta",
+            role: "Creative Director, Brunst Studios"
         },
         {
-            text: `"Working with Quinzex felt like having a world-class in-house team. They understood our product deeply, challenged our assumptions, and delivered a digital experience that actually reflects what we've built."`,
-            avatar: "SR",
+            text: `"Serving 50,000+ students concurrently with sub-120ms latency felt impossible until Quinzex overhauled our backend with Next.js edge and WebSockets. Absolute masterclass in engineering."`,
+            avatar: "CV",
             name: "Sara Reyes",
-            role: "Founder, Orbis SaaS"
+            role: "Head of Product, CareerVedha"
         },
         {
-            text: `"The ROI was undeniable. Our user activation rate jumped 60%, and our sales cycle shortened by 30%. Quinzex aren't a vendor — they're a strategic growth partner."`,
-            avatar: "MC",
-            name: "Marcus Chen",
-            role: "CTO, Vaultex Fintech"
+            text: `"The custom Three.js WebGL inspection engine and GSAP visual scroll narrative drove a 340% conversion surge. Quinzex doesn't just write code; they craft digital art."`,
+            avatar: "MM",
+            name: "Julian Weber",
+            role: "Principal Architect, MH Marble"
         }
     ];
 

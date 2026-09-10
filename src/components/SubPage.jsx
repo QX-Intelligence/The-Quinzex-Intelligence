@@ -52,7 +52,7 @@ const SubPage = ({ path }) => {
             tagline: "Measurable architectural impact for fast-growing technology leaders and enterprise platforms."
         },
         "/features": {
-            title: "Aura Architecture",
+            title: "System Architecture",
             category: "System Capabilities",
             tagline: "Modern cognitive integrations, ultra-low latency pipelines, and resilient system architecture."
         },
