@@ -158,7 +158,7 @@ const ProjectDetail = ({ projectId }) => {
                     <div className="project-next-case-wrapper">
                         <div className="project-next-case-header">
                             <span className="next-case-label-dot"></span>
-                            <span className="next-case-label-text">Next Architecture Case Study</span>
+                            <span className="next-case-label-text">Next Project</span>
                         </div>
 
                         <Link to={`/project/${project.next.id}`} className="project-next-card">

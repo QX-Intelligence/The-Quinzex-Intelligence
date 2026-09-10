@@ -55,7 +55,7 @@ const FeaturedProjectCard = ({ project }) => {
                 </header>
                 <Link to={project.link} className="link-wrapper-is-project w-inline-block" style={{ marginTop: '2rem' }}>
                     <div className="arrow-flex-explore w-layout-hflex">
-                        <div className="explore-link">Explore Case Study</div>
+                        <div className="explore-link">View Project</div>
                         <div className="expl-arrow w-embed">
                             <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 13 8" fill="none">
                                 <path d="M0.5 3.18C0.224 3.18 0 3.406 0 3.682 0 3.958.224 4.182.5 4.182L.5 3.682.5 3.18zm12.354.854a.5.5 0 000-.707L9.672.146A.5.5 0 008.964.854L11.793 3.68 8.964 6.51a.5.5 0 00.707.707l3.182-3.182zM.5 3.682.5 4.182 12.5 4.182v-.5-.5H.5L.5 3.682z" fill="currentColor"/>

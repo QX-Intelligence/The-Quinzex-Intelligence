@@ -98,7 +98,7 @@ const FullMenu = ({ isOpen, onClose }) => {
                             {/* Secondary Side Panel (Desktop featured work & studio locations) */}
                             <div className="fullmenu-side-panel">
                                 <div className="fullmenu-side-block">
-                                    <div className="fullmenu-side-heading">Selected Case Studies</div>
+                                    <div className="fullmenu-side-heading">Selected Projects</div>
                                     <div className="fullmenu-featured-list">
                                         {FEATURED_PROJECTS.map((proj) => (
                                             <Link 

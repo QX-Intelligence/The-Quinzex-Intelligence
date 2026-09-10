@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from './Link';
+import SelectedWorkShowcase from './SelectedWorkShowcase';
 import { teamMembers } from '../data/team';
 import { projectsList } from '../data/projects';
 import {
@@ -23,7 +24,7 @@ const SubPage = ({ path }) => {
     let activePath = path;
     if (path === '/collective') activePath = '/team';
     if (path === '/expertise') activePath = '/services';
-    if (path === '/works') activePath = '/portfolio';
+    if (path === '/works' || path === '/work' || path === '/projects') activePath = '/portfolio';
 
     const pageMeta = {
         "/about": {
@@ -48,7 +49,7 @@ const SubPage = ({ path }) => {
         },
         "/portfolio": {
             title: "Selected Work",
-            category: "Client Case Studies",
+            category: "Selected Projects",
             tagline: "Measurable architectural impact for fast-growing technology leaders and enterprise platforms."
         },
         "/features": {
@@ -96,25 +97,27 @@ const SubPage = ({ path }) => {
             exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="sub-page-view"
-            style={{ paddingTop: '100px', minHeight: '100vh', color: '#0f3554' }}
+            style={{ paddingTop: activePath === '/portfolio' ? '70px' : '100px', minHeight: '100vh', color: '#0f3554' }}
         >
-            {/* Subpage Hero Header */}
-            <section className="section sub-page-hero" style={{ paddingBottom: '2.5rem' }}>
-                <div className="w-layout-blockcontainer container w-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
-                    <div className="project-hero-grid">
-                        <div className="sect-dot-flex w-layout-hflex" style={{ marginBottom: '1.5rem' }}>
-                            <div className="dot"></div>
-                            <div>{currentMeta.category}</div>
+            {/* Subpage Hero Header (Omitted for /portfolio since SelectedWorkShowcase renders a cinematic stage) */}
+            {activePath !== '/portfolio' && (
+                <section className="section sub-page-hero" style={{ paddingBottom: '2.5rem' }}>
+                    <div className="w-layout-blockcontainer container w-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+                        <div className="project-hero-grid">
+                            <div className="sect-dot-flex w-layout-hflex" style={{ marginBottom: '1.5rem' }}>
+                                <div className="dot"></div>
+                                <div>{currentMeta.category}</div>
+                            </div>
+                            <h1 className="project-detail-title">{currentMeta.title}</h1>
+                            <p className="project-detail-tagline">{currentMeta.tagline}</p>
                         </div>
-                        <h1 className="project-detail-title">{currentMeta.title}</h1>
-                        <p className="project-detail-tagline">{currentMeta.tagline}</p>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* Subpage Dynamic Content Body */}
             <section className="section sub-page-content-section" style={{ minHeight: '40vh', paddingBottom: '5rem' }}>
-                <div className="w-layout-blockcontainer container w-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+                <div className="w-layout-blockcontainer container w-container" style={{ maxWidth: activePath === '/portfolio' ? '1440px' : '1200px', margin: '0 auto', padding: '0 24px' }}>
 
                     {/* ==================================================== */}
                     {/* 1. ABOUT PAGE                                        */}
@@ -374,85 +377,7 @@ const SubPage = ({ path }) => {
                     {/* 5. PORTFOLIO / WORKS PAGE                            */}
                     {/* ==================================================== */}
                     {activePath === '/portfolio' && (
-                        <div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem', marginBottom: '4rem' }}>
-                                {projectsList.map((project, idx) => (
-                                    <div
-                                        key={project.id}
-                                        style={{
-                                            background: 'rgba(255, 255, 255, 0.65)',
-                                            backdropFilter: 'blur(20px)',
-                                            border: '1px solid rgba(15, 53, 84, 0.08)',
-                                            borderRadius: '1.25rem',
-                                            overflow: 'hidden',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'space-between',
-                                            boxShadow: '0 12px 32px rgba(15, 53, 84, 0.04)'
-                                        }}
-                                    >
-                                        <div>
-                                            <div style={{ height: '220px', width: '100%', overflow: 'hidden', position: 'relative' }}>
-                                                <img src={project.image} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                                <div style={{ position: 'absolute', top: '16px', left: '16px', background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', padding: '4px 12px', borderRadius: '999px', fontSize: '11px', fontWeight: 600, color: '#0f3554' }}>
-                                                    {project.category}
-                                                </div>
-                                            </div>
-
-                                            <div style={{ padding: '2rem' }}>
-                                                <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, color: '#0f3554', marginBottom: '8px' }}>
-                                                    {project.title}
-                                                </h3>
-                                                <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#2a4358', marginBottom: '1.5rem' }}>
-                                                    {project.tagline}
-                                                </p>
-
-                                                {/* Metrics */}
-                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', padding: '1rem', background: 'rgba(15, 53, 84, 0.04)', borderRadius: '12px', marginBottom: '1.5rem' }}>
-                                                    {project.results.metrics.map((m, mIdx) => (
-                                                        <div key={mIdx} style={{ textAlign: 'center' }}>
-                                                            <div style={{ fontSize: '16px', fontWeight: 700, color: '#0f3554' }}>{m}</div>
-                                                            <div style={{ fontSize: '10px', color: 'rgba(15, 53, 84, 0.6)' }}>{project.results.labels[mIdx]}</div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div style={{ padding: '0 2rem 2rem 2rem', display: 'flex', gap: '10px' }}>
-                                            <Link
-                                                to={`/project/${project.id}`}
-                                                className="dock-btn-cta"
-                                                style={{ flex: 1, textAlign: 'center', fontSize: '12px', padding: '10px 14px' }}
-                                            >
-                                                Full Case Study &rarr;
-                                            </Link>
-                                            {project.url && (
-                                                <a
-                                                    href={project.url}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    style={{
-                                                        display: 'inline-flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        padding: '10px 14px',
-                                                        borderRadius: '999px',
-                                                        background: 'rgba(15, 53, 84, 0.06)',
-                                                        color: '#0f3554',
-                                                        fontSize: '12px',
-                                                        fontWeight: 600,
-                                                        textDecoration: 'none'
-                                                    }}
-                                                >
-                                                    Live ↗
-                                                </a>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <SelectedWorkShowcase />
                     )}
 
                     {/* ==================================================== */}
