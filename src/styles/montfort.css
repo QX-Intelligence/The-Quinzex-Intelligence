@@ -1339,55 +1339,227 @@ html, body {
     filter: drop-shadow(0 10px 24px rgba(15, 53, 84, 0.08));
 }
 
-@media (max-width: 900px) {
+/* ==================================================== */
+/* TABLET RESPONSIVE FOOTER (641px - 1024px)            */
+/* ==================================================== */
+@media (max-width: 1024px) {
     .ic-creative-footer {
-        padding: 32px 14px 20px 14px !important;
+        padding: clamp(36px, 4vw, 56px) clamp(20px, 3.5vw, 40px) clamp(28px, 4vw, 48px) clamp(20px, 3.5vw, 40px) !important;
+        overflow-x: hidden !important;
     }
+
     .ic-footer-top {
         display: none !important;
     }
-    .ic-footer-floating-card {
-        padding: 32px 20px 24px 20px !important;
-        border-radius: 20px !important;
+
+    .ic-footer-card-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
     }
+
+    .ic-footer-floating-card {
+        padding: clamp(32px, 4vw, 48px) clamp(28px, 4vw, 48px) clamp(24px, 3vw, 32px) clamp(28px, 4vw, 48px) !important;
+        border-radius: clamp(20px, 2.5vw, 28px) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
     .ic-footer-card-grid {
         grid-template-columns: 1fr !important;
         gap: 32px !important;
     }
+
+    .ic-footer-brand-col {
+        max-width: 100% !important;
+    }
+
+    .ic-footer-card-desc {
+        max-width: 520px !important;
+        font-size: 14px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* 3 balanced side-by-side columns on tablet */
     .ic-footer-columns-group {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 24px !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: clamp(20px, 3vw, 36px) !important;
     }
+
     .ic-footer-card-divider {
-        margin: 28px 0 20px 0 !important;
+        margin: 32px 0 20px 0 !important;
     }
+
     .ic-footer-card-bottom {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 14px !important;
-    }
-    .ic-footer-card-legal {
-        flex-wrap: wrap !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
         gap: 16px !important;
     }
+
     .ic-footer-watermark {
-        margin-top: -30px !important;
-        padding-bottom: 16px !important;
+        margin-top: -clamp(28px, 4vw, 54px) !important;
+        padding-bottom: clamp(24px, 4vw, 48px) !important;
+        width: 100% !important;
+        overflow: visible !important;
     }
+
     .ic-footer-watermark-text {
-        font-size: clamp(44px, 17vw, 110px) !important;
-        -webkit-text-stroke: 1px rgba(15, 53, 84, 0.25) !important;
-        letter-spacing: 0.04em !important;
+        font-size: clamp(86px, 17.5vw, 175px) !important;
+        letter-spacing: clamp(3px, 0.8vw, 10px) !important;
+        line-height: 0.92 !important;
+        -webkit-text-stroke: 1.2px rgba(15, 53, 84, 0.25) !important;
+        width: 100% !important;
+        text-align: center !important;
     }
 }
 
-@media (max-width: 550px) {
-    .ic-footer-columns-group {
+/* ==================================================== */
+/* MOBILE RESPONSIVE FOOTER (<= 640px)                  */
+/* ==================================================== */
+@media (max-width: 640px) {
+    .ic-creative-footer {
+        padding: clamp(22px, 5vw, 32px) clamp(10px, 3vw, 16px) clamp(18px, 4vw, 28px) clamp(10px, 3vw, 16px) !important;
+        overflow-x: hidden !important;
+    }
+
+    .ic-footer-floating-card {
+        padding: clamp(22px, 5vw, 28px) clamp(16px, 4.5vw, 22px) clamp(18px, 4vw, 24px) clamp(16px, 4.5vw, 22px) !important;
+        border-radius: clamp(16px, 4vw, 22px) !important;
+        box-shadow: 0 10px 30px -8px rgba(15, 53, 84, 0.08), 0 1px 3px rgba(15, 53, 84, 0.04) !important;
+    }
+
+    .ic-footer-card-grid {
         grid-template-columns: 1fr !important;
         gap: 20px !important;
     }
+
+    .ic-footer-card-brand {
+        margin-bottom: 10px !important;
+        gap: 10px !important;
+    }
+
+    .ic-footer-card-name {
+        font-size: 16px !important;
+        letter-spacing: 0.14em !important;
+    }
+
+    .ic-footer-card-desc {
+        font-size: 13px !important;
+        line-height: 1.55 !important;
+        margin-bottom: 16px !important;
+        max-width: 100% !important;
+        color: #4b6680 !important;
+    }
+
+    .ic-footer-social-row {
+        gap: 10px !important;
+    }
+
+    .ic-footer-social-icon {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    /* 2-column clean grid on mobile with Company spanning full width */
+    .ic-footer-columns-group {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 20px 14px !important;
+    }
+
+    .ic-footer-col-title {
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .ic-footer-column a {
+        font-size: 12.5px !important;
+        margin-bottom: 8px !important;
+        line-height: 1.45 !important;
+    }
+
+    /* Company spans full width with a delicate separator */
+    .ic-footer-col-company {
+        grid-column: 1 / -1 !important;
+        border-top: 1px solid rgba(15, 53, 84, 0.07) !important;
+        padding-top: 16px !important;
+        margin-top: 2px !important;
+    }
+
+    .ic-footer-col-company a {
+        word-break: break-word !important;
+    }
+
+    .ic-footer-col-note {
+        font-size: 11.5px !important;
+        margin-top: 8px !important;
+        color: #7a94a8 !important;
+    }
+
+    .ic-footer-card-divider {
+        margin: 20px 0 14px 0 !important;
+    }
+
+    .ic-footer-card-bottom {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 10px !important;
+    }
+
+    .ic-footer-card-copyright {
+        font-size: 11.5px !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .ic-footer-card-legal {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 14px !important;
+        font-size: 11.5px !important;
+        width: 100% !important;
+    }
+
+    /* Watermark gracefully emerges below the card spanning full edge-to-edge width */
+    .ic-footer-watermark {
+        margin-top: -12px !important;
+        padding: 6px 0 clamp(20px, 5vw, 36px) 0 !important;
+        width: 100% !important;
+        overflow: visible !important;
+    }
+
     .ic-footer-watermark-text {
-        font-size: clamp(36px, 16vw, 68px) !important;
+        font-size: clamp(52px, 18.2vw, 94px) !important;
+        letter-spacing: clamp(1px, 0.5vw, 4px) !important;
+        line-height: 0.95 !important;
+        -webkit-text-stroke: 1px rgba(15, 53, 84, 0.22) !important;
+        text-stroke: 1px rgba(15, 53, 84, 0.22) !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+}
+
+/* ==================================================== */
+/* EXTRA SMALL MOBILE (< 380px)                         */
+/* ==================================================== */
+@media (max-width: 380px) {
+    .ic-footer-floating-card {
+        padding: 18px 12px 14px 12px !important;
+    }
+
+    .ic-footer-columns-group {
+        gap: 16px 10px !important;
+    }
+
+    .ic-footer-watermark-text {
+        font-size: clamp(44px, 17.5vw, 56px) !important;
+        letter-spacing: 0.8px !important;
     }
 }
 
@@ -3828,42 +4000,7 @@ html, body {
         margin-top: 10px !important;
     }
 
-    /* ── Creative Footer ── */
-    .ic-creative-footer {
-        padding: 32px 14px 20px 14px !important;
-        position: relative !important;
-        z-index: 20 !important;
-        background: #f4f6f9 !important;
-    }
 
-    .ic-footer-top {
-        display: none !important;
-    }
-
-    .ic-footer-floating-card {
-        padding: 32px 20px 22px 20px !important;
-        border-radius: 20px !important;
-    }
-
-    .ic-footer-card-grid {
-        grid-template-columns: 1fr !important;
-        gap: 32px !important;
-    }
-
-    .ic-footer-columns-group {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 24px !important;
-    }
-
-    .ic-footer-watermark {
-        margin-top: -24px !important;
-    }
-
-    .ic-footer-watermark-text {
-        font-size: clamp(38px, 13vw, 76px) !important;
-        -webkit-text-stroke: 1.1px rgba(15, 53, 84, 0.16) !important;
-        letter-spacing: 0.04em !important;
-    }
 }
 
 /* Tablet refinements (769px - 1024px) */

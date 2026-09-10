@@ -111,7 +111,7 @@ const MontfortFooter = ({ onScrollToChapter }) => {
                                 <a href="mailto:hello@quinzexintelligence.com">Documentation</a>
                             </div>
 
-                            <div className="ic-footer-column">
+                            <div className="ic-footer-column ic-footer-col-company">
                                 <span className="ic-footer-col-title">Company</span>
                                 <a href="mailto:hello@quinzexintelligence.com">hello@quinzexintelligence.com</a>
                                 <a href="mailto:partners@quinzexintelligence.com">partners@quinzexintelligence.com</a>
