@@ -147,6 +147,9 @@ jobs:
 
     steps:
 
+      # ==========================================
+      # Configure AWS credentials
+      # ==========================================
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -154,10 +157,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # ==========================================
+      # Verify AWS identity
+      # ==========================================
       - name: Verify AWS identity
         run: |
           aws sts get-caller-identity
 
+      # ==========================================
+      # Deploy to EC2 using AWS SSM
+      # ==========================================
       - name: Send deployment command via SSM
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -167,6 +176,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
 
         run: |
+          set -e
 
           RELEASE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${RELEASE_TAG}/frontend.tar.gz"
 
@@ -178,50 +188,60 @@ jobs:
           echo "AWS Region: ${AWS_REGION}"
           echo "=========================================="
 
+          # ==========================================
+          # Build SSM parameters as valid JSON
+          # ==========================================
+          jq -n \
+            --arg release_url "$RELEASE_URL" \
+            --arg target_dir "$EC2_TARGET_DIR" \
+            '{
+              commands: [
+                "set -e",
+                "echo \"Cleaning temporary deployment directory\"",
+                "rm -rf /tmp/frontend",
+                "echo \"Creating temporary deployment directory\"",
+                "mkdir -p /tmp/frontend",
+                "echo \"Downloading frontend release\"",
+                ("curl -fL " + ($release_url | @sh) + " -o /tmp/frontend/frontend.tar.gz"),
+                "echo \"Creating target directory\"",
+                ("mkdir -p " + ($target_dir | @sh)),
+                "echo \"Removing previous frontend build\"",
+                ("rm -rf " + ($target_dir | @sh) + "/*"),
+                "echo \"Extracting new frontend build\"",
+                ("tar -xzf /tmp/frontend/frontend.tar.gz -C " + ($target_dir | @sh)),
+                "echo \"Deployment completed\"",
+                "echo \"Contents of target directory:\"",
+                ("ls -la " + ($target_dir | @sh))
+              ]
+            }' > /tmp/ssm-parameters.json
+
+          echo "SSM parameters prepared successfully"
+
+          # ==========================================
+          # Send deployment command
+          # ==========================================
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "${EC2_INSTANCE_ID}" \
             --document-name "AWS-RunShellScript" \
             --comment "Deploy static Next.js frontend" \
+            --parameters file:///tmp/ssm-parameters.json \
             --query "Command.CommandId" \
-            --output text \
-            --parameters commands="
-              set -e
-
-              RELEASE_URL='${RELEASE_URL}'
-
-              echo 'Cleaning temporary deployment directory'
-              rm -rf /tmp/frontend
-
-              echo 'Creating temporary deployment directory'
-              mkdir -p /tmp/frontend
-
-              echo 'Downloading frontend release'
-              curl -fL \"\$RELEASE_URL\" \
-                -o /tmp/frontend/frontend.tar.gz
-
-              echo 'Creating target directory'
-              mkdir -p '${EC2_TARGET_DIR}'
-
-              echo 'Removing previous frontend build'
-              rm -rf '${EC2_TARGET_DIR}'/*
-
-              echo 'Extracting new frontend build'
-              tar -xzf /tmp/frontend/frontend.tar.gz \
-                -C '${EC2_TARGET_DIR}'
-
-              echo 'Deployment completed'
-              echo 'Contents of target directory:'
-              ls -la '${EC2_TARGET_DIR}'
-            ")
+            --output text)
 
           echo "Command ID: ${COMMAND_ID}"
 
+          # ==========================================
+          # Wait for deployment
+          # ==========================================
           echo "Waiting for deployment command to complete..."
 
           aws ssm wait command-executed \
             --command-id "${COMMAND_ID}" \
             --instance-id "${EC2_INSTANCE_ID}"
 
+          # ==========================================
+          # Get deployment result
+          # ==========================================
           echo "=========================================="
           echo "SSM Deployment Result"
           echo "=========================================="
