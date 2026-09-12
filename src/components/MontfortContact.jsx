@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { sendContactEmail } from "../services/emailService";
 
 const MontfortContact = () => {
     const [form, setForm] = useState({
@@ -9,24 +10,34 @@ const MontfortContact = () => {
         message: ""
     });
     const [service, setService] = useState("");
-    const [status, setStatus] = useState("idle"); // idle | sending | done
+    const [status, setStatus] = useState("idle"); // idle | sending | done | error
+    const [errorMessage, setErrorMessage] = useState("");
 
     const services = ["Engineering", "AI & Automation", "Web Design & 3D", "Brand & Strategy", "Other"];
     const budgets = ["< $5k", "$5k – $15k", "$15k – $50k", "$50k+", "Let's talk"];
 
     const handleChange = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!form.name || !form.email || !form.message) return;
         setStatus("sending");
-        // Build a mailto with all fields prefilled so submissions land in inbox
-        const subject = encodeURIComponent(`[Quinzex Inquiry] ${service || "General"} — ${form.name}`);
-        const body = encodeURIComponent(
-            `Name: ${form.name}\nEmail: ${form.email}\nService: ${service || "—"}\nBudget/Timeline: ${form.budget || "—"}\n\nProject Brief:\n${form.message}`
-        );
-        window.location.href = `mailto:hello@quinzexintelligence.com?subject=${subject}&body=${body}`;
-        setTimeout(() => setStatus("done"), 800);
+        setErrorMessage("");
+
+        try {
+            await sendContactEmail({
+                name: form.name,
+                email: form.email,
+                service: service || "General Inquiry",
+                budget: form.budget || "Not specified",
+                message: form.message
+            });
+            setStatus("done");
+        } catch (err) {
+            console.error("Submission failed:", err);
+            setErrorMessage(err?.text || err?.message || "Failed to dispatch inquiry. Please check your connection or contact us directly.");
+            setStatus("error");
+        }
     };
 
     return (
@@ -44,12 +55,8 @@ const MontfortContact = () => {
 
                     {/* Emails & Calendly */}
                     <div className="montfort-contact-info">
-                        <a href="mailto:hello@quinzexintelligence.com" className="montfort-contact-email">
-                            hello@quinzexintelligence.com
-                        </a>
-                        <span className="montfort-contact-divider">&bull;</span>
-                        <a href="mailto:partners@quinzexintelligence.com" className="montfort-contact-email">
-                            partners@quinzexintelligence.com
+                        <a href="mailto:quinzex.intel@gmail.com" className="montfort-contact-email">
+                            quinzex.intel@gmail.com
                         </a>
                         <span className="montfort-contact-divider">&bull;</span>
                         <a
@@ -88,10 +95,22 @@ const MontfortContact = () => {
                                     <circle cx="24" cy="24" r="23" stroke="#0f3554" strokeWidth="1.5" />
                                     <path d="M14 24l7 7 13-14" stroke="#0f3554" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
-                                <h3 className="montfort-contact-success-title">Opening your email client…</h3>
+                                <h3 className="montfort-contact-success-title">Message Delivered</h3>
                                 <p className="montfort-contact-success-sub">
-                                    Your message draft is ready. Hit Send in your email app and we'll reply within one business day.
+                                    Thank you{form.name ? `, ${form.name.split(' ')[0]}` : ''}. Your inquiry has been dispatched to our engineering team. We'll reply to {form.email || 'your email'} within one business day.
                                 </p>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setForm({ name: "", email: "", budget: "", message: "" });
+                                        setService("");
+                                        setStatus("idle");
+                                    }}
+                                    className="montfort-calendly-btn"
+                                    style={{ marginTop: "1.25rem", cursor: "pointer", background: "none", border: "1px solid rgba(15, 53, 84, 0.2)" }}
+                                >
+                                    Send Another Inquiry
+                                </button>
                             </motion.div>
                         ) : (
                             <motion.form
@@ -176,6 +195,29 @@ const MontfortContact = () => {
                                         required
                                     />
                                 </div>
+
+                                {errorMessage && (
+                                    <div
+                                        style={{
+                                            padding: "12px 16px",
+                                            marginBottom: "16px",
+                                            borderRadius: "8px",
+                                            background: "rgba(220, 38, 38, 0.08)",
+                                            border: "1px solid rgba(220, 38, 38, 0.25)",
+                                            color: "#991b1b",
+                                            fontSize: "13px",
+                                            lineHeight: 1.5
+                                        }}
+                                    >
+                                        <strong>Transmission error:</strong> {errorMessage}{" "}
+                                        <a
+                                            href={`mailto:quinzex.intel@gmail.com?subject=${encodeURIComponent(`[Quinzex Inquiry] ${service || "General"} — ${form.name}`)}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\nService: ${service || "—"}\nBudget: ${form.budget || "—"}\n\n${form.message}`)}`}
+                                            style={{ color: "#0f3554", textDecoration: "underline", fontWeight: 600, display: "inline-block", marginLeft: "4px" }}
+                                        >
+                                            Click here to email directly
+                                        </a>
+                                    </div>
+                                )}
 
                                 <div className="montfort-form-actions">
                                     <button

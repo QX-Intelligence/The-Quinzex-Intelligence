@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sendContactEmail } from '../services/emailService';
 
 const ContactForm = () => {
     const [selectedServices, setSelectedServices] = useState([]);
-    const [status, setStatus] = useState('idle'); // 'idle' | 'sending' | 'submitted'
+    const [status, setStatus] = useState('idle'); // 'idle' | 'sending' | 'submitted' | 'error'
+    const [errorMessage, setErrorMessage] = useState('');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -33,14 +35,25 @@ const ContactForm = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('sending');
+        setErrorMessage('');
 
-        // Simulate form submission delay
-        setTimeout(() => {
+        try {
+            await sendContactEmail({
+                name: formData.name,
+                email: formData.email,
+                company: formData.company,
+                service: selectedServices.join(', ') || 'General Inquiry',
+                message: formData.message
+            });
             setStatus('submitted');
-        }, 1200);
+        } catch (err) {
+            console.error('Submission failed:', err);
+            setErrorMessage(err?.text || err?.message || 'Failed to send message. Please try again.');
+            setStatus('error');
+        }
     };
 
     return (
@@ -65,7 +78,7 @@ const ContactForm = () => {
                                 Tell us about your project. We'll get back to you within 24 hours with a clear plan of action.
                             </p>
                             <div className="h-flex-0-75 w-layout-hflex">
-                                <a href="mailto:hello@quinzexintelligence.com" className="ico-standard" title="Email">
+                                <a href="mailto:quinzex.intel@gmail.com" className="ico-standard" title="Email">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none">
                                         <path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z" stroke="currentColor" strokeWidth="1.5"/>
                                         <path d="M22 6l-10 7L2 6" stroke="currentColor" strokeWidth="1.5"/>
@@ -171,6 +184,12 @@ const ContactForm = () => {
                                             ></textarea>
                                         </div>
                                     </div>
+
+                                    {errorMessage && (
+                                        <div style={{ color: '#dc2626', fontSize: '0.85rem', marginBottom: '1rem', padding: '0.75rem', background: 'rgba(220, 38, 38, 0.08)', borderRadius: '6px' }}>
+                                            {errorMessage}
+                                        </div>
+                                    )}
 
                                     <input 
                                         type="submit" 

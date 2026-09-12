@@ -80,7 +80,7 @@ const MontfortFooter = ({ onScrollToChapter }) => {
                                     </svg>
                                 </a>
                                 <a 
-                                    href="mailto:hello@quinzexintelligence.com" 
+                                    href="mailto:quinzex.intel@gmail.com" 
                                     aria-label="Email Studio" 
                                     className="ic-footer-social-icon"
                                 >
@@ -107,14 +107,13 @@ const MontfortFooter = ({ onScrollToChapter }) => {
                                 <span className="ic-footer-col-title">Resources</span>
                                 <a href="https://cal.com/quinzex/discovery" target="_blank" rel="noopener noreferrer">Discovery Call</a>
                                 <a href="#form" onClick={(e) => handleNavigation(e, '#form')}>Start Project</a>
-                                <a href="mailto:hello@quinzexintelligence.com">Architecture Audits</a>
-                                <a href="mailto:hello@quinzexintelligence.com">Documentation</a>
+                                <a href="mailto:quinzex.intel@gmail.com">Architecture Audits</a>
+                                <a href="mailto:quinzex.intel@gmail.com">Documentation</a>
                             </div>
 
                             <div className="ic-footer-column ic-footer-col-company">
                                 <span className="ic-footer-col-title">Company</span>
-                                <a href="mailto:hello@quinzexintelligence.com">hello@quinzexintelligence.com</a>
-                                <a href="mailto:partners@quinzexintelligence.com">partners@quinzexintelligence.com</a>
+                                <a href="mailto:quinzex.intel@gmail.com">quinzex.intel@gmail.com</a>
                                 <a href="#Sustainability" onClick={(e) => handleNavigation(e, '#Sustainability')}>Careers</a>
                                 <span className="ic-footer-col-note">Global Studio<br />US · EU · APAC</span>
                             </div>

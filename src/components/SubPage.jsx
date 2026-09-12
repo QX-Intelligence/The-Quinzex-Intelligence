@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from './Link';
 import SelectedWorkShowcase from './SelectedWorkShowcase';
 import { teamMembers } from '../data/team';
 import { projectsList } from '../data/projects';
+import { sendContactEmail } from '../services/emailService';
 import {
     techMatrix,
     engineeringPillars,
@@ -16,9 +17,34 @@ import {
 } from '../data/companyData';
 
 const SubPage = ({ path }) => {
+    const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
+    const [contactStatus, setContactStatus] = useState('idle'); // 'idle' | 'sending' | 'done' | 'error'
+    const [contactError, setContactError] = useState('');
+
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'instant' });
     }, [path]);
+
+    const handleContactSubmit = async (e) => {
+        e.preventDefault();
+        if (!contactForm.name || !contactForm.email || !contactForm.message) return;
+        setContactStatus('sending');
+        setContactError('');
+
+        try {
+            await sendContactEmail({
+                name: contactForm.name,
+                email: contactForm.email,
+                service: 'Architecture Consultation',
+                message: contactForm.message
+            });
+            setContactStatus('done');
+        } catch (err) {
+            console.error('Contact submit failed:', err);
+            setContactError(err?.text || err?.message || 'Failed to dispatch inquiry. Please try again or email directly.');
+            setContactStatus('error');
+        }
+    };
 
     // Normalize path aliases
     let activePath = path;
@@ -453,7 +479,7 @@ const SubPage = ({ path }) => {
                                 <p style={{ fontSize: '14px', lineHeight: 1.75, color: '#2a4358', marginBottom: '1.5rem' }}>
                                     A fast-paced, high-intensity partnership designed to build your flagship digital MVP, establish institutional brand guidelines, and prepare your deck and interactive product for Seed or Series A funding rounds.
                                 </p>
-                                <a href="mailto:partners@quinzexintelligence.com?subject=Launch%20Sprint" className="dock-btn-cta">
+                                <a href="mailto:quinzex.intel@gmail.com?subject=Launch%20Sprint" className="dock-btn-cta">
                                     Inquire About Sprint &rarr;
                                 </a>
                             </div>
@@ -464,7 +490,7 @@ const SubPage = ({ path }) => {
                                 <p style={{ fontSize: '14px', lineHeight: 1.75, color: '#2a4358', marginBottom: '1.5rem' }}>
                                     For selected high-potential technology companies, we offer hybrid service agreements combining cash and equity. We deploy our senior architects directly into your team, aligning our upside completely with yours.
                                 </p>
-                                <a href="mailto:partners@quinzexintelligence.com?subject=Equity%20Partnership" className="dock-btn-cta">
+                                <a href="mailto:quinzex.intel@gmail.com?subject=Equity%20Partnership" className="dock-btn-cta">
                                     Propose Partnership &rarr;
                                 </a>
                             </div>
@@ -480,13 +506,8 @@ const SubPage = ({ path }) => {
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, color: '#0f3554', marginBottom: '1.5rem' }}>Direct Inquiries</h3>
                                 
                                 <div style={{ marginBottom: '1.5rem' }}>
-                                    <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)', marginBottom: '4px' }}>General &amp; New Projects</div>
-                                    <a href="mailto:hello@quinzexintelligence.com" style={{ fontSize: '16px', fontWeight: 600, color: '#0f3554', textDecoration: 'none' }}>hello@quinzexintelligence.com</a>
-                                </div>
-
-                                <div style={{ marginBottom: '1.5rem' }}>
-                                    <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)', marginBottom: '4px' }}>Enterprise Partnerships</div>
-                                    <a href="mailto:partners@quinzexintelligence.com" style={{ fontSize: '16px', fontWeight: 600, color: '#0f3554', textDecoration: 'none' }}>partners@quinzexintelligence.com</a>
+                                    <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)', marginBottom: '4px' }}>Official Company Email</div>
+                                    <a href="mailto:quinzex.intel@gmail.com" style={{ fontSize: '16px', fontWeight: 600, color: '#0f3554', textDecoration: 'none' }}>quinzex.intel@gmail.com</a>
                                 </div>
 
                                 <div style={{ marginBottom: '1.5rem' }}>
@@ -500,23 +521,78 @@ const SubPage = ({ path }) => {
 
                             <div style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, color: '#0f3554', marginBottom: '1.5rem' }}>Request Architecture Consultation</h3>
-                                <form onSubmit={(e) => { e.preventDefault(); alert("Thank you! Your inquiry has been dispatched to the Quinzex partners."); }} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                                    <div>
-                                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: '#0f3554', marginBottom: '6px' }}>Your Name</label>
-                                        <input required type="text" placeholder="e.g. Alexander Wright" style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(15, 53, 84, 0.15)', background: '#ffffff', color: '#0f3554' }} />
+                                
+                                {contactStatus === 'done' ? (
+                                    <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+                                        <div style={{ fontSize: '2.5rem', color: '#0f3554', marginBottom: '0.75rem' }}>✓</div>
+                                        <h4 style={{ fontFamily: 'var(--font-main)', fontSize: '1.25rem', fontWeight: 700, color: '#0f3554', marginBottom: '0.5rem' }}>
+                                            Request Transmitted
+                                        </h4>
+                                        <p style={{ fontSize: '14px', color: '#2a4358', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                                            Thank you{contactForm.name ? `, ${contactForm.name.split(' ')[0]}` : ''}. Your consultation request has been dispatched to our engineering leadership. We will review your project brief and reply to {contactForm.email} within 24 hours.
+                                        </p>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setContactForm({ name: '', email: '', message: '' });
+                                                setContactStatus('idle');
+                                            }}
+                                            className="dock-btn-cta"
+                                            style={{ padding: '8px 18px', fontSize: '13px' }}
+                                        >
+                                            Send Another Request
+                                        </button>
                                     </div>
-                                    <div>
-                                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: '#0f3554', marginBottom: '6px' }}>Work Email</label>
-                                        <input required type="email" placeholder="alexander@company.com" style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(15, 53, 84, 0.15)', background: '#ffffff', color: '#0f3554' }} />
-                                    </div>
-                                    <div>
-                                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: '#0f3554', marginBottom: '6px' }}>Project Scope / Challenge</label>
-                                        <textarea required rows={4} placeholder="Briefly describe your objectives, timeframe, or architecture turning point..." style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(15, 53, 84, 0.15)', background: '#ffffff', color: '#0f3554' }} />
-                                    </div>
-                                    <button type="submit" className="dock-btn-cta" style={{ width: '100%', padding: '12px' }}>
-                                        Submit Architecture Request &rarr;
-                                    </button>
-                                </form>
+                                ) : (
+                                    <form onSubmit={handleContactSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                                        {contactError && (
+                                            <div style={{ color: '#dc2626', fontSize: '13px', background: 'rgba(220, 38, 38, 0.08)', border: '1px solid rgba(220, 38, 38, 0.2)', padding: '10px 14px', borderRadius: '8px' }}>
+                                                {contactError}
+                                            </div>
+                                        )}
+                                        <div>
+                                            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: '#0f3554', marginBottom: '6px' }}>Your Name *</label>
+                                            <input
+                                                required
+                                                type="text"
+                                                placeholder="e.g. Alexander Wright"
+                                                value={contactForm.name}
+                                                onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(15, 53, 84, 0.15)', background: '#ffffff', color: '#0f3554' }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: '#0f3554', marginBottom: '6px' }}>Work Email *</label>
+                                            <input
+                                                required
+                                                type="email"
+                                                placeholder="alexander@company.com"
+                                                value={contactForm.email}
+                                                onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(15, 53, 84, 0.15)', background: '#ffffff', color: '#0f3554' }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: '#0f3554', marginBottom: '6px' }}>Project Scope / Challenge *</label>
+                                            <textarea
+                                                required
+                                                rows={4}
+                                                placeholder="Briefly describe your objectives, timeframe, or architecture turning point..."
+                                                value={contactForm.message}
+                                                onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(15, 53, 84, 0.15)', background: '#ffffff', color: '#0f3554' }}
+                                            />
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            className="dock-btn-cta"
+                                            disabled={contactStatus === 'sending'}
+                                            style={{ width: '100%', padding: '12px', opacity: contactStatus === 'sending' ? 0.7 : 1, cursor: contactStatus === 'sending' ? 'not-allowed' : 'pointer' }}
+                                        >
+                                            {contactStatus === 'sending' ? 'Sending Architecture Request...' : 'Submit Architecture Request →'}
+                                        </button>
+                                    </form>
+                                )}
                             </div>
                         </div>
                     )}

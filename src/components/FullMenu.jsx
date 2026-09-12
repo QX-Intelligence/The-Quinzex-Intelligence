@@ -116,8 +116,8 @@ const FullMenu = ({ isOpen, onClose }) => {
 
                                 <div className="fullmenu-side-block">
                                     <div className="fullmenu-side-heading">Studio Inquiries</div>
-                                    <a href="mailto:hello@quinzexintelligence.com" className="fullmenu-side-email">
-                                        hello@quinzexintelligence.com
+                                    <a href="mailto:quinzex.intel@gmail.com" className="fullmenu-side-email">
+                                        quinzex.intel@gmail.com
                                     </a>
                                     <div className="fullmenu-side-studios">
                                         Geneva &bull; London &bull; San Francisco
