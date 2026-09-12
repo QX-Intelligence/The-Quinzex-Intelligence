@@ -160,10 +160,10 @@ jobs:
 
       - name: Send deployment command via SSM
         env:
-          AWS_REGION: ${{ vars.AWS_REGION }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           EC2_TARGET_DIR: ${{ vars.EC2_TARGET_DIR }}
           EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
-          RELEASE_TAG: nextjs-${{ github.sha }}
+          RELEASE_TAG: Quinzex_Official-${{ github.sha }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
         run: |
