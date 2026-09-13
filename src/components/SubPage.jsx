@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import Link from './Link';
 import SelectedWorkShowcase from './SelectedWorkShowcase';
 import { teamMembers } from '../data/team';
-import { projectsList } from '../data/projects';
 import { sendContactEmail } from '../services/emailService';
 import {
     techMatrix,

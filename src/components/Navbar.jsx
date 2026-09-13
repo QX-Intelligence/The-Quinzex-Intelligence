@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from './Link';
+import { navigate } from '../utils/navigation';
 
 // ── Magnetic Button Component ─────────────────────────────────────────────
 const Magnetic = ({ children, className, href = '#form', onClick, style }) => {
@@ -24,10 +25,18 @@ const Magnetic = ({ children, className, href = '#form', onClick, style }) => {
         }
         if (href?.startsWith('#')) {
             e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
+            const isHomePage = typeof window !== 'undefined' && 
+                (window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.startsWith('/#'));
+            
+            if (isHomePage) {
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    return;
+                }
             }
+            // On subpages or if anchor does not exist on page, route to contact page
+            navigate('/contact');
         }
     };
 

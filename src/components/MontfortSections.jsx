@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import MontfortContact from './MontfortContact';
 import MontfortFooter from './MontfortFooter';
 import Link from './Link';
@@ -379,10 +379,17 @@ const MontfortSections = ({ onScrollToChapter }) => {
                     {/* ==================================================== */}
                     <div ref={slide3Ref} className="infracorp-stage-slide slide-work">
                         <div className="slide-content-wrap">
-                            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', maxWidth: '980px', margin: '0 auto', width: '100%', gap: '24px' }}>
-                                <h2 className="ic-title" style={{ margin: 0, maxWidth: '700px', paddingBottom: '16px' }}>
-                                    MEASURABLE IMPACT FOR FAST-GROWING TECH &amp; ENTERPRISE LEADERS.
+                            <div className="ic-work-header-wrap">
+                                <div className="sect-label-row">
+                                    <div className="sect-dot" />
+                                    <span className="sect-label-text">SELECTED WORK</span>
+                                </div>
+                                <h2 className="ic-title ic-title-work">
+                                    MEASURABLE IMPACT FOR HIGH-GROWTH TECH LEADERS.
                                 </h2>
+                                <p className="ic-desc ic-desc-work">
+                                    Bespoke software platforms, cloud infrastructure, and custom AI systems engineered for enterprise scale.
+                                </p>
                             </div>
                             <div className="ic-project-track-wrap">
                                 <div className="ic-project-track" ref={projectCarouselRef}>

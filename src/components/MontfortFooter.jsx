@@ -97,16 +97,45 @@ const MontfortFooter = ({ onScrollToChapter }) => {
                             <div className="ic-footer-column">
                                 <span className="ic-footer-col-title">Product</span>
                                 <a href="#Hero" onClick={(e) => handleNavigation(e, '#Hero')}>Overview</a>
-                                <a href="#WhoWeAre" onClick={(e) => handleNavigation(e, '#WhoWeAre')}>Who We Are</a>
-                                <a href="#WhatWeDo" onClick={(e) => handleNavigation(e, '#WhatWeDo')}>Capabilities</a>
-                                <a href="#GlobalConnectivity" onClick={(e) => handleNavigation(e, '#GlobalConnectivity')}>Selected Work</a>
-                                <a href="#Sustainability" onClick={(e) => handleNavigation(e, '#Sustainability')}>Our Team</a>
+                                <a href="/about" onClick={(e) => {
+                                    e.preventDefault();
+                                    const isHomePage = typeof window !== 'undefined' && (window.location.pathname === '/' || window.location.pathname === '');
+                                    if (isHomePage && onScrollToChapter) onScrollToChapter('WhoWeAre');
+                                    else navigate('/about');
+                                }}>Who We Are</a>
+                                <a href="/services" onClick={(e) => {
+                                    e.preventDefault();
+                                    const isHomePage = typeof window !== 'undefined' && (window.location.pathname === '/' || window.location.pathname === '');
+                                    if (isHomePage && onScrollToChapter) onScrollToChapter('WhatWeDo');
+                                    else navigate('/services');
+                                }}>Capabilities</a>
+                                <a href="/portfolio" onClick={(e) => {
+                                    e.preventDefault();
+                                    const isHomePage = typeof window !== 'undefined' && (window.location.pathname === '/' || window.location.pathname === '');
+                                    if (isHomePage && onScrollToChapter) onScrollToChapter('GlobalConnectivity');
+                                    else navigate('/portfolio');
+                                }}>Selected Work</a>
+                                <a href="/team" onClick={(e) => {
+                                    e.preventDefault();
+                                    const isHomePage = typeof window !== 'undefined' && (window.location.pathname === '/' || window.location.pathname === '');
+                                    if (isHomePage && onScrollToChapter) onScrollToChapter('Sustainability');
+                                    else navigate('/team');
+                                }}>Our Team</a>
                             </div>
 
                             <div className="ic-footer-column">
                                 <span className="ic-footer-col-title">Resources</span>
                                 <a href="https://cal.com/quinzex/discovery" target="_blank" rel="noopener noreferrer">Discovery Call</a>
-                                <a href="#form" onClick={(e) => handleNavigation(e, '#form')}>Start Project</a>
+                                <a href="#form" onClick={(e) => {
+                                    e.preventDefault();
+                                    const isHomePage = typeof window !== 'undefined' && (window.location.pathname === '/' || window.location.pathname === '');
+                                    if (isHomePage) {
+                                        const el = document.getElementById('form');
+                                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                    } else {
+                                        navigate('/contact');
+                                    }
+                                }}>Start Project</a>
                                 <a href="mailto:quinzex.intel@gmail.com">Architecture Audits</a>
                                 <a href="mailto:quinzex.intel@gmail.com">Documentation</a>
                             </div>
@@ -114,7 +143,7 @@ const MontfortFooter = ({ onScrollToChapter }) => {
                             <div className="ic-footer-column ic-footer-col-company">
                                 <span className="ic-footer-col-title">Company</span>
                                 <a href="mailto:quinzex.intel@gmail.com">quinzex.intel@gmail.com</a>
-                                <a href="#Sustainability" onClick={(e) => handleNavigation(e, '#Sustainability')}>Careers</a>
+                                <a href="/careers" onClick={(e) => handleNavigation(e, '/careers')}>Careers</a>
                                 <span className="ic-footer-col-note">Global Studio<br />US · EU · APAC</span>
                             </div>
                         </div>
@@ -129,9 +158,9 @@ const MontfortFooter = ({ onScrollToChapter }) => {
                             &copy; 2026 Quinzex Intelligence. All rights reserved.
                         </span>
                         <div className="ic-footer-card-legal">
-                            <a href="#privacy" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
-                            <a href="#terms" onClick={(e) => e.preventDefault()}>Terms of Service</a>
-                            <a href="#cookies" onClick={(e) => e.preventDefault()}>Cookies Settings</a>
+                            <a href="/privacy" onClick={(e) => handleNavigation(e, '/privacy')}>Privacy Policy</a>
+                            <a href="/terms" onClick={(e) => handleNavigation(e, '/terms')}>Terms of Service</a>
+                            <a href="/privacy" onClick={(e) => handleNavigation(e, '/privacy')}>Cookies Settings</a>
                         </div>
                     </div>
                 </div>

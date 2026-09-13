@@ -65,7 +65,9 @@ class SoundEngine {
         this.gainNode.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.8);
         setTimeout(() => {
             this.oscillators.forEach(({ osc }) => {
-                try { osc.stop(); } catch (e) {}
+                try { osc.stop(); } catch (_e) {
+                    /* ignore already stopped */
+                }
             });
             this.oscillators = [];
             this.isPlaying = false;

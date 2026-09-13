@@ -67,6 +67,26 @@ html, body {
     min-height: 100vh;
 }
 
+/* Subpage Ambient Atmosphere & Aesthetic Continuity */
+.sub-page-view {
+    position: relative;
+    z-index: 5;
+    background: radial-gradient(circle at 50% 0%, rgba(220, 229, 236, 0.45) 0%, rgba(240, 244, 248, 0.20) 50%, transparent 80%);
+}
+
+.sub-page-hero {
+    position: relative;
+    z-index: 2;
+}
+
+.sub-page-hero .project-detail-title {
+    text-shadow: 0 2px 20px rgba(255, 255, 255, 0.9);
+}
+
+.sub-page-hero .project-detail-tagline {
+    text-shadow: 0 1px 12px rgba(255, 255, 255, 0.8);
+}
+
 /* ==================================================== */
 /* FLOATING DOCK NAVBAR (OUR NAVBAR)                    */
 /* ==================================================== */
@@ -394,6 +414,35 @@ html, body {
 .hud-node-btn.active .hud-node-label {
     opacity: 1;
     font-weight: 500;
+}
+
+@media (max-width: 1536px) {
+    .montfort-hud {
+        left: 24px;
+    }
+    .hud-node-label {
+        opacity: 0;
+        max-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        pointer-events: none;
+        transform: translateX(-6px);
+        transition: opacity 0.25s ease, transform 0.25s ease, max-width 0.25s ease;
+    }
+    .hud-node-btn:hover .hud-node-label,
+    .hud-node-btn:focus-visible .hud-node-label,
+    .hud-node-btn.active .hud-node-label {
+        opacity: 1;
+        max-width: 140px;
+        pointer-events: auto;
+        transform: translateX(0);
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 3px 8px;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(15, 53, 84, 0.08);
+    }
 }
 
 /* ==================================================== */
@@ -770,16 +819,45 @@ html, body {
     }
 }
 
+/* ── Selected Work Heading Refinement ── */
+.infracorp-stage-slide.slide-work {
+    justify-content: flex-start;
+    padding-top: max(100px, 11vh);
+}
+
+.ic-work-header-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 880px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.ic-title-work {
+    margin: 0 auto 12px auto;
+    max-width: 820px;
+    text-align: center;
+}
+
+.ic-desc-work {
+    max-width: 640px;
+    margin: 0 auto 8px auto;
+    text-align: center;
+}
+
 .ic-project-track-wrap {
     width: 100%;
     max-width: 980px;
-    margin: 36px auto 0 auto;
+    margin: 24px auto 0 auto;
 }
 
 .ic-project-track {
     display: flex;
     gap: 24px;
-    padding: 0;
+    padding: 16px 8px 32px 8px;
+    margin: -16px -8px -32px -8px;
     overflow-x: hidden;
     overflow-y: hidden;
     scroll-snap-type: none;
@@ -2929,6 +3007,18 @@ html, body {
 /* ==================================================== */
 /* MONTFORT CONTACT / INQUIRY FORM                      */
 /* ==================================================== */
+.infracorp-stage-slide.slide-contact {
+    padding: max(60px, 7vh) 24px 24px 24px;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.slide-contact .montfort-contact-section {
+    padding: 0;
+    border-top: none;
+    width: 100%;
+}
+
 .montfort-contact-section {
     position: relative;
     z-index: 10;
@@ -2946,7 +3036,7 @@ html, body {
     width: 100%;
     margin: 0 auto;
     text-align: center;
-    gap: 36px;
+    gap: 28px;
 }
 
 /* Centered Header & Copy */
@@ -2985,25 +3075,27 @@ html, body {
 
 .montfort-contact-heading {
     font-family: var(--font-main);
-    font-size: clamp(32px, 4vw, 56px);
+    font-size: clamp(30px, 3.8vw, 52px);
     font-weight: 300;
     line-height: 1.15;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-navy);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     text-align: center;
+    text-shadow: 0 2px 20px rgba(255, 255, 255, 0.9), 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
 .montfort-contact-sub {
     font-family: var(--font-main);
     font-size: 15px;
-    font-weight: 300;
-    line-height: 1.75;
+    font-weight: 400;
+    line-height: 1.65;
     color: var(--text-navy-secondary);
     max-width: 580px;
-    margin: 0 auto 24px auto;
+    margin: 0 auto 18px auto;
     text-align: center;
+    text-shadow: 0 1px 12px rgba(255, 255, 255, 0.8);
 }
 
 .montfort-contact-info {
@@ -3044,11 +3136,13 @@ html, body {
 
 /* Centered Form panel */
 .montfort-contact-form-wrap {
-    background: rgba(255, 255, 255, 0.62);
-    border: 1px solid rgba(15, 53, 84, 0.12);
+    background: rgba(255, 255, 255, 0.84);
+    backdrop-filter: blur(28px) saturate(140%);
+    -webkit-backdrop-filter: blur(28px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.95);
     border-radius: 18px;
-    padding: 40px 36px;
-    box-shadow: 0 12px 40px rgba(15, 53, 84, 0.07);
+    padding: 36px 36px;
+    box-shadow: 0 20px 50px rgba(15, 53, 84, 0.10), 0 2px 10px rgba(15, 53, 84, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95);
     width: 100%;
     box-sizing: border-box;
     text-align: left;
@@ -3082,8 +3176,8 @@ html, body {
 }
 
 .montfort-form-input {
-    background: rgba(255, 255, 255, 0.70);
-    border: 1px solid rgba(15, 53, 84, 0.18);
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(15, 53, 84, 0.22);
     border-radius: 10px;
     padding: 12px 16px;
     font-family: var(--font-main);
@@ -3091,17 +3185,18 @@ html, body {
     font-weight: 400;
     color: var(--text-navy);
     outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     width: 100%;
 }
 
 .montfort-form-input::placeholder {
-    color: rgba(15, 53, 84, 0.35);
+    color: rgba(15, 53, 84, 0.38);
 }
 
 .montfort-form-input:focus {
-    border-color: rgba(15, 53, 84, 0.50);
-    box-shadow: 0 0 0 3px rgba(15, 53, 84, 0.07);
+    border-color: #0f3554;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(15, 53, 84, 0.12);
 }
 
 .montfort-form-textarea {
@@ -3287,13 +3382,14 @@ html, body {
 /* ── Infracorp Parallax Team Cards ── */
 .ic-team-parallax-wrap {
     width: 100%;
-    max-width: 1080px;
+    max-width: min(1080px, calc(100vw - 120px));
     margin: 48px auto 0 auto;
     display: flex;
     justify-content: center;
-    gap: 24px;
+    gap: 20px;
     align-items: center;
     perspective: 1000px;
+    box-sizing: border-box;
 }
 
 .ic-team-parallax-card {
@@ -3527,7 +3623,7 @@ html, body {
         justify-content: flex-start !important;
         align-items: center !important;
         text-align: center !important;
-        padding: max(74px, calc(env(safe-area-inset-top, 0px) + 64px)) 16px 20px 16px !important;
+        padding: max(96px, calc(env(safe-area-inset-top, 0px) + 84px)) 16px 20px 16px !important;
         box-sizing: border-box !important;
         overflow: hidden !important;
         will-change: transform, opacity !important;
@@ -3608,6 +3704,20 @@ html, body {
         text-align: center !important;
         max-width: 92% !important;
         padding: 0 4px !important;
+    }
+
+    .ic-title-work {
+        font-size: clamp(16px, 4.4vw, 24px) !important;
+        line-height: 1.22 !important;
+        margin: 0 auto 6px auto !important;
+        max-width: 95% !important;
+    }
+
+    .ic-desc-work {
+        font-size: clamp(11px, 2.7vw, 13px) !important;
+        line-height: 1.45 !important;
+        max-width: 90% !important;
+        margin: 0 auto 6px auto !important;
     }
 
     .ic-hero-subtitle {
@@ -3925,79 +4035,113 @@ html, body {
 
     /* ── Slide 5: Direct Inquiry & Contact Form ── */
     .slide-contact {
-        padding: 50px 16px 20px 16px !important;
+        padding: max(96px, calc(env(safe-area-inset-top, 0px) + 84px)) 16px 40px 16px !important;
         overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        pointer-events: auto !important;
     }
 
     .slide-contact .slide-content-wrap {
-        max-width: 420px !important;
+        max-width: 440px !important;
     }
 
-    .montfort-contact-section {
+    .slide-contact .montfort-contact-section {
         padding: 0 !important;
         width: 100% !important;
     }
 
-    .montfort-contact-copy {
-        margin-bottom: 10px !important;
+    .slide-contact .montfort-contact-inner {
+        gap: 16px !important;
     }
 
-    .montfort-contact-heading {
-        font-size: clamp(18px, 5vw, 24px) !important;
-        margin-bottom: 4px !important;
-    }
-
-    .montfort-contact-sub {
-        font-size: 11px !important;
-        line-height: 1.4 !important;
-        margin-bottom: 8px !important;
-    }
-
-    .montfort-contact-info {
-        gap: 6px !important;
-        font-size: 10px !important;
+    .slide-contact .montfort-contact-copy {
         margin-bottom: 6px !important;
     }
 
-    .montfort-calendly-btn {
-        padding: 4px 10px !important;
+    .slide-contact .montfort-contact-heading {
+        font-size: clamp(20px, 5.5vw, 28px) !important;
+        margin-bottom: 6px !important;
+        text-shadow: 0 2px 14px rgba(255, 255, 255, 0.95);
+    }
+
+    .slide-contact .montfort-contact-sub {
+        font-size: 11.5px !important;
+        line-height: 1.5 !important;
+        margin-bottom: 8px !important;
+        max-width: 340px !important;
+    }
+
+    .slide-contact .montfort-contact-info {
+        gap: 8px !important;
+        font-size: 10.5px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .slide-contact .montfort-calendly-btn {
+        padding: 5px 12px !important;
         font-size: 9px !important;
     }
 
-    .montfort-contact-timezone {
-        font-size: 9px !important;
-        margin-bottom: 10px !important;
+    .slide-contact .montfort-contact-timezone {
+        display: none !important;
     }
 
-    .montfort-contact-form-wrap {
-        padding: 14px 16px !important;
-        border-radius: 14px !important;
+    .slide-contact .montfort-contact-form-wrap {
+        padding: 20px 16px !important;
+        border-radius: 16px !important;
+        background: rgba(255, 255, 255, 0.90) !important;
+        box-shadow: 0 12px 36px rgba(15, 53, 84, 0.10) !important;
     }
 
-    .montfort-form-grid {
+    .slide-contact .montfort-contact-form {
+        gap: 14px !important;
+    }
+
+    .slide-contact .montfort-form-row {
+        grid-template-columns: 1fr !important;
         gap: 10px !important;
     }
 
-    .montfort-input {
-        padding: 8px 10px !important;
-        font-size: 11px !important;
+    .slide-contact .montfort-form-field {
+        gap: 5px !important;
     }
 
-    .montfort-textarea {
-        min-height: 50px !important;
-        padding: 8px 10px !important;
-        font-size: 11px !important;
+    .slide-contact .montfort-form-input {
+        padding: 9px 12px !important;
+        font-size: 12px !important;
     }
 
-    .montfort-pill {
-        padding: 4px 8px !important;
-        font-size: 9.5px !important;
+    .slide-contact .montfort-form-textarea {
+        min-height: 72px !important;
+        padding: 9px 12px !important;
+        font-size: 12px !important;
     }
 
-    .montfort-submit-btn {
-        padding: 10px !important;
+    .slide-contact .montfort-chip {
+        padding: 5px 10px !important;
+        font-size: 8.5px !important;
+    }
+
+    .slide-contact .montfort-form-submit {
+        padding: 11px 24px !important;
         font-size: 10px !important;
-        margin-top: 10px !important;
+        min-height: 40px !important;
+        width: 100% !important;
+    }
+
+    .slide-contact .montfort-form-actions {
+        flex-direction: column !important;
+        gap: 8px !important;
+        align-items: center !important;
+    }
+
+    /* Mobile Team Cards Contrast */
+    .ic-team-parallax-card {
+        background: rgba(255, 255, 255, 0.88) !important;
+        backdrop-filter: blur(24px) !important;
+        -webkit-backdrop-filter: blur(24px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.95) !important;
+        box-shadow: 0 8px 24px rgba(15, 53, 84, 0.08) !important;
     }
 
 
@@ -4005,6 +4149,39 @@ html, body {
 
 /* Tablet refinements (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
+    .infracorp-stage-slide {
+        padding: max(96px, 10vh) 28px 28px 28px !important;
+    }
+
+    .slide-contact {
+        padding: max(100px, 10vh) 28px 36px 28px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        pointer-events: auto !important;
+    }
+
+    .slide-contact .montfort-contact-inner {
+        gap: 20px !important;
+    }
+
+    .slide-contact .montfort-contact-heading {
+        font-size: clamp(24px, 4.5vw, 36px) !important;
+    }
+
+    .slide-contact .montfort-contact-sub {
+        font-size: 13px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .slide-contact .montfort-contact-form-wrap {
+        padding: 28px 24px !important;
+    }
+
+    .ic-title-work {
+        font-size: clamp(22px, 3.8vw, 34px) !important;
+        line-height: 1.2 !important;
+    }
+
     .ic-split-card-wrap {
         max-width: 700px !important;
         height: 280px !important;

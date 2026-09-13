@@ -5,9 +5,8 @@ const MontfortCanvas = () => {
     useEffect(() => {
         let isMounted = true;
         let timer = null;
-        let rafId = null;
 
-        async function initHomepageEnvironment(App, basePos, baseLookAt, dirX, dirY, dirZ) {
+        async function initHomepageEnvironment(App) {
             const hp = App.webgl?.pages?.Homepage;
             const mainScene = App.webgl?.mainScene;
             if (!hp || !mainScene) return;
@@ -99,19 +98,18 @@ const MontfortCanvas = () => {
 
             // Mountain summit baseline coordinates
             const basePos = [175.85617065429688, 45.820762634277344, -51.13716125488281];
-            const baseLookAt = [-5.933984756469727, -4.881087303161621, 54.62010192871094];
+            // Desktop lookAt targets the peak with landscape aspect ratio
+            const desktopLookAt = [-5.933984756469727, -4.881087303161621, 54.62010192871094];
+            // Mobile lookAt targets the peak centered for portrait aspect ratio (matching Montfort TargetPath-Mobile)
+            const mobileLookAt = [11.824583053588867, -7.763660430908203, 2.5923118591308594];
 
-            // Unit sightline direction vector toward mountain center
-            const dx = baseLookAt[0] - basePos[0];
-            const dy = baseLookAt[1] - basePos[1];
-            const dz = baseLookAt[2] - basePos[2];
-            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-            const dirX = dx / dist;
-            const dirY = dy / dist;
-            const dirZ = dz / dist;
+            const getLookAt = () => {
+                const isMobile = window.innerWidth <= 768;
+                return isMobile ? mobileLookAt : desktopLookAt;
+            };
 
-            // Initialize full environment (multiple mountain peaks + cloud sea + 3D depth logo)
-            initHomepageEnvironment(App, basePos, baseLookAt, dirX, dirY, dirZ);
+            // Initialize full environment (multiple mountain peaks + cloud sea)
+            initHomepageEnvironment(App);
 
             // Ensure renderer is sized to exact viewport with crisp devicePixelRatio
             const updateSize = () => {
@@ -127,14 +125,12 @@ const MontfortCanvas = () => {
                     App.webgl.camera.aspect = w / h;
                     App.webgl.camera.updateProjectionMatrix();
                 }
+                updateCamera(true);
             };
-
-            updateSize();
-            window.addEventListener('resize', updateSize, { passive: true });
 
             // Update 3D Camera coordinates smoothly on scroll
             let lastScrollY = -1;
-            const updateCamera = () => {
+            const updateCamera = (force = false) => {
                 if (!isMounted) return;
 
                 const cam = App.webgl?.camera;
@@ -142,8 +138,20 @@ const MontfortCanvas = () => {
 
                 if (cam && scene) {
                     const scrollY = window.scrollY || 0;
-                    if (scrollY === lastScrollY) return;
+                    if (!force && scrollY === lastScrollY) return;
                     lastScrollY = scrollY;
+
+                    const isMobile = window.innerWidth <= 768;
+                    const baseLookAt = getLookAt();
+
+                    // Direction vector toward mountain center
+                    const dx = baseLookAt[0] - basePos[0];
+                    const dy = baseLookAt[1] - basePos[1];
+                    const dz = baseLookAt[2] - basePos[2];
+                    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                    const dirX = dx / dist;
+                    const dirY = dy / dist;
+                    const dirZ = dz / dist;
 
                     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
                     const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
@@ -153,10 +161,12 @@ const MontfortCanvas = () => {
                     }
 
                     // Pure Mountain Zoom (dolly along sightline) & Angle Shift on scroll
-                    const zoom = Math.sin(progress * Math.PI) * 46.0;
+                    const zoomScale = isMobile ? 30.0 : 46.0;
+                    const zoom = Math.sin(progress * Math.PI) * zoomScale;
 
                     // Lateral & Altitude Angle Differences
-                    const lateralShift = -Math.sin(progress * Math.PI * 0.85) * 38.0;
+                    const lateralShiftScale = isMobile ? 18.0 : 38.0;
+                    const lateralShift = -Math.sin(progress * Math.PI * 0.85) * lateralShiftScale;
                     const altitudeShift = -Math.sin(progress * Math.PI * 0.75) * 12.0 + (progress > 0.65 ? (progress - 0.65) * 20.0 : 0);
 
                     // Apply calculated camera coordinates
@@ -165,9 +175,11 @@ const MontfortCanvas = () => {
                     const posZ = basePos[2] + dirZ * zoom;
 
                     // Angle difference focal lookAt target
-                    const targetX = baseLookAt[0] - progress * 22.0;
+                    const targetDeltaX = isMobile ? 12.0 : 22.0;
+                    const targetDeltaZ = isMobile ? 8.0 : 16.0;
+                    const targetX = baseLookAt[0] - progress * targetDeltaX;
                     const targetY = baseLookAt[1] + Math.sin(progress * Math.PI) * 9.0;
-                    const targetZ = baseLookAt[2] - progress * 16.0;
+                    const targetZ = baseLookAt[2] - progress * targetDeltaZ;
 
                     cam.targetPosition.set(posX, posY, posZ);
                     cam.targetLookAt.set(targetX, targetY, targetZ);
@@ -178,6 +190,9 @@ const MontfortCanvas = () => {
                     cam.lookAt(targetX, targetY, targetZ);
                 }
             };
+
+            updateSize();
+            window.addEventListener('resize', updateSize, { passive: true });
 
             updateCamera();
             window.addEventListener('scroll', updateCamera, { passive: true });
