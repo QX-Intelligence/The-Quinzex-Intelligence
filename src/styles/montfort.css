@@ -821,8 +821,8 @@ html, body {
 
 /* ── Selected Work Heading Refinement ── */
 .infracorp-stage-slide.slide-work {
-    justify-content: flex-start;
-    padding-top: max(100px, 11vh);
+    justify-content: center;
+    padding: 90px 48px 36px 48px;
 }
 
 .ic-work-header-wrap {
@@ -3568,36 +3568,29 @@ html, body {
         overflow-x: hidden !important;
     }
 
-    /* Pinned track height providing scroll distance for 6 slides */
+    /* Pinned track height providing scroll distance for 6 slides (native touch momentum, no snap fighting) */
     .infracorp-scroll-track {
         height: 550vh !important;
         position: relative !important;
         display: block !important;
         width: 100% !important;
-        scroll-snap-type: y proximity !important;
+        scroll-snap-type: none !important;
         box-sizing: border-box !important;
     }
 
-    /* Soft snap anchors along track */
+    /* Hidden on mobile to prevent scroll-snap jitter against touch inertia */
     .ic-mobile-snap-point {
-        position: absolute !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100vh !important;
-        height: 100dvh !important;
-        scroll-snap-align: start !important;
-        scroll-snap-stop: normal !important;
-        pointer-events: none !important;
+        display: none !important;
     }
 
-    /* Sticky 100vh viewport stage */
+    /* Sticky 100vh viewport stage (svh avoids address-bar resize thrashing during touch scroll) */
     .infracorp-sticky-stage {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        height: 100dvh !important;
+        height: 100svh !important;
         overflow: hidden !important;
         display: flex !important;
         justify-content: center !important;
@@ -3617,7 +3610,6 @@ html, body {
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        height: 100dvh !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3744,18 +3736,30 @@ html, body {
         border-radius: 0 !important;
     }
 
-    /* ── Slide 2: Capabilities (Vertical Stacked Deck Using Full Remaining Height) ── */
+    /* ── Slide 2: Capabilities (Centered Vertical Stacked Deck) ── */
+    .slide-whatwedo {
+        justify-content: center !important;
+        padding: max(84px, calc(env(safe-area-inset-top, 0px) + 74px)) 16px 24px 16px !important;
+    }
+
+    .slide-whatwedo .slide-content-wrap {
+        height: auto !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin: auto 0 !important;
+    }
+
     .ic-split-card-wrap {
         position: relative !important;
         width: 100% !important;
         max-width: 380px !important;
-        height: calc(100dvh - 165px) !important;
-        max-height: 560px !important;
-        margin: 8px auto 0 auto !important;
+        height: clamp(320px, calc(100svh - 220px), 440px) !important;
+        max-height: 440px !important;
+        margin: 14px auto 0 auto !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        flex: 1 1 auto !important;
+        flex: 0 0 auto !important;
     }
 
     .ic-split-card {
@@ -3766,9 +3770,9 @@ html, body {
         min-height: 96px !important;
         padding: 14px 18px !important;
         border-radius: 16px !important;
-        background: rgba(255, 255, 255, 0.90) !important;
-        backdrop-filter: blur(24px) !important;
-        -webkit-backdrop-filter: blur(24px) !important;
+        background: rgba(255, 255, 255, 0.94) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
         border: 1px solid rgba(255, 255, 255, 0.98) !important;
         box-shadow: 0 10px 26px rgba(15, 53, 84, 0.09) !important;
         box-sizing: border-box !important;
@@ -3816,18 +3820,30 @@ html, body {
         flex-shrink: 0 !important;
     }
 
-    /* ── Slide 3: Selected Work (Projects -> Full Remaining Height in Bottom) ── */
+    /* ── Slide 3: Selected Work (Centered Vertical Project Track) ── */
+    .infracorp-stage-slide.slide-work {
+        justify-content: center !important;
+        padding: max(84px, calc(env(safe-area-inset-top, 0px) + 74px)) 16px 24px 16px !important;
+    }
+
+    .slide-work .slide-content-wrap {
+        height: auto !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin: auto 0 !important;
+    }
+
     .ic-project-track-wrap {
         width: 100% !important;
         max-width: 380px !important;
-        height: calc(100dvh - 160px) !important;
-        max-height: 560px !important;
-        margin: 8px auto 0 auto !important;
+        height: clamp(320px, calc(100svh - 240px), 480px) !important;
+        max-height: 480px !important;
+        margin: 14px auto 0 auto !important;
         overflow: hidden !important;
         position: relative !important;
         border-radius: 16px !important;
         pointer-events: auto !important;
-        flex: 1 1 auto !important;
+        flex: 0 0 auto !important;
     }
 
     .ic-project-track {
@@ -3857,9 +3873,9 @@ html, body {
         padding: 16px 20px !important;
         box-sizing: border-box !important;
         border-radius: 16px !important;
-        background: rgba(255, 255, 255, 0.90) !important;
-        backdrop-filter: blur(24px) !important;
-        -webkit-backdrop-filter: blur(24px) !important;
+        background: rgba(255, 255, 255, 0.94) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
         border: 1px solid rgba(255, 255, 255, 0.98) !important;
         box-shadow: 0 10px 24px rgba(15, 53, 84, 0.07) !important;
         display: flex !important;
@@ -3896,9 +3912,17 @@ html, body {
         flex-shrink: 0 !important;
     }
 
-    /* ── Slide 4: Our Team (Full Remaining Height 2x2 Grid) ── */
+    /* ── Slide 4: Our Team (Vertically & Horizontally Centered 2x2 Grid) ── */
     .infracorp-stage-slide.slide-collective {
-        padding: 68px 16px 20px 16px !important;
+        justify-content: center !important;
+        padding: max(84px, calc(env(safe-area-inset-top, 0px) + 74px)) 16px 24px 16px !important;
+    }
+
+    .slide-collective .slide-content-wrap {
+        height: auto !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin: auto 0 !important;
     }
 
     .ic-team-parallax-wrap {
@@ -3907,11 +3931,12 @@ html, body {
         gap: 12px !important;
         width: 100% !important;
         max-width: 380px !important;
-        height: calc(100dvh - 170px) !important;
-        max-height: 540px !important;
-        margin: 10px auto 0 auto !important;
+        height: auto !important;
+        max-height: none !important;
+        margin: 18px auto 0 auto !important;
         position: relative !important;
-        flex: 1 1 auto !important;
+        flex: 0 0 auto !important;
+        align-items: stretch !important;
     }
 
     .ic-team-parallax-card {
@@ -3919,19 +3944,20 @@ html, body {
         top: auto !important;
         left: auto !important;
         width: 100% !important;
-        height: 100% !important;
-        min-height: 175px !important;
-        max-height: 255px !important;
-        padding: 12px 10px !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        padding: 14px 12px !important;
+        gap: 8px !important;
         box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         text-align: left !important;
         border-radius: 16px !important;
-        background: rgba(255, 255, 255, 0.88) !important;
-        backdrop-filter: blur(24px) !important;
-        -webkit-backdrop-filter: blur(24px) !important;
+        background: rgba(255, 255, 255, 0.94) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
         border: 1px solid rgba(255, 255, 255, 0.98) !important;
         box-shadow: 0 8px 22px rgba(15, 53, 84, 0.07) !important;
         pointer-events: auto !important;
@@ -3946,7 +3972,7 @@ html, body {
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 2px !important;
     }
 
     .ic-team-monogram {
@@ -3983,7 +4009,7 @@ html, body {
         font-size: 10.5px !important;
         font-weight: 600 !important;
         margin-bottom: 2px !important;
-        line-height: 1.2 !important;
+        line-height: 1.25 !important;
         text-decoration: none !important;
         color: var(--text-navy) !important;
     }
@@ -3992,16 +4018,16 @@ html, body {
         font-size: 8.5px !important;
         color: #0284c7 !important;
         font-weight: 500 !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 5px !important;
         text-decoration: none !important;
     }
 
     .ic-team-desc {
-        font-size: 8px !important;
-        line-height: 1.35 !important;
+        font-size: 9px !important;
+        line-height: 1.4 !important;
         color: var(--text-navy-secondary) !important;
         display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
+        -webkit-line-clamp: 3 !important;
         -webkit-box-orient: vertical !important;
         overflow: hidden !important;
         margin: 0 !important;
@@ -4013,8 +4039,8 @@ html, body {
         align-items: center !important;
         justify-content: flex-start !important;
         width: 100% !important;
-        margin-top: auto !important;
-        padding-top: 5px !important;
+        margin-top: 6px !important;
+        padding-top: 8px !important;
         border-top: 1px solid rgba(15, 53, 84, 0.08) !important;
     }
 
@@ -4035,14 +4061,17 @@ html, body {
 
     /* ── Slide 5: Direct Inquiry & Contact Form ── */
     .slide-contact {
-        padding: max(96px, calc(env(safe-area-inset-top, 0px) + 84px)) 16px 40px 16px !important;
+        justify-content: flex-start !important;
+        padding: max(84px, calc(env(safe-area-inset-top, 0px) + 74px)) 16px 32px 16px !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
         pointer-events: auto !important;
     }
 
     .slide-contact .slide-content-wrap {
+        height: auto !important;
         max-width: 440px !important;
+        margin: auto 0 !important;
     }
 
     .slide-contact .montfort-contact-section {
@@ -4089,7 +4118,9 @@ html, body {
     .slide-contact .montfort-contact-form-wrap {
         padding: 20px 16px !important;
         border-radius: 16px !important;
-        background: rgba(255, 255, 255, 0.90) !important;
+        background: rgba(255, 255, 255, 0.94) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
         box-shadow: 0 12px 36px rgba(15, 53, 84, 0.10) !important;
     }
 
@@ -4135,13 +4166,39 @@ html, body {
         align-items: center !important;
     }
 
-    /* Mobile Team Cards Contrast */
+    /* Mobile Team Cards & Glass Panels: solid translucent fill without live WebGL blur readback */
     .ic-team-parallax-card {
-        background: rgba(255, 255, 255, 0.88) !important;
-        backdrop-filter: blur(24px) !important;
-        -webkit-backdrop-filter: blur(24px) !important;
+        background: rgba(255, 255, 255, 0.94) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
         border: 1px solid rgba(255, 255, 255, 0.95) !important;
         box-shadow: 0 8px 24px rgba(15, 53, 84, 0.08) !important;
+    }
+
+    .ic-badge,
+    .ic-premium-glass-card,
+    .sw-editorial-card,
+    .sw-index-table-container,
+    .sw-search-input,
+    .sw-view-switcher,
+    .hud-node-btn:hover .hud-node-label,
+    .hud-node-btn:focus-visible .hud-node-label,
+    .hud-node-btn.active .hud-node-label {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(255, 255, 255, 0.94) !important;
+    }
+
+    .sw-quick-modal-backdrop {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(11, 34, 56, 0.65) !important;
+    }
+
+    .ic-glass-card,
+    .ic-premium-glass-card,
+    .ic-project-track {
+        will-change: auto !important;
     }
 
 
@@ -4150,10 +4207,17 @@ html, body {
 /* Tablet refinements (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
     .infracorp-stage-slide {
+        justify-content: center !important;
         padding: max(96px, 10vh) 28px 28px 28px !important;
     }
 
+    .slide-content-wrap {
+        height: auto !important;
+        margin: auto 0 !important;
+    }
+
     .slide-contact {
+        justify-content: flex-start !important;
         padding: max(100px, 10vh) 28px 36px 28px !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
@@ -4205,14 +4269,16 @@ html, body {
         grid-template-columns: repeat(2, 1fr) !important;
         max-width: 640px !important;
         gap: 16px !important;
-        height: calc(100dvh - 180px) !important;
-        max-height: 560px !important;
+        height: auto !important;
+        max-height: none !important;
+        margin: 20px auto 0 auto !important;
+        align-items: stretch !important;
     }
 
     .ic-team-parallax-card {
-        height: 100% !important;
-        min-height: 210px !important;
-        max-height: 270px !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
         padding: 18px 16px !important;
     }
 

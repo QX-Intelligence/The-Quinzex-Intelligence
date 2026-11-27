@@ -43,7 +43,7 @@ const MontfortFooter = ({ onScrollToChapter }) => {
                                 <span className="ic-footer-card-name">QUINZEX</span>
                             </div>
                             <p className="ic-footer-card-desc">
-                                Quinzex empowers modern technology leaders to engineer resilient cloud platforms and generative AI systems.
+                                Quinzex designs and builds scalable web applications, cloud infrastructure, and applied AI workflows.
                             </p>
                             <div className="ic-footer-social-row">
                                 <a 

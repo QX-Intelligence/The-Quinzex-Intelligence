@@ -8,7 +8,7 @@ const MontfortSections = ({ onScrollToChapter }) => {
     const stageRef = useRef(null);
     const scrollPromptRef = useRef(null);
     const projectCarouselRef = useRef(null);
-    
+
     // 1-to-4 Split Animation Refs
     const capCard0Ref = useRef(null);
     const capCard1Ref = useRef(null);
@@ -29,13 +29,48 @@ const MontfortSections = ({ onScrollToChapter }) => {
     const slide4Ref = useRef(null);
     const slide5Ref = useRef(null);
 
-    // High-performance scroll-driven slide positioning (ZERO CPU work when idle)
+    // High-performance scroll-driven slide positioning (ZERO layout thrashing, ZERO CPU work when idle)
     useEffect(() => {
         let ticking = false;
+        let rafId = null;
         let lastScrollY = -1;
 
+        const metrics = {
+            isDesktop: window.innerWidth > 1024,
+            isMobile: window.innerWidth <= 768,
+            windowHeight: window.innerHeight,
+            trackTop: 0,
+            trackHeight: 1,
+            scrollDist: 1,
+            projectMaxScrollX: 0,
+            projectMaxScrollY: 0,
+        };
+
+        const measureMetrics = () => {
+            metrics.isDesktop = window.innerWidth > 1024;
+            metrics.isMobile = window.innerWidth <= 768;
+            metrics.windowHeight = window.innerHeight;
+
+            if (trackRef.current) {
+                const rect = trackRef.current.getBoundingClientRect();
+                const scrollY = window.scrollY || window.pageYOffset || 0;
+                metrics.trackTop = rect.top + scrollY;
+                metrics.trackHeight = trackRef.current.offsetHeight;
+                metrics.scrollDist = Math.max(1, metrics.trackHeight - metrics.windowHeight);
+            }
+
+            if (projectCarouselRef.current) {
+                const el = projectCarouselRef.current;
+                metrics.projectMaxScrollX = Math.max(0, el.scrollWidth - el.clientWidth);
+                const parentH = el.parentElement ? el.parentElement.clientHeight : 500;
+                metrics.projectMaxScrollY = Math.max(0, el.scrollHeight - parentH);
+            }
+        };
+
+        const slideVisState = new WeakMap();
+
         const applySlideStyles = (el, progress, enterStart, enterEnd, exitStart, exitEnd) => {
-            if (!el) return;
+            if (!el) return false;
 
             let opacity = 0;
             let y = 32;
@@ -69,37 +104,50 @@ const MontfortSections = ({ onScrollToChapter }) => {
             }
 
             const isVisible = opacity > 0.01;
+            const wasVisible = slideVisState.get(el);
+            if (!isVisible && wasVisible === false) {
+                return false;
+            }
+            slideVisState.set(el, isVisible);
+
             el.style.opacity = opacity;
             el.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(3)})`;
             el.style.pointerEvents = isVisible ? 'auto' : 'none';
             el.style.visibility = isVisible ? 'visible' : 'hidden';
+            return isVisible;
         };
 
-        const updateScroll = () => {
+        let lastStageMode = '';
+        let lastCapProgress = -1;
+        let lastProjectProgress = -1;
+        let lastTeamProgress = -1;
+
+        const updateScroll = (force = false) => {
             if (!trackRef.current) return;
-            
-            const isDesktop = window.innerWidth > 1024;
+
             const scrollY = window.scrollY || window.pageYOffset || 0;
-            if (scrollY === lastScrollY) return;
+            if (!force && scrollY === lastScrollY) return;
             lastScrollY = scrollY;
 
-            const rect = trackRef.current.getBoundingClientRect();
-            const trackHeight = trackRef.current.offsetHeight;
-            const windowHeight = window.innerHeight;
-            const scrollDist = Math.max(1, trackHeight - windowHeight);
-            const p = Math.max(0, Math.min(1, -rect.top / scrollDist));
+            const { isDesktop, isMobile, windowHeight, trackTop, trackHeight, scrollDist, projectMaxScrollX, projectMaxScrollY } = metrics;
+            const rectTop = trackTop - scrollY;
+            const rectBottom = rectTop + trackHeight;
+            const p = Math.max(0, Math.min(1, -rectTop / scrollDist));
 
             // Dynamically manage stage transform: pinned inside track, smoothly scrolls up to reveal footer at the end
             if (stageRef.current) {
-                if (rect.bottom < windowHeight) {
-                    stageRef.current.style.transform = `translate3d(0, ${(rect.bottom - windowHeight).toFixed(1)}px, 0)`;
-                    stageRef.current.style.opacity = Math.max(0, Math.min(1, rect.bottom / windowHeight)).toFixed(2);
-                } else if (rect.top > 0) {
-                    stageRef.current.style.transform = `translate3d(0, ${rect.top.toFixed(1)}px, 0)`;
+                if (rectBottom < windowHeight) {
+                    stageRef.current.style.transform = `translate3d(0, ${(rectBottom - windowHeight).toFixed(1)}px, 0)`;
+                    stageRef.current.style.opacity = Math.max(0, Math.min(1, rectBottom / windowHeight)).toFixed(2);
+                    lastStageMode = 'bottom';
+                } else if (rectTop > 0) {
+                    stageRef.current.style.transform = `translate3d(0, ${rectTop.toFixed(1)}px, 0)`;
                     stageRef.current.style.opacity = '1';
-                } else {
+                    lastStageMode = 'top';
+                } else if (lastStageMode !== 'pinned' || force) {
                     stageRef.current.style.transform = 'translate3d(0, 0, 0)';
                     stageRef.current.style.opacity = '1';
+                    lastStageMode = 'pinned';
                 }
             }
 
@@ -108,12 +156,12 @@ const MontfortSections = ({ onScrollToChapter }) => {
                 scrollPromptRef.current.classList.toggle('faded', p > 0.07);
             }
 
-            // 6 Clean Non-Overlapping Cinematic Slide Ranges (Active on all screens for Option B)
+            // 6 Clean Non-Overlapping Cinematic Slide Ranges
             applySlideStyles(slide0Ref.current, p, 0.00, 0.00, 0.10, 0.15);
             applySlideStyles(slide1Ref.current, p, 0.15, 0.20, 0.28, 0.33);
-            applySlideStyles(slide2Ref.current, p, 0.33, 0.38, 0.46, 0.51);
-            applySlideStyles(slide3Ref.current, p, 0.51, 0.56, 0.72, 0.77);
-            applySlideStyles(slide4Ref.current, p, 0.77, 0.82, 0.88, 0.93);
+            const slide2Visible = applySlideStyles(slide2Ref.current, p, 0.33, 0.38, 0.46, 0.51);
+            const slide3Visible = applySlideStyles(slide3Ref.current, p, 0.51, 0.56, 0.72, 0.77);
+            const slide4Visible = applySlideStyles(slide4Ref.current, p, 0.77, 0.82, 0.88, 0.93);
             applySlideStyles(slide5Ref.current, p, 0.93, 0.97, 1.00, 1.00);
 
             // Capabilities (Slide 2): 1-to-4 Card Animation
@@ -121,43 +169,45 @@ const MontfortSections = ({ onScrollToChapter }) => {
                 const startP = 0.34;
                 const endP = 0.45;
                 let splitProgress = 0;
-                
+
                 if (p <= startP) splitProgress = 0;
                 else if (p >= endP) splitProgress = 1;
                 else splitProgress = (p - startP) / (endP - startP);
 
-                const easeOut = 1 - Math.pow(1 - splitProgress, 3);
-                
-                if (isDesktop) {
-                    // Desktop / Laptops: 100% UNTOUCHED horizontal split
-                    capCard0Ref.current.style.transform = `translate3d(${(-369 * easeOut).toFixed(1)}px, ${(20 * easeOut).toFixed(1)}px, 0) rotate(${(-6 * easeOut).toFixed(2)}deg)`;
-                    capCard1Ref.current.style.transform = `translate3d(${(-127 * easeOut).toFixed(1)}px, ${(5 * easeOut).toFixed(1)}px, 0) rotate(${(-2 * easeOut).toFixed(2)}deg)`;
-                    capCard2Ref.current.style.transform = `translate3d(${(127 * easeOut).toFixed(1)}px, ${(5 * easeOut).toFixed(1)}px, 0) rotate(${(2 * easeOut).toFixed(2)}deg)`;
-                    capCard3Ref.current.style.transform = `translate3d(${(369 * easeOut).toFixed(1)}px, ${(20 * easeOut).toFixed(1)}px, 0) rotate(${(6 * easeOut).toFixed(2)}deg)`;
-                } else if (window.innerWidth <= 768) {
-                    // Mobile: Vertical Stacked Deck Animation (Full remaining height in bottom)
-                    const availableH = Math.min(560, Math.max(340, window.innerHeight - 170));
-                    const maxSpan = Math.max(260, availableH - 105);
-                    const step = maxSpan / 3;
-                    const card0Y = -step * 1.5 * easeOut;
-                    const card1Y = -step * 0.5 * easeOut;
-                    const card2Y = step * 0.5 * easeOut;
-                    const card3Y = step * 1.5 * easeOut;
+                if (force || (slide2Visible && splitProgress !== lastCapProgress) || (lastCapProgress !== splitProgress && (splitProgress === 0 || splitProgress === 1))) {
+                    lastCapProgress = splitProgress;
+                    const easeOut = 1 - Math.pow(1 - splitProgress, 3);
 
-                    capCard0Ref.current.style.transform = `translate3d(0, ${card0Y.toFixed(1)}px, 0) scale(${(0.96 + 0.04 * easeOut).toFixed(3)}) rotate(${(-2.0 * (1 - easeOut)).toFixed(1)}deg)`;
-                    capCard1Ref.current.style.transform = `translate3d(0, ${card1Y.toFixed(1)}px, 0) scale(${(0.97 + 0.03 * easeOut).toFixed(3)}) rotate(${(1.4 * (1 - easeOut)).toFixed(1)}deg)`;
-                    capCard2Ref.current.style.transform = `translate3d(0, ${card2Y.toFixed(1)}px, 0) scale(${(0.98 + 0.02 * easeOut).toFixed(3)}) rotate(${(-1.2 * (1 - easeOut)).toFixed(1)}deg)`;
-                    capCard3Ref.current.style.transform = `translate3d(0, ${card3Y.toFixed(1)}px, 0) scale(${(0.99 + 0.01 * easeOut).toFixed(3)}) rotate(${(1.8 * (1 - easeOut)).toFixed(1)}deg)`;
-                    capCard0Ref.current.style.zIndex = '4';
-                    capCard1Ref.current.style.zIndex = '3';
-                    capCard2Ref.current.style.zIndex = '2';
-                    capCard3Ref.current.style.zIndex = '1';
-                } else {
-                    // Tablet: Proportional horizontal fan
-                    capCard0Ref.current.style.transform = `translate3d(${(-240 * easeOut).toFixed(1)}px, ${(15 * easeOut).toFixed(1)}px, 0) rotate(${(-4 * easeOut).toFixed(1)}deg)`;
-                    capCard1Ref.current.style.transform = `translate3d(${(-80 * easeOut).toFixed(1)}px, ${(5 * easeOut).toFixed(1)}px, 0) rotate(${(-1.5 * easeOut).toFixed(1)}deg)`;
-                    capCard2Ref.current.style.transform = `translate3d(${(80 * easeOut).toFixed(1)}px, ${(5 * easeOut).toFixed(1)}px, 0) rotate(${(1.5 * easeOut).toFixed(1)}deg)`;
-                    capCard3Ref.current.style.transform = `translate3d(${(240 * easeOut).toFixed(1)}px, ${(15 * easeOut).toFixed(1)}px, 0) rotate(${(4 * easeOut).toFixed(1)}deg)`;
+                    if (isDesktop) {
+                        capCard0Ref.current.style.transform = `translate3d(${(-369 * easeOut).toFixed(1)}px, ${(20 * easeOut).toFixed(1)}px, 0) rotate(${(-6 * easeOut).toFixed(2)}deg)`;
+                        capCard1Ref.current.style.transform = `translate3d(${(-127 * easeOut).toFixed(1)}px, ${(5 * easeOut).toFixed(1)}px, 0) rotate(${(-2 * easeOut).toFixed(2)}deg)`;
+                        capCard2Ref.current.style.transform = `translate3d(${(127 * easeOut).toFixed(1)}px, ${(5 * easeOut).toFixed(1)}px, 0) rotate(${(2 * easeOut).toFixed(2)}deg)`;
+                        capCard3Ref.current.style.transform = `translate3d(${(369 * easeOut).toFixed(1)}px, ${(20 * easeOut).toFixed(1)}px, 0) rotate(${(6 * easeOut).toFixed(2)}deg)`;
+                    } else if (isMobile) {
+                        const availableH = Math.min(440, Math.max(310, windowHeight - 220));
+                        const maxSpan = Math.max(210, availableH - 100);
+                        const step = maxSpan / 3;
+                        const card0Y = -step * 1.5 * easeOut;
+                        const card1Y = -step * 0.5 * easeOut;
+                        const card2Y = step * 0.5 * easeOut;
+                        const card3Y = step * 1.5 * easeOut;
+
+                        capCard0Ref.current.style.transform = `translate3d(0, ${card0Y.toFixed(1)}px, 0) scale(${(0.96 + 0.04 * easeOut).toFixed(3)}) rotate(${(-2.0 * (1 - easeOut)).toFixed(1)}deg)`;
+                        capCard1Ref.current.style.transform = `translate3d(0, ${card1Y.toFixed(1)}px, 0) scale(${(0.97 + 0.03 * easeOut).toFixed(3)}) rotate(${(1.4 * (1 - easeOut)).toFixed(1)}deg)`;
+                        capCard2Ref.current.style.transform = `translate3d(0, ${card2Y.toFixed(1)}px, 0) scale(${(0.98 + 0.02 * easeOut).toFixed(3)}) rotate(${(-1.2 * (1 - easeOut)).toFixed(1)}deg)`;
+                        capCard3Ref.current.style.transform = `translate3d(0, ${card3Y.toFixed(1)}px, 0) scale(${(0.99 + 0.01 * easeOut).toFixed(3)}) rotate(${(1.8 * (1 - easeOut)).toFixed(1)}deg)`;
+                        if (force) {
+                            capCard0Ref.current.style.zIndex = '4';
+                            capCard1Ref.current.style.zIndex = '3';
+                            capCard2Ref.current.style.zIndex = '2';
+                            capCard3Ref.current.style.zIndex = '1';
+                        }
+                    } else {
+                        capCard0Ref.current.style.transform = `translate3d(${(-240 * easeOut).toFixed(1)}px, ${(15 * easeOut).toFixed(1)}px, 0) rotate(${(-4 * easeOut).toFixed(1)}deg)`;
+                        capCard1Ref.current.style.transform = `translate3d(${(-80 * easeOut).toFixed(1)}px, ${(5 * easeOut).toFixed(1)}px, 0) rotate(${(-1.5 * easeOut).toFixed(1)}deg)`;
+                        capCard2Ref.current.style.transform = `translate3d(${(80 * easeOut).toFixed(1)}px, ${(5 * easeOut).toFixed(1)}px, 0) rotate(${(1.5 * easeOut).toFixed(1)}deg)`;
+                        capCard3Ref.current.style.transform = `translate3d(${(240 * easeOut).toFixed(1)}px, ${(15 * easeOut).toFixed(1)}px, 0) rotate(${(4 * easeOut).toFixed(1)}deg)`;
+                    }
                 }
             }
 
@@ -166,28 +216,25 @@ const MontfortSections = ({ onScrollToChapter }) => {
                 const startP = 0.54;
                 const endP = 0.70;
                 let progress = 0;
-                
+
                 if (p <= startP) progress = 0;
                 else if (p >= endP) progress = 1;
                 else progress = (p - startP) / (endP - startP);
-                
-                if (isDesktop) {
-                    // Laptop / Desktop: 100% UNTOUCHED horizontal scroll
-                    const maxScroll = projectCarouselRef.current.scrollWidth - projectCarouselRef.current.clientWidth;
-                    if (maxScroll > 0) {
-                        projectCarouselRef.current.scrollLeft = maxScroll * progress;
-                    }
-                    projectCarouselRef.current.style.transform = '';
-                } else {
-                    // Mobile & Tablet: Vertical project orientation & vertical glide using full remaining height
-                    projectCarouselRef.current.scrollLeft = 0;
-                    const parent = projectCarouselRef.current.parentElement;
-                    const parentH = parent ? parent.clientHeight : 500;
-                    const maxScrollY = Math.max(0, projectCarouselRef.current.scrollHeight - parentH);
-                    if (maxScrollY > 0) {
-                        projectCarouselRef.current.style.transform = `translate3d(0, ${(-maxScrollY * progress).toFixed(1)}px, 0)`;
+
+                if (force || (slide3Visible && progress !== lastProjectProgress) || (lastProjectProgress !== progress && (progress === 0 || progress === 1))) {
+                    lastProjectProgress = progress;
+                    if (isDesktop) {
+                        if (projectMaxScrollX > 0) {
+                            projectCarouselRef.current.scrollLeft = projectMaxScrollX * progress;
+                        }
+                        if (force) projectCarouselRef.current.style.transform = '';
                     } else {
-                        projectCarouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+                        if (force) projectCarouselRef.current.scrollLeft = 0;
+                        if (projectMaxScrollY > 0) {
+                            projectCarouselRef.current.style.transform = `translate3d(0, ${(-projectMaxScrollY * progress).toFixed(1)}px, 0)`;
+                        } else {
+                            projectCarouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+                        }
                     }
                 }
             }
@@ -197,26 +244,27 @@ const MontfortSections = ({ onScrollToChapter }) => {
                 const startP = 0.76;
                 const endP = 0.86;
                 let teamProgress = 0;
-                
+
                 if (p <= startP) teamProgress = 0;
                 else if (p >= endP) teamProgress = 1;
                 else teamProgress = (p - startP) / (endP - startP);
 
-                const easeOut = 1 - Math.pow(1 - teamProgress, 3);
-                
-                if (isDesktop) {
-                    // Laptop / Desktop: 100% UNTOUCHED parallax rise
-                    teamCard0Ref.current.style.transform = `translate3d(0, ${(300 * (1 - easeOut)).toFixed(1)}px, 0)`;
-                    teamCard1Ref.current.style.transform = `translate3d(0, ${(100 * (1 - easeOut)).toFixed(1)}px, 0)`;
-                    teamCard2Ref.current.style.transform = `translate3d(0, ${(-100 * (1 - easeOut)).toFixed(1)}px, 0)`;
-                    teamCard3Ref.current.style.transform = `translate3d(0, ${(-300 * (1 - easeOut)).toFixed(1)}px, 0)`;
-                } else {
-                    // Mobile & Tablet: Noticeable staggered entrance into 2x2 grid
-                    const scaleVal = (0.92 + 0.08 * easeOut).toFixed(3);
-                    teamCard0Ref.current.style.transform = `translate3d(0, ${(35 * (1 - easeOut)).toFixed(1)}px, 0) scale(${scaleVal})`;
-                    teamCard1Ref.current.style.transform = `translate3d(0, ${(48 * (1 - easeOut)).toFixed(1)}px, 0) scale(${scaleVal})`;
-                    teamCard2Ref.current.style.transform = `translate3d(0, ${(60 * (1 - easeOut)).toFixed(1)}px, 0) scale(${scaleVal})`;
-                    teamCard3Ref.current.style.transform = `translate3d(0, ${(72 * (1 - easeOut)).toFixed(1)}px, 0) scale(${scaleVal})`;
+                if (force || (slide4Visible && teamProgress !== lastTeamProgress) || (lastTeamProgress !== teamProgress && (teamProgress === 0 || teamProgress === 1))) {
+                    lastTeamProgress = teamProgress;
+                    const easeOut = 1 - Math.pow(1 - teamProgress, 3);
+
+                    if (isDesktop) {
+                        teamCard0Ref.current.style.transform = `translate3d(0, ${(300 * (1 - easeOut)).toFixed(1)}px, 0)`;
+                        teamCard1Ref.current.style.transform = `translate3d(0, ${(100 * (1 - easeOut)).toFixed(1)}px, 0)`;
+                        teamCard2Ref.current.style.transform = `translate3d(0, ${(-100 * (1 - easeOut)).toFixed(1)}px, 0)`;
+                        teamCard3Ref.current.style.transform = `translate3d(0, ${(-300 * (1 - easeOut)).toFixed(1)}px, 0)`;
+                    } else {
+                        const scaleVal = (0.92 + 0.08 * easeOut).toFixed(3);
+                        teamCard0Ref.current.style.transform = `translate3d(0, ${(35 * (1 - easeOut)).toFixed(1)}px, 0) scale(${scaleVal})`;
+                        teamCard1Ref.current.style.transform = `translate3d(0, ${(48 * (1 - easeOut)).toFixed(1)}px, 0) scale(${scaleVal})`;
+                        teamCard2Ref.current.style.transform = `translate3d(0, ${(60 * (1 - easeOut)).toFixed(1)}px, 0) scale(${scaleVal})`;
+                        teamCard3Ref.current.style.transform = `translate3d(0, ${(72 * (1 - easeOut)).toFixed(1)}px, 0) scale(${scaleVal})`;
+                    }
                 }
             }
         };
@@ -224,22 +272,37 @@ const MontfortSections = ({ onScrollToChapter }) => {
         const onScroll = () => {
             if (!ticking) {
                 ticking = true;
-                requestAnimationFrame(() => {
-                    updateScroll();
+                rafId = requestAnimationFrame(() => {
+                    updateScroll(false);
                     ticking = false;
                 });
             }
         };
 
-        // Initial layout positioning
-        updateScroll();
+        const onResize = () => {
+            measureMetrics();
+            updateScroll(true);
+        };
+
+        let resizeObs = null;
+        if (typeof ResizeObserver !== 'undefined') {
+            resizeObs = new ResizeObserver(onResize);
+            if (trackRef.current) resizeObs.observe(trackRef.current);
+            if (projectCarouselRef.current) resizeObs.observe(projectCarouselRef.current);
+        }
+
+        // Initial layout measurement & positioning
+        measureMetrics();
+        updateScroll(true);
 
         window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll, { passive: true });
+        window.addEventListener('resize', onResize, { passive: true });
 
         return () => {
             window.removeEventListener('scroll', onScroll);
-            window.removeEventListener('resize', onScroll);
+            window.removeEventListener('resize', onResize);
+            if (rafId) cancelAnimationFrame(rafId);
+            resizeObs?.disconnect();
         };
     }, []);
 
@@ -268,7 +331,7 @@ const MontfortSections = ({ onScrollToChapter }) => {
                 {/* 100vh Sticky Viewport Stage */}
                 <div ref={stageRef} className="infracorp-sticky-stage">
                     {/* Minimal Centered Scroll Indicator ↓ */}
-                    <div 
+                    <div
                         ref={scrollPromptRef}
                         className="ic-scroll-prompt"
                         onClick={() => onScrollToChapter?.('WhoWeAre')}
@@ -289,9 +352,9 @@ const MontfortSections = ({ onScrollToChapter }) => {
                                 <h1 className="colossal-title">QUINZEX</h1>
                             </div>
                             <p className="ic-hero-subtitle">
-                                High-Performance Software Engineering, Cloud Architecture &amp; AI Systems Studio.
+                                Software Engineering, Cloud Architecture &amp; Digital Products.
                             </p>
-                            <button 
+                            <button
                                 className="ic-btn"
                                 onClick={() => onScrollToChapter?.('WhoWeAre')}
                             >
@@ -307,16 +370,16 @@ const MontfortSections = ({ onScrollToChapter }) => {
                     <div ref={slide1Ref} className="infracorp-stage-slide slide-whoweare">
                         <div className="slide-content-wrap">
                             <h2 className="ic-title">
-                                QUINZEX CLOSES THE GAP BETWEEN WHAT TECH LEADERS ARE AND HOW THEY ARE PERCEIVED.
+                                WE BUILD RELIABLE SOFTWARE PLATFORMS FOR GROWING TECHNOLOGY COMPANIES.
                             </h2>
                             <p className="ic-desc">
-                                Most companies experience the same disconnect — between what their technology delivers and how they are perceived in the market. We close that gap through strategic clarity, high-signal design, custom AI workflows, and scalable software platforms.
+                                We partner with engineering and product teams to design, build, and scale web applications, cloud infrastructure, and practical AI integrations.
                             </p>
-                            <button 
+                            <button
                                 className="ic-btn"
                                 onClick={() => onScrollToChapter?.('WhatWeDo')}
                             >
-                                <span>OUR DISCIPLINES</span>
+                                <span>OUR CAPABILITIES</span>
                                 <span className="ic-btn-arrow">↗</span>
                             </button>
                         </div>
@@ -328,18 +391,18 @@ const MontfortSections = ({ onScrollToChapter }) => {
                     <div ref={slide2Ref} className="infracorp-stage-slide slide-whatwedo">
                         <div className="slide-content-wrap">
                             <h2 className="ic-title">
-                                FULL-STACK ENGINEERING CAPABILITIES.
+                                OUR CORE CAPABILITIES.
                             </h2>
                             <p className="ic-desc" style={{ maxWidth: '640px' }}>
-                                Integrated engineering disciplines to design, build, and scale high-stakes production systems.
+                                End-to-end engineering services to design, build, and scale production software.
                             </p>
 
                             <div className="ic-split-card-wrap">
                                 <div className="ic-split-card" ref={capCard0Ref}>
                                     <div>
                                         <div className="ic-split-card-num">01</div>
-                                        <h3 className="ic-split-card-title">AI SOLUTIONS &amp; AGENTS</h3>
-                                        <p className="ic-split-card-desc">Custom self-healing AI agents, automated data ingestion pipelines, and LLM fine-tuning to accelerate team velocity.</p>
+                                        <h3 className="ic-split-card-title">APPLIED AI &amp; AUTOMATION</h3>
+                                        <p className="ic-split-card-desc">Practical LLM integrations, automated data pipelines, and intelligent workflows built for production reliability.</p>
                                     </div>
                                     <div className="ic-split-card-arrow">↗</div>
                                 </div>
@@ -347,8 +410,8 @@ const MontfortSections = ({ onScrollToChapter }) => {
                                 <div className="ic-split-card" ref={capCard1Ref}>
                                     <div>
                                         <div className="ic-split-card-num">02</div>
-                                        <h3 className="ic-split-card-title">WEB DESIGN &amp; 3D</h3>
-                                        <p className="ic-split-card-desc">Custom React and WebGL architectures engineered with fluid transitions, responsive layouts, and interactive micro-physics.</p>
+                                        <h3 className="ic-split-card-title">WEB DEVELOPMENT &amp; 3D</h3>
+                                        <p className="ic-split-card-desc">Responsive React and WebGL applications built with clean interfaces, smooth interactions, and fast load times.</p>
                                     </div>
                                     <div className="ic-split-card-arrow">↗</div>
                                 </div>
@@ -356,8 +419,8 @@ const MontfortSections = ({ onScrollToChapter }) => {
                                 <div className="ic-split-card" ref={capCard2Ref}>
                                     <div>
                                         <div className="ic-split-card-num">03</div>
-                                        <h3 className="ic-split-card-title">STRATEGY &amp; BRANDING</h3>
-                                        <p className="ic-split-card-desc">Unified visual identities, high-signal typography systems, and strategic positioning frameworks that demand attention.</p>
+                                        <h3 className="ic-split-card-title">PRODUCT STRATEGY &amp; DESIGN</h3>
+                                        <p className="ic-split-card-desc">Clear visual identities, structured design systems, and product positioning tailored to your market.</p>
                                     </div>
                                     <div className="ic-split-card-arrow">↗</div>
                                 </div>
@@ -365,8 +428,8 @@ const MontfortSections = ({ onScrollToChapter }) => {
                                 <div className="ic-split-card" ref={capCard3Ref}>
                                     <div>
                                         <div className="ic-split-card-num">04</div>
-                                        <h3 className="ic-split-card-title">MOTION &amp; UX/UI</h3>
-                                        <p className="ic-split-card-desc">Interface design grounded in rigorous user research, wireframing, and immersive keyframe animations.</p>
+                                        <h3 className="ic-split-card-title">UI/UX &amp; INTERACTION DESIGN</h3>
+                                        <p className="ic-split-card-desc">User-centered interface design backed by wireframing, usability testing, and refined motion.</p>
                                     </div>
                                     <div className="ic-split-card-arrow">↗</div>
                                 </div>
@@ -380,15 +443,11 @@ const MontfortSections = ({ onScrollToChapter }) => {
                     <div ref={slide3Ref} className="infracorp-stage-slide slide-work">
                         <div className="slide-content-wrap">
                             <div className="ic-work-header-wrap">
-                                <div className="sect-label-row">
-                                    <div className="sect-dot" />
-                                    <span className="sect-label-text">SELECTED WORK</span>
-                                </div>
                                 <h2 className="ic-title ic-title-work">
-                                    MEASURABLE IMPACT FOR HIGH-GROWTH TECH LEADERS.
+                                    SELECTED WORK &amp; CLIENT CASE STUDIES.
                                 </h2>
                                 <p className="ic-desc ic-desc-work">
-                                    Bespoke software platforms, cloud infrastructure, and custom AI systems engineered for enterprise scale.
+                                    Production web platforms, data pipelines, and cloud systems delivered for our clients.
                                 </p>
                             </div>
                             <div className="ic-project-track-wrap">
@@ -486,9 +545,9 @@ const MontfortSections = ({ onScrollToChapter }) => {
                                     </div>
                                     <div className="ic-team-content">
                                         <h3 className="ic-team-name">KATTA SRI SAI PRAVEEN</h3>
-                                        <div className="ic-team-role">Backend &amp; Data Engineer</div>
+                                        <div className="ic-team-role">Backend, AI &amp; Data Engineer</div>
                                         <p className="ic-team-desc">
-                                            Computer Science engineer specialized in Python, Django REST, microservices, real-time WebSockets, and ML-driven analytics pipelines.
+                                            Python, Django/Flask microservices, machine learning, computer vision, and LangChain/LangGraph engineer building scalable APIs and AI pipelines.
                                         </p>
                                     </div>
                                     <div className="ic-team-action">
@@ -505,7 +564,7 @@ const MontfortSections = ({ onScrollToChapter }) => {
                                         <h3 className="ic-team-name">AKHIL MALISETTY</h3>
                                         <div className="ic-team-role">Backend Engineer</div>
                                         <p className="ic-team-desc">
-                                            Building scalable, low-latency applications with Java, Spring Boot, distributed systems, Redis caching, and robust API architecture.
+                                            Java, Spring Boot/Cloud/Security, Hibernate, Microservices, Apache Kafka, Redis, WebSockets, and payment gateway engineer.
                                         </p>
                                     </div>
                                     <div className="ic-team-action">
@@ -522,7 +581,7 @@ const MontfortSections = ({ onScrollToChapter }) => {
                                         <h3 className="ic-team-name">SIVA CHANDRASEKHAR JAVVADI</h3>
                                         <div className="ic-team-role">Cloud &amp; DevOps Engineer</div>
                                         <p className="ic-team-desc">
-                                            Kubernetes, AWS/Azure, Terraform, and CI/CD pipelines engineer ensuring zero-downtime deployments, observability, and infrastructure stability.
+                                            Linux, AWS, Kubernetes, Docker, Terraform, and Jenkins engineer automating CI/CD, security scanning, and Prometheus + Grafana observability.
                                         </p>
                                     </div>
                                     <div className="ic-team-action">

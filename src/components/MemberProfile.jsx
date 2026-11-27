@@ -46,10 +46,6 @@ const MemberProfile = ({ memberId }) => {
                         </div>
 
                         <div style={{ flex: 1, minWidth: 'min(100%, 260px)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                                <div className="dot" style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#0f3554' }}></div>
-                                <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.6)' }}>Quinzex Specialist</span>
-                            </div>
                             <h1 style={{ fontFamily: 'var(--font-main)', fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 700, lineHeight: 1.15, color: '#0f3554', marginBottom: '10px' }}>
                                 {member.name}
                             </h1>
@@ -79,7 +75,7 @@ const MemberProfile = ({ memberId }) => {
                 {/* Skills Matrix */}
                 <div style={{ marginBottom: '4rem', background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
                     <h2 style={{ fontFamily: 'var(--font-main)', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
-                        Specialized Technical Matrix
+                        Technical Skills
                     </h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem' }}>
                         {member.skills.map((skillGroup, idx) => (
@@ -113,7 +109,7 @@ const MemberProfile = ({ memberId }) => {
                 {/* Engineering Projects */}
                 <div style={{ marginBottom: '4rem' }}>
                     <h2 style={{ fontFamily: 'var(--font-main)', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
-                        Engineered Systems &amp; Contributions
+                        Key Projects
                     </h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
                         {member.projects.map((proj, pIdx) => (

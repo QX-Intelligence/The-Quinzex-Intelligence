@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import * as THREE from 'three';
 
 const MontfortCanvas = () => {
     useEffect(() => {
         let isMounted = true;
         let timer = null;
+        let cleanupListeners = null;
 
         async function initHomepageEnvironment(App) {
             const hp = App.webgl?.pages?.Homepage;
@@ -35,23 +35,26 @@ const MontfortCanvas = () => {
                 if (mainScene.mountains && !mainScene.extraPeaksAdded) {
                     const baseMountain = mainScene.mountains.getObjectByName('Mountain');
                     if (baseMountain) {
+                        const isMobile = window.innerWidth <= 768;
                         // Multi-mountain configuration spanning the horizon and depth
-                        const peaksConfig = [
+                        // On narrow mobile portrait viewports, keep only the peaks visible in frustum to cut overdraw
+                        const allPeaks = [
                             // Left Far Backdrop Peak
-                            { name: 'Peak_LeftFarBackdrop', pos: [-125, -16, -20], scale: [0.76, 0.74, 0.76], rot: [0, 1.35, 0] },
+                            { name: 'Peak_LeftFarBackdrop', pos: [-125, -16, -20], scale: [0.76, 0.74, 0.76], rot: [0, 1.35, 0], mobile: false },
                             // Left Mid-Saddle Mountain
-                            { name: 'Peak_LeftMidSaddle', pos: [-62, -11, -46], scale: [0.65, 0.62, 0.65], rot: [0, 0.75, 0] },
+                            { name: 'Peak_LeftMidSaddle', pos: [-62, -11, -46], scale: [0.65, 0.62, 0.65], rot: [0, 0.75, 0], mobile: true },
                             // Left Deep Background Crest
-                            { name: 'Peak_LeftDeepCrest', pos: [-88, -6, 32], scale: [0.82, 0.80, 0.82], rot: [0, -0.45, 0] },
+                            { name: 'Peak_LeftDeepCrest', pos: [-88, -6, 32], scale: [0.82, 0.80, 0.82], rot: [0, -0.45, 0], mobile: false },
                             // Right Backdrop Flank Peak
-                            { name: 'Peak_RightBackdrop', pos: [55, -15, 26], scale: [0.60, 0.56, 0.60], rot: [0, -1.20, 0] },
+                            { name: 'Peak_RightBackdrop', pos: [55, -15, 26], scale: [0.60, 0.56, 0.60], rot: [0, -1.20, 0], mobile: false },
                             // Right Far Horizon Mountain
-                            { name: 'Peak_RightFarHorizon', pos: [98, -22, 10], scale: [0.68, 0.64, 0.68], rot: [0, -1.85, 0] },
+                            { name: 'Peak_RightFarHorizon', pos: [98, -22, 10], scale: [0.68, 0.64, 0.68], rot: [0, -1.85, 0], mobile: false },
                             // Right Middle Ridge Saddle
-                            { name: 'Peak_RightMidSaddle', pos: [42, -12, -24], scale: [0.50, 0.48, 0.50], rot: [0, 2.25, 0] },
+                            { name: 'Peak_RightMidSaddle', pos: [42, -12, -24], scale: [0.50, 0.48, 0.50], rot: [0, 2.25, 0], mobile: true },
                             // Distant Center Colossal Mountain Ridge
-                            { name: 'Peak_CenterDistantColossus', pos: [-18, -8, 88], scale: [0.88, 0.85, 0.88], rot: [0, 3.05, 0] }
+                            { name: 'Peak_CenterDistantColossus', pos: [-18, -8, 88], scale: [0.88, 0.85, 0.88], rot: [0, 3.05, 0], mobile: true }
                         ];
+                        const peaksConfig = isMobile ? allPeaks.filter(p => p.mobile) : allPeaks;
 
                         peaksConfig.forEach(cfg => {
                             const peak = baseMountain.clone();
@@ -103,19 +106,30 @@ const MontfortCanvas = () => {
             // Mobile lookAt targets the peak centered for portrait aspect ratio (matching Montfort TargetPath-Mobile)
             const mobileLookAt = [11.824583053588867, -7.763660430908203, 2.5923118591308594];
 
-            const getLookAt = () => {
-                const isMobile = window.innerWidth <= 768;
-                return isMobile ? mobileLookAt : desktopLookAt;
-            };
+            const getLookAt = (isMobile) => (isMobile ? mobileLookAt : desktopLookAt);
 
             // Initialize full environment (multiple mountain peaks + cloud sea)
             initHomepageEnvironment(App);
 
-            // Ensure renderer is sized to exact viewport with crisp devicePixelRatio
-            const updateSize = () => {
+            let lastW = 0;
+            let lastH = 0;
+            let cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+
+            const refreshMaxScroll = () => {
+                cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+            };
+
+            // Ensure renderer is sized to exact viewport; cap mobile DPR to 1.25 to avoid fill-rate bottlenecks
+            const updateSize = (forceResize = false) => {
                 const w = window.innerWidth;
                 const h = window.innerHeight;
-                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                if (!forceResize && w <= 1024 && w === lastW && Math.abs(h - lastH) < 120) {
+                    refreshMaxScroll();
+                    return;
+                }
+                lastW = w;
+                lastH = h;
+                const dpr = Math.min(window.devicePixelRatio || 1, w <= 1024 ? 1.25 : 2);
 
                 if (App.webgl?.renderer) {
                     App.webgl.renderer.setSize(w, h);
@@ -125,6 +139,7 @@ const MontfortCanvas = () => {
                     App.webgl.camera.aspect = w / h;
                     App.webgl.camera.updateProjectionMatrix();
                 }
+                refreshMaxScroll();
                 updateCamera(true);
             };
 
@@ -142,7 +157,7 @@ const MontfortCanvas = () => {
                     lastScrollY = scrollY;
 
                     const isMobile = window.innerWidth <= 768;
-                    const baseLookAt = getLookAt();
+                    const baseLookAt = getLookAt(isMobile);
 
                     // Direction vector toward mountain center
                     const dx = baseLookAt[0] - basePos[0];
@@ -153,10 +168,9 @@ const MontfortCanvas = () => {
                     const dirY = dy / dist;
                     const dirZ = dz / dist;
 
-                    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-                    const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
+                    const progress = Math.min(1, Math.max(0, scrollY / cachedMaxScroll));
 
-                    if (scene.mountains) {
+                    if (scene.mountains && !scene.mountains.visible) {
                         scene.mountains.visible = true;
                     }
 
@@ -191,11 +205,35 @@ const MontfortCanvas = () => {
                 }
             };
 
-            updateSize();
-            window.addEventListener('resize', updateSize, { passive: true });
+            let scrollTicking = false;
+            let scrollRafId = null;
+            const onScroll = () => {
+                if (scrollTicking) return;
+                scrollTicking = true;
+                scrollRafId = requestAnimationFrame(() => {
+                    updateCamera(false);
+                    scrollTicking = false;
+                });
+            };
 
-            updateCamera();
-            window.addEventListener('scroll', updateCamera, { passive: true });
+            const onResize = () => updateSize(false);
+
+            let docObserver = null;
+            if (typeof ResizeObserver !== 'undefined') {
+                docObserver = new ResizeObserver(refreshMaxScroll);
+                docObserver.observe(document.body);
+            }
+
+            updateSize(true);
+            window.addEventListener('resize', onResize, { passive: true });
+            window.addEventListener('scroll', onScroll, { passive: true });
+
+            cleanupListeners = () => {
+                window.removeEventListener('resize', onResize);
+                window.removeEventListener('scroll', onScroll);
+                if (scrollRafId) cancelAnimationFrame(scrollRafId);
+                docObserver?.disconnect();
+            };
         }
 
         checkAndBindApp();
@@ -203,6 +241,7 @@ const MontfortCanvas = () => {
         return () => {
             isMounted = false;
             if (timer) clearTimeout(timer);
+            cleanupListeners?.();
         };
     }, []);
 

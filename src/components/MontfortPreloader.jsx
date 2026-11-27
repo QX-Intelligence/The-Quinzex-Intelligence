@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const NUM_COLUMNS = 7;
@@ -18,9 +18,9 @@ function markPreloaderAsSeen() {
 
 const MontfortPreloader = ({ onDone }) => {
     const alreadySeen = typeof window !== 'undefined' && hasSeenPreloaderToday();
-    const [progress, setProgress] = useState(alreadySeen ? 100 : 0);
     const [isComplete, setIsComplete] = useState(alreadySeen);
     const [isExiting, setIsExiting] = useState(false);
+    const counterRef = useRef(null);
 
     useEffect(() => {
         if (hasSeenPreloaderToday()) {
@@ -29,30 +29,45 @@ const MontfortPreloader = ({ onDone }) => {
             return;
         }
 
-        let startTime = Date.now();
+        const startTime = performance.now();
         const duration = 2000; // 2.0s smooth cinematic duration
+        let rafId = null;
+        let exitTimer = null;
+        let doneTimer = null;
+        let lastDisplayed = -1;
 
-        const interval = setInterval(() => {
-            const elapsed = Date.now() - startTime;
-            const rawProgress = elapsed / duration;
+        const tick = (now) => {
+            const elapsed = now - startTime;
+            const rawProgress = Math.min(1, elapsed / duration);
             const easedProgress = Math.min(100, Math.floor(Math.pow(rawProgress, 1.2) * 100));
-            setProgress(easedProgress);
 
-            if (rawProgress >= 1) {
-                clearInterval(interval);
-                setProgress(100);
-                setTimeout(() => {
+            if (easedProgress !== lastDisplayed && counterRef.current) {
+                lastDisplayed = easedProgress;
+                counterRef.current.textContent = easedProgress.toString().padStart(2, '0');
+            }
+
+            if (rawProgress < 1) {
+                rafId = requestAnimationFrame(tick);
+            } else {
+                if (counterRef.current) counterRef.current.textContent = '100';
+                exitTimer = setTimeout(() => {
                     setIsExiting(true);
-                    setTimeout(() => {
+                    doneTimer = setTimeout(() => {
                         markPreloaderAsSeen();
                         setIsComplete(true);
                         onDone?.();
                     }, 1000);
                 }, 350);
             }
-        }, 25);
+        };
 
-        return () => clearInterval(interval);
+        rafId = requestAnimationFrame(tick);
+
+        return () => {
+            if (rafId) cancelAnimationFrame(rafId);
+            if (exitTimer) clearTimeout(exitTimer);
+            if (doneTimer) clearTimeout(doneTimer);
+        };
     }, [onDone]);
 
     if (isComplete) return null;
@@ -240,7 +255,7 @@ const MontfortPreloader = ({ onDone }) => {
                             marginBottom: '32px'
                         }}
                     >
-                        Software Engineering &amp; AI Studio
+                        Software &amp; Cloud Engineering
                     </motion.div>
 
                     {/* Architectural Counter */}
@@ -254,6 +269,7 @@ const MontfortPreloader = ({ onDone }) => {
                         }}
                     >
                         <span
+                            ref={counterRef}
                             style={{
                                 fontSize: '64px',
                                 fontWeight: 200,
@@ -262,7 +278,7 @@ const MontfortPreloader = ({ onDone }) => {
                                 lineHeight: 1
                             }}
                         >
-                            {progress.toString().padStart(2, '0')}
+                            00
                         </span>
                         <span
                             style={{

@@ -46,7 +46,6 @@ const ProjectDetail = ({ projectId }) => {
                     </Link>
 
                     <div className="project-category-badge">
-                        <span className="badge-pulse-dot"></span>
                         <span>{project.category} &bull; {project.year}</span>
                     </div>
                 </div>
@@ -73,7 +72,7 @@ const ProjectDetail = ({ projectId }) => {
                             </a>
                         )}
                         <a href="#narrative" className="dock-btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                            <span>Read Architecture Brief</span>
+                            <span>Read Case Study</span>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <polyline points="19 12 12 19 5 12"></polyline>
@@ -82,7 +81,7 @@ const ProjectDetail = ({ projectId }) => {
                     </div>
                 </header>
 
-                {/* ── METRICS RIBBON: 3 High-Signal Glass Cards ──────────────── */}
+                {/* ── METRICS RIBBON: 3 Key Metric Cards ─────────────────────── */}
                 <div className="project-metrics-ribbon">
                     {project.results.metrics.map((metric, i) => (
                         <div className="project-metric-card" key={i}>
@@ -102,14 +101,14 @@ const ProjectDetail = ({ projectId }) => {
                     />
                     <div className="project-hero-media-overlay" />
                     <div className="project-hero-media-label">
-                        <span>{project.title} &mdash; Architecture View</span>
+                        <span>{project.title} &mdash; Platform Overview</span>
                     </div>
                 </div>
 
                 {/* ── TECH STACK BADGES ──────────────────────────────────────── */}
                 {project.tech && project.tech.length > 0 && (
                     <div className="project-tech-stack-wrap">
-                        <span className="project-tech-stack-title">Engineered Stack</span>
+                        <span className="project-tech-stack-title">Tech Stack</span>
                         <div className="project-tech-pills">
                             {project.tech.map((t, idx) => (
                                 <span key={idx} className="project-tech-pill">
@@ -132,21 +131,21 @@ const ProjectDetail = ({ projectId }) => {
                         <p className="narrative-card-body">{project.challenge}</p>
                     </div>
 
-                    {/* Card 2: The Architecture */}
+                    {/* Card 2: Solution & Architecture */}
                     <div className="project-narrative-card">
                         <div className="narrative-card-header">
                             <span className="narrative-step-num">02</span>
-                            <h2 className="narrative-card-title">System Architecture</h2>
+                            <h2 className="narrative-card-title">Solution &amp; Architecture</h2>
                         </div>
                         <p className="narrative-card-body">{project.architecture || project.solution}</p>
                     </div>
 
-                    {/* Card 3: The Measurable Outcome */}
+                    {/* Card 3: Results */}
                     {project.outcome && (
                         <div className="project-narrative-card is-highlight">
                             <div className="narrative-card-header">
                                 <span className="narrative-step-num">03</span>
-                                <h2 className="narrative-card-title">Measurable Outcome</h2>
+                                <h2 className="narrative-card-title">Results</h2>
                             </div>
                             <p className="narrative-card-body">{project.outcome}</p>
                         </div>
@@ -157,7 +156,6 @@ const ProjectDetail = ({ projectId }) => {
                 {project.next && (
                     <div className="project-next-case-wrapper">
                         <div className="project-next-case-header">
-                            <span className="next-case-label-dot"></span>
                             <span className="next-case-label-text">Next Project</span>
                         </div>
 

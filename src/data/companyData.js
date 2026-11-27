@@ -12,58 +12,58 @@ export const techMatrix = [
         items: ['Kubernetes', 'AWS (S3/EC2/RDS)', 'Azure', 'Terraform', 'Docker', 'Redis', 'Kafka']
     },
     {
-        category: 'DevOps & Intelligence',
-        items: ['GitHub Actions', 'Jenkins', 'ArgoCD', 'Prometheus & Grafana', 'SonarQube', 'spaCy / NLTK', 'Pandas']
+        category: 'DevOps & Data',
+        items: ['GitHub Actions', 'Jenkins', 'Terraform', 'Prometheus & Grafana', 'SonarQube', 'spaCy / NLTK', 'Pandas']
     }
 ];
 
 export const engineeringPillars = [
     {
         title: 'High Performance',
-        description: 'Static edge generation, low bundle sizes, and optimized rendering engines ensuring instant user response.',
+        description: 'Static edge generation, lean bundle sizes, and optimized rendering ensuring fast user response.',
         metric: '99+ Core Web Vitals'
     },
     {
         title: 'Resilient Scalability',
-        description: 'Dockerized microservice setups orchestrated with Kubernetes, ready to scale seamlessly under heavy concurrent traffic.',
+        description: 'Containerized microservices orchestrated with Kubernetes to scale reliably under concurrent traffic.',
         metric: '99.99% Target Uptime'
     },
     {
-        title: 'Intelligence & Analytics',
-        description: 'Integrated machine learning pipelines, predictive engines, and dashboard systems translating raw telemetry into actionable data.',
-        metric: 'Real-time telemetry'
+        title: 'Data & Analytics',
+        description: 'Machine learning pipelines, analytics workflows, and dashboards turning raw data into clear insights.',
+        metric: 'Real-Time Analytics'
     }
 ];
 
 export const philosophyPillars = [
     {
-        title: 'Aesthetics',
-        intro: 'We believe digital interactions are emotional. A premium application must captivate on first touch.',
+        title: 'Design',
+        intro: 'Clear, well-crafted interfaces make complex software intuitive from the first interaction.',
         points: [
-            'Custom motion-flow architectures',
-            'High-end glassmorphism styling',
-            'Tailored, elegant micro-animations',
-            'Pixel-perfect responsive layouts'
+            'Thoughtful motion and transitions',
+            'Clean, accessible component systems',
+            'Consistent typography and visual hierarchy',
+            'Responsive layouts across all devices'
         ]
     },
     {
         title: 'Architecture',
-        intro: 'Visuals without integrity are hollow. We engineer resilient distributed systems that stand standard.',
+        intro: 'Visuals need a solid foundation. We build maintainable backend systems designed to scale.',
         points: [
-            'Robust Spring Boot microservices',
-            'Highly-optimized SQL/NoSQL structures',
-            'JWT access & refresh auth systems',
-            'WebSockets and event-driven patterns'
+            'Modular Spring Boot & Node.js services',
+            'Indexed SQL & NoSQL data models',
+            'JWT access & refresh authentication',
+            'WebSockets and event-driven APIs'
         ]
     },
     {
         title: 'Automation',
-        intro: 'Complexity is automated. We deploy zero-downtime, fully-audited environments that scale automatically.',
+        intro: 'Repetitive operations belong in code. We automate testing, deployments, and monitoring.',
         points: [
-            'Continuous GitHub Actions pipelines',
-            'Automated EKS / Kubernetes deployments',
-            'Real-time telemetry and alerts',
-            'SEO structure optimization'
+            'Automated CI/CD build pipelines',
+            'Containerized Kubernetes deployments',
+            'Real-time monitoring and alerting',
+            'Technical SEO and performance checks'
         ]
     }
 ];
@@ -71,63 +71,63 @@ export const philosophyPillars = [
 export const clientJourney = [
     {
         step: '01',
-        phase: 'Strategic Alignment',
-        description: 'We align deeply with your core objectives, drafting precise software blueprints and selecting the optimal technology stack.'
+        phase: 'Discovery & Planning',
+        description: 'We align on business goals, scope technical requirements, and select the right technology stack.'
     },
     {
         step: '02',
-        phase: 'System Architecture',
-        description: 'We construct database diagrams, draft API specifications, and design interactive visual layouts before writing code.'
+        phase: 'Architecture & Design',
+        description: 'We design database schemas, API contracts, and interactive prototypes before implementation begins.'
     },
     {
         step: '03',
-        phase: 'Elite Crafting',
-        description: 'Our engineers construct application layers under comprehensive unit test coverage, ensuring bulletproof stability.'
+        phase: 'Engineering & QA',
+        description: 'Our engineers build application layers with automated tests and code reviews for long-term stability.'
     },
     {
         step: '04',
-        phase: 'Performance Testing',
-        description: 'We perform high-concurrency load testing, complete security audits, and optimize SEO attributes to the peak.'
+        phase: 'Testing & Optimization',
+        description: 'We run load testing, security checks, and performance profiling before production release.'
     },
     {
         step: '05',
-        phase: 'Orchestrated Launch',
-        description: 'We deploy to edge Content Delivery Networks (CDNs) and set up persistent observability dashboards to secure longevity.'
+        phase: 'Deployment & Monitoring',
+        description: 'We launch on cloud and CDN infrastructure with dashboards and alerts to keep systems healthy.'
     }
 ];
 
 export const auraFeatures = [
     {
-        title: "Quinzex Design Language",
-        description: "Bespoke digital curation styled with a luxury Alpine & Obsidian aesthetic. Fluid responsive systems, micro-animations, and balanced glassmorphism form an instant emotional connection.",
-        tech: "Bespoke Curation & UI/UX"
+        title: "Design Systems & UI",
+        description: "Cohesive visual systems with responsive layouts, refined typography, and accessible components built for clarity.",
+        tech: "UI/UX & Design Systems"
     },
     {
-        title: "Cognitive Integration",
-        description: "Intelligent software structures loaded with modern AI integrations, semantic pipelines, and natural language processing models to streamline complex operational tasks seamlessly.",
-        tech: "AI & Machine Learning"
+        title: "Applied AI & Data Pipelines",
+        description: "Practical LLM integrations, search workflows, and Python data pipelines designed to automate manual operations.",
+        tech: "AI & Data Engineering"
     },
     {
-        title: "Ultra-Low Latency Pipelines",
-        description: "High-performance setups leveraging optimized asset loads, pre-rendering patterns, edge-caching networks, and minimal bundle weights to ensure instantaneous interaction vectors.",
+        title: "Performance Optimization",
+        description: "Lean asset loading, server/edge rendering, caching layers, and small bundle sizes for fast page loads.",
         tech: "Performance Engineering"
     },
     {
-        title: "Resilient System Architecture",
-        description: "Dockerized, microservices-driven structures engineered for horizontal scalability, high concurrent traffic spikes, and strict data layer security protocols.",
-        tech: "Robust Infrastructure"
+        title: "Scalable Cloud Infrastructure",
+        description: "Containerized microservices engineered for horizontal scaling, high availability, and strict access controls.",
+        tech: "Cloud & DevOps"
     }
 ];
 
 export const whyItMatters = [
     {
-        text: "Bespoke, elite visual presentation establishes instant, unwavering trust with enterprise stakeholders. First impressions are irreversible."
+        text: "Clear, dependable product design builds immediate credibility with customers and enterprise buyers."
     },
     {
-        text: "Uncompromising application performance guarantees high user retention and frictionless conversion vectors for your digital services."
+        text: "Fast, responsive performance improves user retention and conversion across desktop and mobile."
     },
     {
-        text: "Unique, highly custom digital ecosystems set your enterprise leagues apart from standard off-the-shelf framework competitors."
+        text: "Custom-built software architectures adapt to your business requirements instead of forcing workarounds."
     }
 ];
 

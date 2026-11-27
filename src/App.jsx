@@ -58,51 +58,69 @@ function App() {
         };
     }, []);
 
-    // Initialize Lenis Momentum Smooth Scroll & Synchronize with GSAP
+    // Initialize Lenis Momentum Smooth Scroll (desktop only) & Synchronize with GSAP
     useEffect(() => {
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            orientation: 'vertical',
-            gestureOrientation: 'vertical',
-            smoothWheel: true,
-            wheelMultiplier: 1.0,
-            touchMultiplier: 2.0,
-            infinite: false
-        });
-        lenisRef.current = lenis;
+        const isTouchOrMobile = typeof window !== 'undefined' && (
+            window.innerWidth <= 1024 ||
+            window.matchMedia?.('(pointer: coarse)')?.matches
+        );
 
-        lenis.on('scroll', ScrollTrigger.update);
+        let lenis = null;
+        let onTick = null;
 
-        gsap.ticker.add((time) => {
-            lenis.raf(time * 1000);
-        });
-        gsap.ticker.lagSmoothing(0);
+        if (!isTouchOrMobile) {
+            lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                orientation: 'vertical',
+                gestureOrientation: 'vertical',
+                smoothWheel: true,
+                wheelMultiplier: 1.0,
+                infinite: false
+            });
+            lenisRef.current = lenis;
+
+            lenis.on('scroll', ScrollTrigger.update);
+
+            onTick = (time) => {
+                lenis.raf(time * 1000);
+            };
+            gsap.ticker.add(onTick);
+            gsap.ticker.lagSmoothing(0);
+        } else {
+            lenisRef.current = null;
+        }
+
+        // Cache DOM nodes for scroll chapter & footer tracking
+        const chapterIds = ['Sustainability', 'GlobalConnectivity', 'WhatWeDo', 'WhoWeAre'];
+        const footerEl = document.querySelector('.ic-creative-footer');
+        const chapterEls = chapterIds
+            .map(id => ({ id, el: document.getElementById(id) }))
+            .filter(item => item.el);
 
         let ticking = false;
+        let scrollRafId = null;
         const handleScroll = () => {
             if (ticking) return;
             ticking = true;
-            requestAnimationFrame(() => {
-                const footer = document.querySelector('.ic-creative-footer');
-                if (footer) {
-                    const fRect = footer.getBoundingClientRect();
-                    setIsInFooter(fRect.top < window.innerHeight * 0.75);
+            scrollRafId = requestAnimationFrame(() => {
+                const winH = window.innerHeight;
+                if (footerEl) {
+                    const fRect = footerEl.getBoundingClientRect();
+                    const nextInFooter = fRect.top < winH * 0.75;
+                    setIsInFooter(prev => (prev === nextInFooter ? prev : nextInFooter));
                 } else {
-                    setIsInFooter(false);
+                    setIsInFooter(prev => (prev ? false : prev));
                 }
 
                 // Active Chapter detection matching section IDs on homepage
-                const chapters = ['Sustainability', 'GlobalConnectivity', 'WhatWeDo', 'WhoWeAre'];
-                for (let i = 0; i < chapters.length; i++) {
-                    const el = document.getElementById(chapters[i]);
-                    if (el) {
-                        const rect = el.getBoundingClientRect();
-                        if (rect.top <= window.innerHeight * 0.5) {
-                            const found = chapters[i];
-                            setActiveChapter(prev => prev === found ? prev : found);
-                            break;
-                        }
+                const threshold = winH * 0.5;
+                for (let i = 0; i < chapterEls.length; i++) {
+                    const rect = chapterEls[i].el.getBoundingClientRect();
+                    if (rect.top <= threshold) {
+                        const found = chapterEls[i].id;
+                        setActiveChapter(prev => (prev === found ? prev : found));
+                        break;
                     }
                 }
                 ticking = false;
@@ -114,7 +132,12 @@ function App() {
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
-            lenis.destroy();
+            if (scrollRafId) cancelAnimationFrame(scrollRafId);
+            if (onTick) gsap.ticker.remove(onTick);
+            if (lenis) {
+                lenis.destroy();
+                lenisRef.current = null;
+            }
             ScrollTrigger.killAll();
         };
     }, [currentPath]);

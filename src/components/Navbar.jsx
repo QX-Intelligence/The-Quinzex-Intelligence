@@ -152,9 +152,22 @@ const Navbar = ({ onOpenMenu }) => {
     }, []);
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20);
+        let ticking = false;
+        let rafId = null;
+        const handleScroll = () => {
+            if (ticking) return;
+            ticking = true;
+            rafId = requestAnimationFrame(() => {
+                const next = window.scrollY > 20;
+                setScrolled(prev => (prev === next ? prev : next));
+                ticking = false;
+            });
+        };
         window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
     }, []);
 
     useEffect(() => {
@@ -366,8 +379,8 @@ const Navbar = ({ onOpenMenu }) => {
                                                         <line x1="17.2" y1="16.6" x2="14" y2="13.8" />
                                                     </svg>
                                                     <div className="w-layout-vflex">
-                                                        <div className="link-wrapper"><div className="nav-link-sub-items">AI & Machine Learning</div><div className="hover-line"></div></div>
-                                                        <div className="menu-items-detail-text">Autonomous agents & intelligence pipelines.</div>
+                                                        <div className="link-wrapper"><div className="nav-link-sub-items">AI &amp; Data Systems</div><div className="hover-line"></div></div>
+                                                        <div className="menu-items-detail-text">Applied AI workflows &amp; data pipelines.</div>
                                                     </div>
                                                 </Link>
                                             </div>

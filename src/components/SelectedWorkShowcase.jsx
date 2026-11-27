@@ -62,16 +62,11 @@ export default function SelectedWorkShowcase() {
             {/* ── HEADER & CONTROLS ────────────────────────────────────────── */}
             <div className="sw-header-container">
                 <div className="sw-headline-wrap">
-                    <div className="sect-dot-flex w-layout-hflex" style={{ marginBottom: '1rem' }}>
-                        <span className="dot pulse-dot"></span>
-                        <span className="sw-category-subtitle">Portfolio &bull; 2023–2025</span>
-                    </div>
                     <h1 className="sw-display-title">
                         SELECTED <span className="sw-highlight-italic">WORK</span>
                     </h1>
                     <p className="sw-lead-description">
-                        A curated selection of high-performance web applications, cloud platforms, 
-                        and custom digital experiences engineered by Quinzex.
+                        Production web applications, cloud platforms, and custom software built by Quinzex.
                     </p>
                 </div>
 
@@ -330,7 +325,7 @@ export default function SelectedWorkShowcase() {
                                                 onClick={() => setPreviewProject(project)}
                                                 title="Preview Project"
                                             >
-                                                ⚡
+                                                ↗
                                             </button>
                                         </div>
 
@@ -484,7 +479,6 @@ export default function SelectedWorkShowcase() {
                             {/* Drawer Header */}
                             <div className="sw-qm-header">
                                 <div className="sw-qm-meta">
-                                    <span className="dot pulse-dot"></span>
                                     <span>PROJECT OVERVIEW &bull; {previewProject.title}</span>
                                 </div>
                                 <button 
@@ -522,7 +516,7 @@ export default function SelectedWorkShowcase() {
                                 </div>
 
                                 <div className="sw-qm-section">
-                                    <h4>Measured Benchmarks</h4>
+                                    <h4>Key Metrics</h4>
                                     <div className="sw-qm-metrics-grid">
                                         {previewProject.results.metrics.map((val, idx) => (
                                             <div key={idx} className="sw-qm-metric-card">

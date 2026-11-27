@@ -29,16 +29,17 @@ export const teamMembers = [
     {
         id: 'sri-sai-praveen',
         name: 'Katta Sri Sai Praveen',
-        role: 'Backend & Data Engineer',
-        subtitle: 'Python · Microservices · ML-driven Analytics',
-        description: 'Computer Science Engineer specializing in Python, backend development, microservices, and data/ML systems. Designing and shipping production-grade APIs, real-time services, and analytics pipelines that are secure, observable, and performant under real traffic.',
+        role: 'Backend, AI & Data Engineer',
+        subtitle: 'Python · Django · LLMs & AI Agents · Machine Learning',
+        description: 'Computer Science engineer specializing in Python, Django/Flask microservices, machine learning, computer vision, and LLM-powered workflows. Building scalable APIs, applied AI pipelines, and interactive analytics dashboards backed by SQL, Redis, and AWS S3.',
         portfolioUrl: 'https://69326c54e8aec728a1540bf7--celadon-zuccutto-a71c25.netlify.app/',
-        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80',
+        image: '/assets/team/sri-sai-praveen.jpg',
         skills: [
-            { category: 'Languages', items: ['Python', 'SQL', 'JavaScript'] },
-            { category: 'Frameworks', items: ['Django REST Framework', 'Streamlit'] },
-            { category: 'Cloud & Infrastructure', items: ['AWS S3', 'Redis', 'Docker', 'Microservices', 'GitHub Actions'] },
-            { category: 'Data & ML', items: ['NLP (spaCy, NLTK)', 'Pandas', 'Plotly', 'Matplotlib'] }
+            { category: 'Languages & Backend', items: ['Python', 'SQL', 'Django', 'Django REST Framework', 'Flask', 'Microservices'] },
+            { category: 'Generative AI & LLMs', items: ['LLMs', 'AI Agents', 'LangChain', 'LangGraph', 'Prompt Engineering', 'Google Gemini API', 'Stable Diffusion'] },
+            { category: 'Machine Learning & Vision', items: ['Machine Learning', 'Deep Learning', 'NLP', 'Computer Vision', 'OpenCV', 'Scikit-learn', 'XGBoost', 'LightGBM', 'Random Forest'] },
+            { category: 'Data & Visualization', items: ['Pandas', 'NumPy', 'SciPy', 'Streamlit', 'Matplotlib', 'Seaborn', 'Plotly'] },
+            { category: 'Databases, Cloud & DevOps', items: ['MySQL', 'PostgreSQL', 'Oracle', 'Redis', 'AWS S3', 'Git', 'GitHub', 'CI/CD'] }
         ],
         projects: [
             {
@@ -62,15 +63,15 @@ export const teamMembers = [
         id: 'akhil-malisetty',
         name: 'Akhil Malisetty',
         role: 'Backend Engineer',
-        subtitle: 'Java · Spring Boot · Distributed Systems · Redis',
-        description: 'Backend engineer building scalable, low-latency applications with Java, Spring Boot, distributed microservices, Redis caching layers, and high-throughput REST/WebSocket APIs.',
+        subtitle: 'Java · Spring Boot · Microservices · Kafka & Redis',
+        description: 'Backend engineer building scalable, low-latency applications with Java, the Spring ecosystem (Boot, MVC, Security, Cloud, Data JPA), Hibernate, Apache Kafka, Redis, WebSockets, and secure payment gateway integrations.',
         portfolioUrl: 'https://stunning-cactus-8b9821.netlify.app/',
-        image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1200&q=80',
+        image: '/assets/team/akhil-malisetty.jpg',
         skills: [
-            { category: 'Languages', items: ['Java', 'SQL', 'Python'] },
-            { category: 'Frameworks', items: ['Spring Boot', 'Hibernate', 'Express'] },
-            { category: 'Architecture', items: ['Distributed Systems', 'Event-Driven Architecture', 'WebSockets', 'Redis'] },
-            { category: 'Cloud & Security', items: ['AWS S3', 'JWT', 'OAuth2', 'RBAC', 'Kafka'] }
+            { category: 'Languages & Frameworks', items: ['Java', 'Spring Boot', 'Spring Framework', 'Spring MVC', 'Spring Cloud', 'Spring Data JPA', 'Hibernate'] },
+            { category: 'Architecture & Messaging', items: ['Microservices', 'REST APIs', 'WebSockets', 'Apache Kafka', 'Payment Gateway Integration'] },
+            { category: 'Security & Databases', items: ['Spring Security', 'JWT', 'OAuth 2.0', 'MySQL', 'PostgreSQL', 'Redis', 'Firebase'] },
+            { category: 'Cloud, DevOps & Testing', items: ['AWS', 'Docker', 'Nginx', 'Maven', 'Git', 'GitHub', 'JUnit', 'Mockito'] }
         ],
         projects: [
             {
@@ -94,31 +95,31 @@ export const teamMembers = [
         id: 'siva-chandrasekhar',
         name: 'Siva Chandrasekhar Javvadi',
         role: 'Cloud & DevOps Engineer',
-        subtitle: 'Kubernetes · Cloud Architecture · Zero-Downtime CI/CD',
-        description: 'Building reliable pipelines, scalable infrastructure, and automated workflows. Turning complexity into clean, reproducible systems. Focusing on zero-downtime, AWS/Azure, multi-environment deployments, and infrastructure stability.',
+        subtitle: 'AWS · Linux · Kubernetes · Terraform · CI/CD',
+        description: 'Building reliable CI/CD pipelines, scalable cloud infrastructure, and automated workflows across Linux and AWS. Turning operational complexity into reproducible systems with Terraform, Docker, Kubernetes, Ansible, Puppet, Prometheus + Grafana, SonarQube, and Snyk.',
         portfolioUrl: 'https://shiva-portfolio-gray.vercel.app/',
-        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=1200&q=80',
+        image: '/assets/team/siva-chandrasekhar.jpg',
         skills: [
-            { category: 'Cloud Platforms', items: ['AWS', 'Azure', 'Terraform'] },
-            { category: 'Container Orchestration', items: ['Kubernetes (EKS)', 'Docker', 'Helm'] },
-            { category: 'CI/CD & Automation', items: ['GitHub Actions', 'Jenkins', 'ArgoCD', 'Ansible'] },
-            { category: 'Observability & Security', items: ['Prometheus', 'Grafana', 'SonarQube'] }
+            { category: 'Systems & Cloud', items: ['Linux', 'AWS', 'SQL', 'Terraform'] },
+            { category: 'Containers & Config Management', items: ['Docker', 'Kubernetes', 'Ansible', 'Puppet'] },
+            { category: 'CI/CD & Build Automation', items: ['Maven', 'Jenkins'] },
+            { category: 'Observability & Security', items: ['SonarQube', 'Prometheus + Grafana', 'Snyk'] }
         ],
         projects: [
             {
                 title: 'Enterprise Microservice Deployment',
                 description: 'Deployed centralized HR portal (Java Spring Boot microservices) on cloud infrastructure with RBAC and immutable audit logging.',
-                tags: ['Kubernetes', 'RBAC', 'Zero-Downtime']
+                tags: ['Kubernetes', 'Docker', 'Jenkins']
             },
             {
                 title: 'High-Availability EdTech Edge Infrastructure',
                 description: 'Managed infrastructure for an EdTech video content delivery platform optimized for sub-100ms global edge delivery via CDN.',
-                tags: ['AWS', 'CloudFront', 'Edge']
+                tags: ['AWS', 'Terraform', 'Linux']
             },
             {
-                title: 'Automated GitOps & Kubernetes Migration',
-                description: 'Migrated monolithic workloads to scalable microservices on AWS EKS using ArgoCD declarative pipelines with automated blue/green canary rollouts.',
-                tags: ['EKS', 'ArgoCD', 'GitOps']
+                title: 'Automated CI/CD & DevSecOps Pipeline',
+                description: 'Automated build, security scanning, and observability workflows using Maven, Jenkins, SonarQube, Snyk, Ansible, Puppet, and Prometheus + Grafana.',
+                tags: ['Jenkins', 'SonarQube', 'Snyk']
             }
         ]
     }

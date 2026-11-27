@@ -54,65 +54,53 @@ const SubPage = ({ path }) => {
     const pageMeta = {
         "/about": {
             title: "About Us",
-            category: "Who We Are",
-            tagline: "We close the gap between what companies are and how they are perceived."
+            tagline: "Software engineering, product design, and cloud infrastructure built for scale."
         },
         "/team": {
             title: "Our Team",
-            category: "Our Team & Specialists",
-            tagline: "An elite engineering team deployed to build your highest-stakes systems."
+            tagline: "Senior engineers specializing in full-stack development, data pipelines, and cloud infrastructure."
         },
         "/services": {
-            title: "Core Expertise",
-            category: "Infrastructure & Capabilities",
-            tagline: "Bespoke digital engineering from high-performance frontends to resilient distributed microservices."
+            title: "Services",
+            tagline: "End-to-end software development, from responsive web interfaces to scalable backend systems."
         },
         "/philosophy": {
             title: "Our Philosophy",
-            category: "Operating Convictions",
-            tagline: "An obsession with craft. We combine visual art, systems architecture, and automated infrastructure."
+            tagline: "We combine thoughtful interface design, reliable architecture, and automated delivery."
         },
         "/portfolio": {
             title: "Selected Work",
-            category: "Selected Projects",
-            tagline: "Measurable architectural impact for fast-growing technology leaders and enterprise platforms."
+            tagline: "Production web applications, data platforms, and cloud systems built for our clients."
         },
         "/features": {
-            title: "System Architecture",
-            category: "System Capabilities",
-            tagline: "Modern cognitive integrations, ultra-low latency pipelines, and resilient system architecture."
+            title: "Capabilities",
+            tagline: "Practical AI integrations, fast data pipelines, and reliable cloud infrastructure."
         },
         "/careers": {
-            title: "Careers & Engineering",
-            category: "Join Our Ranks",
-            tagline: "Work with elite global talent on high-impact projects."
+            title: "Careers",
+            tagline: "Join our team of engineers building production software for global clients."
         },
         "/startups": {
             title: "For Startups",
-            category: "Startup Accelerator",
-            tagline: "Pre-launch, post-pivot, and market expansion sprint packages."
+            tagline: "Dedicated engineering sprints for early-stage and scaling startups."
         },
         "/contact": {
             title: "Start a Conversation",
-            category: "Direct Inquiries",
-            tagline: "Let's discuss your next engineering challenge, AI workflow, architecture overhaul, or digital product launch."
+            tagline: "Let's discuss your next software project, architecture review, or product launch."
         },
         "/privacy": {
             title: privacyPolicyData.title,
-            category: "Legal & Security",
             tagline: "Our commitment to protecting your privacy and confidential business data."
         },
         "/terms": {
             title: termsData.title,
-            category: "Legal Terms",
             tagline: "Terms governing our software delivery, engagements, and intellectual property."
         }
     };
 
     const currentMeta = pageMeta[activePath] || {
         title: "Quinzex Intelligence",
-        category: "Software Engineering & AI Systems",
-        tagline: "High-performance software engineering, cloud architecture & AI systems studio for modern technology leaders."
+        tagline: "Software engineering, cloud architecture, and digital product studio."
     };
 
     return (
@@ -129,10 +117,6 @@ const SubPage = ({ path }) => {
                 <section className="section sub-page-hero" style={{ paddingBottom: '2.5rem' }}>
                     <div className="w-layout-blockcontainer container w-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
                         <div className="project-hero-grid">
-                            <div className="sect-dot-flex w-layout-hflex" style={{ marginBottom: '1.5rem' }}>
-                                <div className="dot"></div>
-                                <div>{currentMeta.category}</div>
-                            </div>
                             <h1 className="project-detail-title">{currentMeta.title}</h1>
                             <p className="project-detail-tagline">{currentMeta.tagline}</p>
                         </div>
@@ -152,13 +136,12 @@ const SubPage = ({ path }) => {
                             <div className="narrative-grid">
                                 <div className="narrative-left">
                                     <div className="sect-dot-flex w-layout-hflex">
-                                        <div className="dot"></div>
-                                        <div>Our Manifesto</div>
+                                        <div>Who We Are</div>
                                     </div>
                                 </div>
                                 <div className="narrative-right">
                                     <p className="narrative-paragraph">
-                                        Quinzex Intelligence is a bespoke software &amp; design studio for technology and corporate leaders at turning points. We believe that architecture, strategy, and design are not separate disciplines — they are three pillars of the same foundation. We reject generic templates and cookie-cutter approaches in favor of high-performance web applications and software systems that demand attention and drive growth.
+                                        Quinzex Intelligence is a software engineering and design studio working with technology teams and business leaders. We bring product design, systems architecture, and infrastructure together so companies can ship reliable web applications and software platforms that support long-term growth.
                                     </p>
                                 </div>
                             </div>
@@ -168,23 +151,22 @@ const SubPage = ({ path }) => {
                             <div className="narrative-grid">
                                 <div className="narrative-left">
                                     <div className="sect-dot-flex w-layout-hflex">
-                                        <div className="dot"></div>
-                                        <div>The Engineering Model</div>
+                                        <div>How We Work</div>
                                     </div>
                                 </div>
                                 <div className="narrative-right">
                                     <p className="narrative-paragraph">
-                                        Unlike traditional agencies that carry massive overhead and assign juniors to critical accounts, we operate as a dedicated team of senior specialists. This model allows us to deploy the exact talent needed for your specific challenge — whether it is distributed microservices, a 3D WebGL brand overhaul, or custom AI telemetry — without friction, bureaucracy, or unnecessary price tags.
+                                        We work directly as a focused team of senior specialists rather than layering account managers and junior handoffs. That lets us bring the right expertise to your project — whether it is distributed backend services, a responsive web platform, or custom data and AI workflows — with clear communication and predictable delivery.
                                     </p>
                                 </div>
                             </div>
 
                             <div className="narrative-divider"></div>
 
-                            {/* Triple-A Standard Overview */}
+                            {/* Core Principles Overview */}
                             <div>
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
-                                    The Triple-A Standard
+                                    Core Principles
                                 </h3>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
                                     {philosophyPillars.map((p, idx) => (
@@ -252,7 +234,7 @@ const SubPage = ({ path }) => {
 
                                             <div style={{ marginBottom: '1.5rem' }}>
                                                 <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)', marginBottom: '8px' }}>
-                                                    Core Competencies
+                                                    Core Skills
                                                 </div>
                                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                                     {member.skills.flatMap(s => s.items).slice(0, 6).map((skill, sIdx) => (
@@ -322,10 +304,10 @@ const SubPage = ({ path }) => {
                                 ))}
                             </div>
 
-                            {/* Tech Matrix */}
+                            {/* Technology Stack */}
                             <div style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem', marginBottom: '4rem' }}>
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
-                                    Enterprise Technology Matrix
+                                    Technology Stack
                                 </h3>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem' }}>
                                     {techMatrix.map((cat, idx) => (
@@ -374,10 +356,10 @@ const SubPage = ({ path }) => {
                                 ))}
                             </div>
 
-                            {/* 5-Step Client Journey */}
+                            {/* Delivery Process */}
                             <div style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
-                                    The 5-Step Engagement Journey
+                                    Delivery Process
                                 </h3>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                                     {clientJourney.map((step, sIdx) => (
@@ -428,7 +410,7 @@ const SubPage = ({ path }) => {
 
                             <div style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
                                 <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '1.5rem' }}>
-                                    Why It Matters For Technology Leaders
+                                    Why It Matters
                                 </h3>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                                     {whyItMatters.map((w, idx) => (
@@ -448,10 +430,10 @@ const SubPage = ({ path }) => {
                     {activePath === '/careers' && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                             {[
-                                { title: "Senior Front-End Architect", type: "Contract / Remote", desc: "Expert in React, Next.js, Framer Motion, and building smooth, performance-optimized micro-interactions with 99+ Core Web Vitals." },
-                                { title: "Lead Distributed Systems Engineer", type: "Contract / Remote", desc: "Craft robust Java Spring Boot and Node.js microservices, Redis caching layers, and high-concurrency event streams (Kafka)." },
-                                { title: "Cloud & Infrastructure Architect", type: "Contract / Remote", desc: "Build automated EKS/Kubernetes CI/CD pipelines, zero-downtime blue/green deployments, and Terraform infrastructure as code." },
-                                { title: "AI Workflow & Data Engineer", type: "Contract / Remote", desc: "Integrate agentic AI architectures, Python NLP models, and real-time telemetry dashboards for enterprise pipelines." }
+                                { title: "Senior Front-End Engineer", type: "Contract / Remote", desc: "Experienced in React, Next.js, Framer Motion, and building responsive, performance-focused interfaces with strong Core Web Vitals." },
+                                { title: "Senior Backend Engineer", type: "Contract / Remote", desc: "Build reliable Java Spring Boot and Node.js services, Redis caching layers, and high-concurrency event streams with Kafka." },
+                                { title: "Cloud & DevOps Engineer", type: "Contract / Remote", desc: "Manage automated Kubernetes CI/CD pipelines, zero-downtime deployments, and Terraform infrastructure as code." },
+                                { title: "Data & Applied AI Engineer", type: "Contract / Remote", desc: "Build practical AI workflows, Python NLP pipelines, and real-time analytics dashboards for production systems." }
                             ].map((role, idx) => (
                                 <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
                                     <div style={{ maxWidth: '700px' }}>
@@ -519,16 +501,16 @@ const SubPage = ({ path }) => {
                             </div>
 
                             <div style={{ background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
-                                <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, color: '#0f3554', marginBottom: '1.5rem' }}>Request Architecture Consultation</h3>
+                                <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.4rem', fontWeight: 700, color: '#0f3554', marginBottom: '1.5rem' }}>Send a Message</h3>
                                 
                                 {contactStatus === 'done' ? (
                                     <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
                                         <div style={{ fontSize: '2.5rem', color: '#0f3554', marginBottom: '0.75rem' }}>✓</div>
                                         <h4 style={{ fontFamily: 'var(--font-main)', fontSize: '1.25rem', fontWeight: 700, color: '#0f3554', marginBottom: '0.5rem' }}>
-                                            Request Transmitted
+                                            Message Sent
                                         </h4>
                                         <p style={{ fontSize: '14px', color: '#2a4358', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                                            Thank you{contactForm.name ? `, ${contactForm.name.split(' ')[0]}` : ''}. Your consultation request has been dispatched to our engineering leadership. We will review your project brief and reply to {contactForm.email} within 24 hours.
+                                            Thank you{contactForm.name ? `, ${contactForm.name.split(' ')[0]}` : ''}. We have received your inquiry and will reply to {contactForm.email} within one business day.
                                         </p>
                                         <button
                                             type="button"
@@ -576,7 +558,7 @@ const SubPage = ({ path }) => {
                                             <textarea
                                                 required
                                                 rows={4}
-                                                placeholder="Briefly describe your objectives, timeframe, or architecture turning point..."
+                                                placeholder="Briefly describe your project goals, timeline, and technical requirements..."
                                                 value={contactForm.message}
                                                 onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
                                                 style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(15, 53, 84, 0.15)', background: '#ffffff', color: '#0f3554' }}
@@ -588,7 +570,7 @@ const SubPage = ({ path }) => {
                                             disabled={contactStatus === 'sending'}
                                             style={{ width: '100%', padding: '12px', opacity: contactStatus === 'sending' ? 0.7 : 1, cursor: contactStatus === 'sending' ? 'not-allowed' : 'pointer' }}
                                         >
-                                            {contactStatus === 'sending' ? 'Sending Architecture Request...' : 'Submit Architecture Request →'}
+                                            {contactStatus === 'sending' ? 'Sending Message...' : 'Send Message →'}
                                         </button>
                                     </form>
                                 )}
