@@ -28,7 +28,7 @@ const MemberProfile = ({ memberId }) => {
             style={{ paddingTop: '120px', paddingBottom: '100px', minHeight: '100vh', color: '#0f3554' }}
         >
             <div className="w-layout-blockcontainer container w-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
-                
+
                 {/* Back Link */}
                 <div style={{ marginBottom: '2rem' }}>
                     <Link to="/team" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#0f3554', textDecoration: 'none', fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
@@ -38,7 +38,7 @@ const MemberProfile = ({ memberId }) => {
 
                 {/* Profile Header Grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '3rem', marginBottom: '4rem' }}>
-                    
+
                     {/* Top Row: Avatar & Bio */}
                     <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                         <div style={{ width: '160px', height: '160px', borderRadius: '1.25rem', overflow: 'hidden', border: '1px solid rgba(15, 53, 84, 0.15)', flexShrink: 0, boxShadow: '0 12px 32px rgba(15, 53, 84, 0.08)' }}>
@@ -73,80 +73,77 @@ const MemberProfile = ({ memberId }) => {
                 </div>
 
                 {/* Skills Matrix */}
-                <div style={{ marginBottom: '4rem', background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(15, 53, 84, 0.08)', borderRadius: '1.25rem', padding: '2.5rem' }}>
-                    <h2 style={{ fontFamily: 'var(--font-main)', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
-                        Technical Skills
-                    </h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem' }}>
-                        {member.skills.map((skillGroup, idx) => (
-                            <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                <div style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)' }}>
-                                    {skillGroup.category}
+                    <div className="ic-sub-glass-card" style={{ marginBottom: '4rem', padding: '2.5rem' }}>
+                        <h2 style={{ fontFamily: 'var(--font-main)', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
+                            Technical Skills
+                        </h2>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem' }}>
+                            {member.skills.map((skillGroup, idx) => (
+                                <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                    <div style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(15, 53, 84, 0.5)' }}>
+                                        {skillGroup.category}
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                        {skillGroup.items.map((item, itemIdx) => (
+                                            <span
+                                                key={itemIdx}
+                                                style={{
+                                                    fontSize: '12px',
+                                                    fontWeight: 500,
+                                                    padding: '5px 12px',
+                                                    borderRadius: '999px',
+                                                    background: 'rgba(15, 53, 84, 0.06)',
+                                                    color: '#0f3554',
+                                                    border: '1px solid rgba(15, 53, 84, 0.12)'
+                                                }}
+                                            >
+                                                {item}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {skillGroup.items.map((item, itemIdx) => (
-                                        <span
-                                            key={itemIdx}
-                                            style={{
-                                                fontSize: '12px',
-                                                fontWeight: 500,
-                                                padding: '5px 12px',
-                                                borderRadius: '999px',
-                                                background: 'rgba(15, 53, 84, 0.06)',
-                                                color: '#0f3554',
-                                                border: '1px solid rgba(15, 53, 84, 0.12)'
-                                            }}
-                                        >
-                                            {item}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                {/* Engineering Projects */}
-                <div style={{ marginBottom: '4rem' }}>
-                    <h2 style={{ fontFamily: 'var(--font-main)', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
-                        Key Projects
-                    </h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
-                        {member.projects.map((proj, pIdx) => (
-                            <div
-                                key={pIdx}
-                                style={{
-                                    background: 'rgba(255, 255, 255, 0.65)',
-                                    backdropFilter: 'blur(20px)',
-                                    border: '1px solid rgba(15, 53, 84, 0.08)',
-                                    borderRadius: '1.25rem',
-                                    padding: '2rem',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between'
-                                }}
-                            >
-                                <div>
-                                    <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.2rem', fontWeight: 700, color: '#0f3554', marginBottom: '12px' }}>
-                                        {proj.title}
-                                    </h3>
-                                    <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#2a4358', marginBottom: '20px' }}>
-                                        {proj.description}
-                                    </p>
+                    {/* Engineering Projects */}
+                    <div style={{ marginBottom: '4rem' }}>
+                        <h2 style={{ fontFamily: 'var(--font-main)', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0f3554', marginBottom: '2rem' }}>
+                            Key Projects
+                        </h2>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
+                            {member.projects.map((proj, pIdx) => (
+                                <div
+                                    key={pIdx}
+                                    className="ic-sub-glass-card"
+                                    style={{
+                                        padding: '2rem',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'space-between'
+                                    }}
+                                >
+                                    <div>
+                                        <h3 style={{ fontFamily: 'var(--font-main)', fontSize: '1.2rem', fontWeight: 700, color: '#0f3554', marginBottom: '12px' }}>
+                                            {proj.title}
+                                        </h3>
+                                        <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#2a4358', marginBottom: '20px' }}>
+                                            {proj.description}
+                                        </p>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                        {proj.tags.map((tag, tIdx) => (
+                                            <span key={tIdx} style={{ fontSize: '11px', fontWeight: 600, padding: '4px 10px', borderRadius: '6px', background: 'rgba(15, 53, 84, 0.08)', color: '#0f3554' }}>
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                    {proj.tags.map((tag, tIdx) => (
-                                        <span key={tIdx} style={{ fontSize: '11px', fontWeight: 600, padding: '4px 10px', borderRadius: '6px', background: 'rgba(15, 53, 84, 0.08)', color: '#0f3554' }}>
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
         </motion.div>
     );
 };

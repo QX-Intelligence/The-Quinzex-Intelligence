@@ -35,9 +35,9 @@ const MontfortCanvas = () => {
                 if (mainScene.mountains && !mainScene.extraPeaksAdded) {
                     const baseMountain = mainScene.mountains.getObjectByName('Mountain');
                     if (baseMountain) {
-                        const isMobile = window.innerWidth <= 768;
+                        const isMobileOrTablet = window.innerWidth <= 1024;
                         // Multi-mountain configuration spanning the horizon and depth
-                        // On narrow mobile portrait viewports, keep only the peaks visible in frustum to cut overdraw
+                        // On mobile/tablet viewports (<= 1024px), keep only the peaks visible in frustum to cut overdraw
                         const allPeaks = [
                             // Left Far Backdrop Peak
                             { name: 'Peak_LeftFarBackdrop', pos: [-125, -16, -20], scale: [0.76, 0.74, 0.76], rot: [0, 1.35, 0], mobile: false },
@@ -54,7 +54,7 @@ const MontfortCanvas = () => {
                             // Distant Center Colossal Mountain Ridge
                             { name: 'Peak_CenterDistantColossus', pos: [-18, -8, 88], scale: [0.88, 0.85, 0.88], rot: [0, 3.05, 0], mobile: true }
                         ];
-                        const peaksConfig = isMobile ? allPeaks.filter(p => p.mobile) : allPeaks;
+                        const peaksConfig = isMobileOrTablet ? allPeaks.filter(p => p.mobile) : allPeaks;
 
                         peaksConfig.forEach(cfg => {
                             const peak = baseMountain.clone();
@@ -119,7 +119,7 @@ const MontfortCanvas = () => {
                 cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
             };
 
-            // Ensure renderer is sized to exact viewport; cap mobile DPR to 1.25 to avoid fill-rate bottlenecks
+            // Ensure renderer is sized to exact viewport; cap mobile/tablet DPR to 1.0 to avoid fill-rate bottlenecks
             const updateSize = (forceResize = false) => {
                 const w = window.innerWidth;
                 const h = window.innerHeight;
@@ -129,7 +129,7 @@ const MontfortCanvas = () => {
                 }
                 lastW = w;
                 lastH = h;
-                const dpr = Math.min(window.devicePixelRatio || 1, w <= 1024 ? 1.25 : 2);
+                const dpr = w <= 1024 ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 
                 if (App.webgl?.renderer) {
                     App.webgl.renderer.setSize(w, h);

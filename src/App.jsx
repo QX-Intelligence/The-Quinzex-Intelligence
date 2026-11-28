@@ -1,27 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import './styles/montfort.css';
 import MontfortCanvas from './components/MontfortCanvas';
 import Navbar from './components/Navbar';
 import ChapterHUD from './components/ChapterHUD';
 import MontfortSections from './components/MontfortSections';
-import FullMenu from './components/FullMenu';
 import MontfortPreloader from './components/MontfortPreloader';
-import SubPage from './components/SubPage';
-import ProjectDetail from './components/ProjectDetail';
-import MemberProfile from './components/MemberProfile';
 import MontfortFooter from './components/MontfortFooter';
 
-gsap.registerPlugin(ScrollTrigger);
+const FullMenu = lazy(() => import('./components/FullMenu'));
+const SubPage = lazy(() => import('./components/SubPage'));
+const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
+const MemberProfile = lazy(() => import('./components/MemberProfile'));
 
 function App() {
     const [activeChapter, setActiveChapter] = useState('WhoWeAre');
     const [isInFooter, setIsInFooter] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
     const [currentPath, setCurrentPath] = useState(typeof window !== 'undefined' ? window.location.pathname : '/');
 
     const lenisRef = useRef(null);
@@ -58,7 +54,7 @@ function App() {
         };
     }, []);
 
-    // Initialize Lenis Momentum Smooth Scroll (desktop only) & Synchronize with GSAP
+    // Initialize Lenis Momentum Smooth Scroll (desktop only) via native rAF loop
     useEffect(() => {
         const isTouchOrMobile = typeof window !== 'undefined' && (
             window.innerWidth <= 1024 ||
@@ -66,7 +62,7 @@ function App() {
         );
 
         let lenis = null;
-        let onTick = null;
+        let lenisRafId = null;
 
         if (!isTouchOrMobile) {
             lenis = new Lenis({
@@ -80,67 +76,81 @@ function App() {
             });
             lenisRef.current = lenis;
 
-            lenis.on('scroll', ScrollTrigger.update);
-
-            onTick = (time) => {
-                lenis.raf(time * 1000);
-            };
-            gsap.ticker.add(onTick);
-            gsap.ticker.lagSmoothing(0);
-        } else {
-            lenisRef.current = null;
-        }
-
-        // Cache DOM nodes for scroll chapter & footer tracking
-        const chapterIds = ['Sustainability', 'GlobalConnectivity', 'WhatWeDo', 'WhoWeAre'];
-        const footerEl = document.querySelector('.ic-creative-footer');
-        const chapterEls = chapterIds
-            .map(id => ({ id, el: document.getElementById(id) }))
-            .filter(item => item.el);
-
-        let ticking = false;
-        let scrollRafId = null;
-        const handleScroll = () => {
-            if (ticking) return;
-            ticking = true;
-            scrollRafId = requestAnimationFrame(() => {
-                const winH = window.innerHeight;
-                if (footerEl) {
-                    const fRect = footerEl.getBoundingClientRect();
-                    const nextInFooter = fRect.top < winH * 0.75;
-                    setIsInFooter(prev => (prev === nextInFooter ? prev : nextInFooter));
-                } else {
-                    setIsInFooter(prev => (prev ? false : prev));
-                }
-
-                // Active Chapter detection matching section IDs on homepage
-                const threshold = winH * 0.5;
-                for (let i = 0; i < chapterEls.length; i++) {
-                    const rect = chapterEls[i].el.getBoundingClientRect();
-                    if (rect.top <= threshold) {
-                        const found = chapterEls[i].id;
-                        setActiveChapter(prev => (prev === found ? prev : found));
-                        break;
-                    }
-                }
-                ticking = false;
-            });
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        handleScroll();
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            if (scrollRafId) cancelAnimationFrame(scrollRafId);
-            if (onTick) gsap.ticker.remove(onTick);
-            if (lenis) {
-                lenis.destroy();
+                const raf = (time) => {
+                    lenis.raf(time);
+                    lenisRafId = requestAnimationFrame(raf);
+                };
+                lenisRafId = requestAnimationFrame(raf);
+            } else {
                 lenisRef.current = null;
             }
-            ScrollTrigger.killAll();
-        };
-    }, [currentPath]);
+
+            // Cache DOM nodes for scroll chapter & footer tracking
+            const chapterIds = ['Sustainability', 'GlobalConnectivity', 'WhatWeDo', 'WhoWeAre'];
+            const footerEl = document.querySelector('.ic-creative-footer');
+            const chapterEls = chapterIds
+                .map(id => ({ id, el: document.getElementById(id) }))
+                .filter(item => item.el);
+
+            let ticking = false;
+            let scrollRafId = null;
+            let footerCovered = false;
+            const handleScroll = () => {
+                if (ticking) return;
+                ticking = true;
+                scrollRafId = requestAnimationFrame(() => {
+                    const winH = window.innerHeight;
+                    if (footerEl) {
+                        const fRect = footerEl.getBoundingClientRect();
+                        const nextInFooter = fRect.top < winH * 0.75;
+                        setIsInFooter(prev => (prev === nextInFooter ? prev : nextInFooter));
+
+                        // Pause WebGL ticker completely while the solid footer fills the entire viewport
+                        const isCovered = fRect.top <= 0;
+                        if (isCovered !== footerCovered) {
+                            footerCovered = isCovered;
+                            const ticker = window.MontfortApp?.core?.ticker;
+                            if (ticker) {
+                                if (isCovered) ticker.pause();
+                                else ticker.play();
+                            }
+                        }
+                    } else {
+                        setIsInFooter(prev => (prev ? false : prev));
+                        if (footerCovered) {
+                            footerCovered = false;
+                            window.MontfortApp?.core?.ticker?.play();
+                        }
+                    }
+
+                    // Active Chapter detection matching section IDs on homepage
+                    const threshold = winH * 0.5;
+                    for (let i = 0; i < chapterEls.length; i++) {
+                        const rect = chapterEls[i].el.getBoundingClientRect();
+                        if (rect.top <= threshold) {
+                            const found = chapterEls[i].id;
+                            setActiveChapter(prev => (prev === found ? prev : found));
+                            break;
+                        }
+                    }
+                    ticking = false;
+                });
+            };
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+                if (scrollRafId) cancelAnimationFrame(scrollRafId);
+                if (footerCovered) window.MontfortApp?.core?.ticker?.play();
+                if (lenisRafId) cancelAnimationFrame(lenisRafId);
+                if (lenis) {
+                    lenis.destroy();
+                    lenisRef.current = null;
+                }
+            };
+        }, [currentPath]);
 
     // Smooth Scroll Navigation Handler
     const scrollToTarget = (targetId) => {
@@ -162,7 +172,7 @@ function App() {
     return (
         <div className="montfort-page">
             {/* Luxury Alpine Montfort/Quinzex Themed Preloader (24h Cookie Managed) */}
-            <MontfortPreloader onDone={() => setIsLoaded(true)} />
+            <MontfortPreloader />
 
             {/* Atmospheric Misty Cloud Layer */}
             <div className="cloud-mist-overlay" />
@@ -177,7 +187,7 @@ function App() {
             {isHome ? (
                 <>
                     {/* Fixed Left Chapter Navigation HUD (Tracking Indicator) */}
-                    <ChapterHUD 
+                    <ChapterHUD
                         activeChapter={activeChapter}
                         isInFooter={isInFooter}
                         onScrollToChapter={scrollToTarget}
@@ -186,28 +196,36 @@ function App() {
                     {/* Main Scroll Content Sections with Quinzex Data */}
                     <MontfortSections onScrollToChapter={scrollToTarget} />
                 </>
-            ) : isProject ? (
-                <>
-                    <ProjectDetail projectId={projectId} />
-                    <MontfortFooter />
-                </>
-            ) : isMember ? (
-                <>
-                    <MemberProfile memberId={memberId} />
-                    <MontfortFooter />
-                </>
             ) : (
-                <>
-                    <SubPage path={currentPath} />
-                    <MontfortFooter />
-                </>
+                <Suspense fallback={null}>
+                    {isProject ? (
+                        <>
+                            <ProjectDetail projectId={projectId} />
+                            <MontfortFooter />
+                        </>
+                    ) : isMember ? (
+                        <>
+                            <MemberProfile memberId={memberId} />
+                            <MontfortFooter />
+                        </>
+                    ) : (
+                        <>
+                            <SubPage path={currentPath} />
+                            <MontfortFooter />
+                        </>
+                    )}
+                </Suspense>
             )}
 
             {/* Fullscreen Navigation Menu */}
-            <FullMenu 
-                isOpen={menuOpen}
-                onClose={() => setMenuOpen(false)}
-            />
+            {menuOpen && (
+                <Suspense fallback={null}>
+                    <FullMenu
+                        isOpen={menuOpen}
+                        onClose={() => setMenuOpen(false)}
+                    />
+                </Suspense>
+            )}
         </div>
     );
 }
